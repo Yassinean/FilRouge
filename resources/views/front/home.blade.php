@@ -1,4 +1,4 @@
-@extends('front.layout.app')
+@extends('front.layouts.app')
 
 @section('main')
     <section class="section-0 lazy d-flex bg-image-style dark align-items-center " class=""
