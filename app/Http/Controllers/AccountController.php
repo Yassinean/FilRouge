@@ -22,8 +22,8 @@ class AccountController extends Controller
         $validateData = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:5|same:confirm_password',
-            'confirm_password' => 'required',
+            'password' => 'required|min:5',
+            'confirm_password' => 'required|same:confirm_password',
         ]);
 
         if ($validateData->passes()) {
@@ -31,8 +31,6 @@ class AccountController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'name' => $request->name,
-
             ]);
             session()->flash('success', 'You have registered Successfully');
             return response()->json([
@@ -72,7 +70,40 @@ class AccountController extends Controller
 
     public function profile()
     {
-        return view('front.account.account');
+        $userID = Auth::id();
+        // $userData = User::where('id', $userID)->first();
+        $userData = User::findOrFail($userID);
+
+        return view('front.account.profile', compact('userData'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $userID = Auth::id();
+        $validateData = validator::make($request->all(), [
+            'name' => 'required|min:5|max:20',
+            'email' => 'required|email|unique:users,email,' . $userID . ',id',
+        ]);
+        if ($validateData->passes()) {
+            $user = User::find($userID);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->mobile = $request->mobile;
+            $user->designation = $request->designation;
+            $user->save();
+            
+            session()->flash('success','Profile updated successfuly');
+
+            return response()->json([
+                'status' => true,
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validateData->errors(),
+            ]);
+        }
     }
 
     public function logout()

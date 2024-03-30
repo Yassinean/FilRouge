@@ -12143,7 +12143,7 @@ q span {
 }
 
 a {
-  color: #A8DF8E;
+  color: #5C94FF;
 }
 
 a:hover {
@@ -12193,8 +12193,8 @@ button.btn-primary:focus,
 .btn.btn-primary:hover,
 .btn.btn-primary:focus {
   border: 2px solid #8bb3ff;
-  background: #8bb3ff;
-  color: #000;
+  background: #fff;
+  color: #8bb3ff;
 }
 
 button.btn-secondary,
