@@ -72,9 +72,9 @@ class AccountController extends Controller
     {
         $userID = Auth::id();
         // $userData = User::where('id', $userID)->first();
-        $userData = User::findOrFail($userID);
+        $user = User::findOrFail($userID);
 
-        return view('front.account.profile', compact('userData'));
+        return view('front.account.profile', compact('user'));
     }
 
     public function updateProfile(Request $request)

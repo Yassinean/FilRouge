@@ -22,7 +22,7 @@ Route::group(['account'], function () {
     // this section for user who authenticated 
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/account/profile', [AccountController::class, 'profile'])->name('account.profile');
-        Route::get('/account/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
+        Route::put('/account/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::get('/account/logout', [AccountController::class, 'logout'])->name('account.logout');
     });
 });
