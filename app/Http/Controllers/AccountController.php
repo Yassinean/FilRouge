@@ -91,17 +91,30 @@ class AccountController extends Controller
             $user->mobile = $request->mobile;
             $user->designation = $request->designation;
             $user->save();
-            
-            session()->flash('success','Profile updated successfuly');
+
+            session()->flash('success', 'Profile updated successfuly');
 
             return response()->json([
                 'status' => true,
             ]);
-
         } else {
             return response()->json([
                 'status' => false,
                 'errors' => $validateData->errors(),
+            ]);
+        }
+    }
+
+    public function updateProfilePic(Request $request)
+    {
+        $validator = validator::make($request->all(), [
+            'image' => 'required|image'
+        ]);
+        if ($validator->passes()) {
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
             ]);
         }
     }

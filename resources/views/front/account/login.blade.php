@@ -18,7 +18,7 @@
                             @csrf
                             @method('POST')
                             <div class="mb-3">
-                                <label for="" class="mb-2">Email*</label>
+                                <label for="email" class="mb-2">Email*</label>
                                 <input type="text" name="email" id="email" value="{{ old('email') }}"
                                     class="form-control @error('email') is-invalid @enderror"
                                     placeholder="example@example.com">
@@ -27,7 +27,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="" class="mb-2">Password*</label>
+                                <label for="password" class="mb-2">Password*</label>
                                 <input type="password" name="password" id="password"
                                     class="form-control @error('password') is-invalid @enderror"
                                     placeholder="Enter Password">
