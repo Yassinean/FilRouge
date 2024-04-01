@@ -93,9 +93,11 @@ class AccountController extends Controller
             $user->save();
 
             session()->flash('success', 'Profile updated successfuly');
-
+            $message_view = view('components.message')->render();
             return response()->json([
                 'status' => true,
+                'message' => $message_view,
+                'user' => $user,
             ]);
         } else {
             return response()->json([

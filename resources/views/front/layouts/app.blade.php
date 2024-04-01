@@ -68,25 +68,11 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
     {{-- script links --}}
+        
+    </script>
     @yield('customJs')
 
-    <script>
-        $("#profilePicForm").submit(function(e) {
-            e.preventDefault()
-            var formData = new FormData(this) // this is for profilePicForm
-            $.ajax({
-                url: '{{ route('account.updateProfilePic') }}',
-                data: formData,
-                type: 'post',
-                dataType: 'json',
-                contentType: false,
-                processType: false,
-                success: function(response) {
 
-                }
-            })
-        });
-    </script>
 </body>
 
 </html>

@@ -24,7 +24,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
         Route::put('/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-        Route::post('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
+        Route::put('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
         Route::get('/create-job', [JobDetailController::class, 'create'])->name('account.createJob');
         Route::post('/store-job', [JobDetailController::class, 'store'])->name('account.storeJob');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');

@@ -18,7 +18,9 @@
                     @include('front.account.side-bar')
                 </div>
                 <div class="col-lg-9">
-                    @include('front.message')
+                    <div>
+                        <x-message />
+                    </div>
                     <div class="card border-0 shadow mb-4">
                         <form action="" method="post" id="userForm" name="userForm">
                             @csrf
@@ -89,10 +91,11 @@
 @endsection
 
 @section('customJs')
-    <script type="text/javascript">
-        $("#userForm").submit(function(e) {
-            e.preventDefault();
+    <script src="{{ asset('assets/js/edit_pic.js') }}">
 
+    <script type="text/javascript">
+        $('#userForm').submit(function(e) {
+            e.preventDefault();
             $.ajax({
                 url: '{{ route('account.updateProfile') }}',
                 type: 'put',
@@ -112,7 +115,9 @@
                             .removeClass('invalid-feedback')
                             .html('')
 
-                        window.location.href = "{{ route('account.profile') }}";
+                        $('#user_name').html(response.user.name);
+                        $('#message').html(response.message);
+                        // window.location.href = "{{ route('account.profile') }}";
 
                     } else {
                         var errors = response.errors;
