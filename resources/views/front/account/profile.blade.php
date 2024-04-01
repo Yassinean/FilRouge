@@ -1,6 +1,6 @@
 @extends('front.layouts.app')
 
-@section('mainProfile')
+@section('main')
     <section class="section-5 bg-2">
         <div class="container py-5">
             <div class="row">
@@ -58,19 +58,19 @@
                             <div class="card-body p-4">
                                 <h3 class="fs-4 mb-1">Change Password</h3>
                                 <div class="mb-4">
-                                    <label for="" class="mb-2">Old Password*</label>
+                                    <label for="old_password" class="mb-2">Old Password*</label>
                                     <input type="password" name="old_password" id="old_password" placeholder="Old Password"
                                         class="form-control">
                                     <p></p>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="password" class="mb-2">New Password*</label>
+                                    <label for="new_password" class="mb-2">New Password*</label>
                                     <input type="password" name="new_password" id="new_password" placeholder="New Password"
                                         class="form-control">
                                     <p></p>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="password" class="mb-2">Confirm Password*</label>
+                                    <label for="confirm_password" class="mb-2">Confirm Password*</label>
                                     <input type="password" name="confirm_password" id="confirm_password"
                                         placeholder="Confirm Password" class="form-control">
                                     <p></p>
