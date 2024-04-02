@@ -91,7 +91,7 @@
 @endsection
 
 @section('customJs')
-    <script src="{{ asset('assets/js/edit_pic.js') }}">
+    <script src="{{ asset('assets/js/edit_pic.js') }}"></script>
 
     <script type="text/javascript">
         $('#userForm').submit(function(e) {

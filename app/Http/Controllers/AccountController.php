@@ -109,17 +109,16 @@ class AccountController extends Controller
 
     public function updateProfilePic(Request $request)
     {
-        dd($request->all());
-        // $validator = validator::make($request->all(), [
-        //     'image' => 'required|image'
-        // ]);
-        // if ($validator->passes()) {
-        // } else {
-        //     return response()->json([
-        //         'status' => false,
-        //         'errors' => $validator->errors(),
-        //     ]);
-        // }
+        $validator = validator::make($request->all(), [
+            'image' => 'required|image'
+        ]);
+        if ($validator->passes()) {
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
     }
 
     public function logout()
