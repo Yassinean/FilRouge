@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('location');
             $table->integer('vacancy');
-            $table->boolean('status')->default(false);
             $table->string('salary')->nullable();
             $table->longText('description')->nullable();
             $table->foreignId('category_job_id')->constrained()->onDelete('cascade');

@@ -68,7 +68,7 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
     {{-- script links --}}
-        
+
     </script>
     @yield('customJs')
 

@@ -2,7 +2,7 @@
     <div class="s-body text-center mt-3">
 
         @if (Auth::user()->image != '')
-            <img src="{{ asset('profile_pic/thumb/' . Auth::user()->image) }}" alt="avatar"
+            <img src="{{ asset('profile_pic/' . Auth::user()->image) }}" alt="avatar"
                 class="rounded-circle img-fluid" style="width: 150px;">
         @else
             <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
@@ -51,9 +51,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="profilePicForm" name="profilePicForm" action="" method="post"
+                <form id="profilePicForm" name="profilePicForm" action="{{route('account.updateProfilePic')}}" method="post"
                     enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="mb-3">
                         <label for="image" class="form-label">Profile Image</label>
                         <input type="file" class="form-control" id="image" name="image">
@@ -68,3 +69,6 @@
         </div>
     </div>
 </div>
+
+
+<script src="{{ asset('assets/js/edit_pic.js') }}"></script>

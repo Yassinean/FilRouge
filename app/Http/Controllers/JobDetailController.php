@@ -24,8 +24,8 @@ class JobDetailController extends Controller
      */
     public function create()
     {
-        $types = TypeJob::orderBy('name', 'ASC')->get();
-        $categories = CategoryJob::orderBy('name', 'ASC')->get();
+        $types = TypeJob::orderBy('name', 'ASC')->where('status',1)->get();
+        $categories = CategoryJob::orderBy('name', 'ASC')->where('status',1)->get();
         return view('front.account.job.create', compact('categories', 'types'));
     }
 
@@ -45,7 +45,30 @@ class JobDetailController extends Controller
                 'experiences' => 'required',
             ];
         $validator = Validator::make($request->all(), $rules);
+        //dd($request);
         if ($validator->passes()) {
+            $jobDetail = new JobDetail();
+            $jobDetail->title = $request->title;
+            $jobDetail->location = $request->location;
+            $jobDetail->vacancy = $request->vacancy;
+            $jobDetail->status = $request->status;
+            $jobDetail->salary = $request->salary;
+            $jobDetail->description = $request->description;
+            $jobDetail->category_id = $request->category_job_id;
+            $jobDetail->jobType_id = $request->type_job_id;
+            $jobDetail->responsibility = $request->responsabitilies;
+            $jobDetail->qualifications = $request->qualifications;
+            $jobDetail->experiences = $request->experiences;
+            $jobDetail->company_name = $request->company_name;
+            $jobDetail->company_location = $request->company_location;
+            $jobDetail->company_website = $request->company_website;
+            $jobDetail->save();
+
+            session()->flash('sucess','Job added successfully!');
+            return response()->json([
+                'status' => true,
+                'message' => 'Job details stored successfully',
+            ]);
         } else {
             return response()->json([
                 'status' => false,
@@ -54,6 +77,9 @@ class JobDetailController extends Controller
         }
     }
 
+    public function getJob(){
+
+    }
     /**
      * Display the specified resource.
      */

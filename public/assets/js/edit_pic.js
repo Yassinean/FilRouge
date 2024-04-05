@@ -1,8 +1,24 @@
-$("#profilePicForm").submit(function (e) {
+$("#profilePicForm").submit(function(e){
     e.preventDefault();
-    if (image.files && image.files[0]) {
-        $("#profilePicForm").submit();
-    } else {
-        $('#image-error').html('The image field is required')
-    }
+
+    let formData = new FormData(this);
+
+    $.ajax({
+        url: '{{ route("account.updateProfilePic") }}',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (response.status == false) {
+                let errors = response.errors;
+                if (errors.image) {
+                    $("#image-error").html(errors.image)
+                }
+            } else {
+                window.location.href = '{{ url()->current() }}';
+            }
+        }
+    });
 });

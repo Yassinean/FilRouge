@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
-    //this function will show us register page 
+    //this function will show us register page
     public function register()
     {
         return view('front.account.register');
@@ -45,7 +45,7 @@ class AccountController extends Controller
         }
     }
 
-    //this function will show us login page 
+    //this function will show us login page
     public function login()
     {
         return view('front.account.login');
@@ -109,10 +109,23 @@ class AccountController extends Controller
 
     public function updateProfilePic(Request $request)
     {
+        $userID = Auth::id();
         $validator = validator::make($request->all(), [
             'image' => 'required|image'
         ]);
         if ($validator->passes()) {
+            $image = $request->image;
+            $ext = $image->getClientOriginalExtension();
+            $imageName = $userID.'-'.time().'.'.$ext;
+            $image->move(public_path('/profile_pic/',$imageName));
+
+            User::where('id',$userID)->update(['image' => $imageName]);
+
+            session()->flash('success','Profile picture updated successfully');
+            return response()->json([
+                'status' => true,
+                'errors' => [],
+            ]);
         } else {
             return response()->json([
                 'status' => false,

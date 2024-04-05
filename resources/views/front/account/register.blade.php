@@ -58,7 +58,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status == false) {
-                        var errors = response.errors;
+                        let errors = response.errors;
                         if (errors.name) {
                             $("#name").addClass('is-invalid')
                                 .siblings('p')

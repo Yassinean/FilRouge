@@ -91,7 +91,6 @@
 @endsection
 
 @section('customJs')
-    <script src="{{ asset('assets/js/edit_pic.js') }}"></script>
 
     <script type="text/javascript">
         $('#userForm').submit(function(e) {
@@ -120,7 +119,7 @@
                         // window.location.href = "{{ route('account.profile') }}";
 
                     } else {
-                        var errors = response.errors;
+                        let errors = response.errors;
 
                         if (errors.name) {
                             $("#name").addClass('is-invalid')
