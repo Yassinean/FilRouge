@@ -15,7 +15,9 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    @include('front.account.side-bar')
+                    <div class="sticky-top">
+                        @include('front.account.side-bar')
+                    </div>
                 </div>
                 <div class="col-lg-9">
                     @include('front.message')
@@ -137,14 +139,14 @@
 
                                     <div class="mb-4 col-md-6">
                                         <label for="" class="mb-2">Location</label>
-                                        <input type="text" placeholder="Location" id="location" name="location"
+                                        <input type="text" placeholder="Location" id="location" name="company_location"
                                                class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Website</label>
-                                    <input type="text" placeholder="Website" id="website" name="website"
+                                    <input type="text" placeholder="Website" id="website" name="company_website"
                                            class="form-control">
                                 </div>
                             </div>
@@ -206,7 +208,7 @@
                             .removeClass('invalid-feedback')
                             .html('')
 
-                        windows.location.href="{{route('account.getJob')}}";
+                        window.location.href="{{route('account.getJob')}}"
                     } else {
                         let errors = response.errors;
 
