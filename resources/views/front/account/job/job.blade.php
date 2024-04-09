@@ -15,7 +15,9 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    @include('front.account.side-bar')
+                    <div class="sticky-top">
+                        @include('front.account.side-bar')
+                    </div>
                 </div>
                 <div class="col-lg-9">
                     @include('front.message')
@@ -74,9 +76,7 @@
                                                                     class="fa fa-edit" aria-hidden="true"></i>Edit</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" href=""
-                                                               onclick="deleteJob({{ $job->id }})"><i class="fa fa-trash"
-                                                                                                    aria-hidden="true"></i>Remove</a>
+                                                            <a class="dropdown-item" href="{{route('account.deleteJob',$job->id)}}"><i class="fa fa-trash" aria-hidden="true"></i>Remove</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -94,24 +94,8 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
 @endsection
 
 @section('customJs')
-    <script type="text/javascript">
-        function deleteJob(jobId) {
-            if (confirm("Are you sure you want to delete?")) {
-                $.ajax({
-                    url: '{{ route("account.deleteJob") }}',
-                    type: 'post',
-                    data: {jobId: jobId},
-                    dataType: 'json',
-                    success: function (response) {
-                        window.location.href = '{{ route("account.getJob") }}';
-                    }
-                });
-            }
-        }
-    </script>
 @endsection

@@ -92,7 +92,7 @@
                                     <label for="" class="mb-2">Responsibility</label>
                                     <textarea class="form-control" name="responsibility" id="responsibility" cols="5"
                                               rows="5"
-                                              placeholder="Responsibility">{{$jobs->responsabilities}}</textarea>
+                                              placeholder="Responsibility">{{$jobs->responsabitilies}}</textarea>
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Qualifications</label>

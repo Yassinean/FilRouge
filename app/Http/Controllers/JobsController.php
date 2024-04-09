@@ -33,51 +33,51 @@ class JobsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorejobsRequest $request): \Illuminate\Http\JsonResponse
-    {
-        $rules = [
-            'title' => 'required|min:5|max:50',
-            'category_id' => 'required',
-            'jobType' => 'required',
-            'vacancy' => 'required',
-            'location' => 'required|max:70',
-            'description' => 'required:',
-            'company_name' => 'required|min:3|max:50',
-            'experiences' => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        //dd($request);
-        if ($validator->passes()) {
-            $jobDetail = new Job();
-            $jobDetail->title = $request->title;
-            $jobDetail->location = $request->location;
-            $jobDetail->vacancy = $request->vacancy;
-            $jobDetail->user_id = Auth::user()->id;
-            $jobDetail->salary = $request->salary;
-            $jobDetail->description = $request->description;
-            $jobDetail->category_job_id = $request->category_id;
-            $jobDetail->type_job_id = $request->jobType;
-            $jobDetail->keywords = $request->keywords;
-            $jobDetail->responsabitilies = $request->responsibility;
-            $jobDetail->qualifications = $request->qualifications;
-            $jobDetail->experiences = $request->experiences;
-            $jobDetail->company_name = $request->company_name;
-            $jobDetail->company_location = $request->company_location;
-            $jobDetail->company_website = $request->company_website;
-            $jobDetail->save();
+        public function store(StorejobsRequest $request): \Illuminate\Http\JsonResponse
+        {
+            $rules = [
+                'title' => 'required|min:5|max:50',
+                'category_id' => 'required',
+                'jobType' => 'required',
+                'vacancy' => 'required',
+                'location' => 'required|max:70',
+                'description' => 'required:',
+                'company_name' => 'required|min:3|max:50',
+                'experiences' => 'required',
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            //dd($request);
+            if ($validator->passes()) {
+                $jobDetail = new Job();
+                $jobDetail->title = $request->title;
+                $jobDetail->location = $request->location;
+                $jobDetail->vacancy = $request->vacancy;
+                $jobDetail->user_id = Auth::user()->id;
+                $jobDetail->salary = $request->salary;
+                $jobDetail->description = $request->description;
+                $jobDetail->category_job_id = $request->category_id;
+                $jobDetail->type_job_id = $request->jobType;
+                $jobDetail->keywords = $request->keywords;
+                $jobDetail->responsabitilies = $request->responsibility;
+                $jobDetail->qualifications = $request->qualifications;
+                $jobDetail->experiences = $request->experiences;
+                $jobDetail->company_name = $request->company_name;
+                $jobDetail->company_location = $request->company_location;
+                $jobDetail->company_website = $request->company_website;
+                $jobDetail->save();
 
-            session()->flash('success', 'Job added successfully!');
-            return response()->json([
-                'status' => true,
-                'message' => 'Job details stored successfully',
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ]);
+                session()->flash('success', 'Job added successfully!');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Job details stored successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors(),
+                ]);
+            }
         }
-    }
 
     public function getJob()
     {
@@ -117,75 +117,35 @@ class JobsController extends Controller
      */
     public function update(UpdatejobsRequest $request, Job $job ,$id)
     {
-        $rules = [
-            'title' => 'required|min:5|max:50',
-            'category_id' => 'required',
-            'jobType' => 'required',
-            'vacancy' => 'required',
-            'location' => 'required|max:70',
-            'description' => 'required:',
-            'company_name' => 'required|min:3|max:50',
-            'experiences' => 'required',
+        $job = Job::findOrFail($id);
 
-        ];
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = Auth::user()->id;
 
-        $validator = Validator::make($request->all(),$rules);
+        $job->update($validatedData);
 
-        if ($validator->passes()) {
+        session()->flash('success', 'Job updated successfully.');
 
-            $jobDetail = Job::find($id);
-            $jobDetail->title = $request->title;
-            $jobDetail->location = $request->location;
-            $jobDetail->vacancy = $request->vacancy;
-            $jobDetail->user_id = Auth::user()->id;
-            $jobDetail->salary = $request->salary;
-            $jobDetail->description = $request->description;
-            $jobDetail->category_job_id = $request->category_id;
-            $jobDetail->type_job_id = $request->jobType;
-            $jobDetail->keywords = $request->keywords;
-            $jobDetail->responsabitilies = $request->responsibility;
-            $jobDetail->qualifications = $request->qualifications;
-            $jobDetail->experiences = $request->experiences;
-            $jobDetail->company_name = $request->company_name;
-            $jobDetail->company_location = $request->company_location;
-            $jobDetail->company_website = $request->company_website;
-            $jobDetail->save();
-
-            session()->flash('success','Job updated successfully.');
-
-            return response()->json([
-                'status' => true,
-                'errors' => []
-            ]);
-
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
+        return response()->json([
+            'status' => true,
+            'errors' => []
+        ]);
     }
 
     public function deleteJob(Job $job, $id) {
 
-        $job = Job::where([
-            'user_id' => Auth::user()->id,
-            'id' => $job->jobId
-        ])->first();
+        $job = Job::where('id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
 
-
-        if ($job == null) {
-            session()->flash('error','Either job deleted or not found.');
-            return response()->json([
-                'status' => true
-            ]);
+        if (!$job) {
+            session()->flash('error', 'Either job was deleted or not found.');
+            return redirect()->back();
         }
 
-        Job::where('id',$job->jobId)->delete();
-        session()->flash('success','Job deleted successfully.');
-        return response()->json([
-            'status' => true
-        ]);
+        $job->delete();
+        session()->flash('success', 'Job deleted successfully.');
+        return redirect()->back();
 
     }
 

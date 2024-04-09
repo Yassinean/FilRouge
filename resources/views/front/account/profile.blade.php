@@ -15,7 +15,9 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    @include('front.account.side-bar')
+                    <div class="sticky-top">
+                        @include('front.account.side-bar')
+                    </div>
                 </div>
                 <div class="col-lg-9">
                     <div>
