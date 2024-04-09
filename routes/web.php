@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
+Route::get('/jobs-page', [JobsController::class, 'index'])->name('jobs-page');
 Route::group(['prefix' => 'account'], function () {
     // this section for guest
     Route::group(['middleware' => 'guest'], function () {
