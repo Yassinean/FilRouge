@@ -2,7 +2,7 @@
     <div class="s-body text-center mt-3">
 
         @if (Auth::user()->image != '')
-            <img src="{{ asset('profile_pic/' . Auth::user()->image) }}" alt="avatar"
+            <img src="{{ asset('profile_pic/' . Auth::user()->image) }}" alt="{{ Auth::user()->image }}"
                 class="rounded-circle img-fluid" style="width: 150px;">
         @else
             <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
@@ -24,10 +24,10 @@
                 <a href="{{ route('account.profile') }}">Account Settings</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="">Post a Job</a>
+                <a href="{{ route('account.createJob') }}">Post a Job</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="">My Jobs</a>
+                <a href="{{ route('account.getJob') }}">My Jobs</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="">Jobs Applied</a>

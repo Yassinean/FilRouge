@@ -117,7 +117,7 @@ class AccountController extends Controller
             $image = $request->image;
             $ext = $image->getClientOriginalExtension();
             $imageName = $userID.'-'.time().'.'.$ext;
-            $image->move(public_path('/profile_pic/',$imageName));
+            $image->move(public_path('assets/profile_pic/',$imageName));
 
             User::where('id',$userID)->update(['image' => $imageName]);
 

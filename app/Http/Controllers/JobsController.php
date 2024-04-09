@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatejobsRequest;
 use App\Models\Job;
 use App\Models\TypeJob;
 use App\Models\CategoryJob;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class JobsController extends Controller
@@ -51,6 +52,7 @@ class JobsController extends Controller
             $jobDetail->title = $request->title;
             $jobDetail->location = $request->location;
             $jobDetail->vacancy = $request->vacancy;
+            $jobDetail->user_id = Auth::user()->id;
             $jobDetail->salary = $request->salary;
             $jobDetail->description = $request->description;
             $jobDetail->category_job_id = $request->category_id;
@@ -79,7 +81,8 @@ class JobsController extends Controller
 
     public function getJob()
     {
-        return view('front.account.job.job');
+        $jobs = Job::where('user_id',Auth::user()->id)->get();
+        return view('front.account.job.job' , compact('jobs'));
     }
 
     /**
@@ -93,24 +96,97 @@ class JobsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job $job)
+    public function editJob(Job $job, $id)
     {
-        //
+            $categories = CategoryJob::orderBy('name','ASC')->where('status',1)->get();
+            $types = TypeJob::orderBy('name','ASC')->where('status',1)->get();
+
+            $jobs = Job::where([
+                'user_id' => Auth::user()->id,
+                'id' => $id
+            ])->first();
+            if ($jobs == null) {
+                abort(404);
+            }
+
+            return view('front.account.job.edit',compact('categories','types','jobs'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJobRequest $request, Job $job)
+    public function update(UpdatejobsRequest $request, Job $job ,$id)
     {
-        //
+        $rules = [
+            'title' => 'required|min:5|max:50',
+            'category_id' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required',
+            'location' => 'required|max:70',
+            'description' => 'required:',
+            'company_name' => 'required|min:3|max:50',
+            'experiences' => 'required',
+
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if ($validator->passes()) {
+
+            $jobDetail = Job::find($id);
+            $jobDetail->title = $request->title;
+            $jobDetail->location = $request->location;
+            $jobDetail->vacancy = $request->vacancy;
+            $jobDetail->user_id = Auth::user()->id;
+            $jobDetail->salary = $request->salary;
+            $jobDetail->description = $request->description;
+            $jobDetail->category_job_id = $request->category_id;
+            $jobDetail->type_job_id = $request->jobType;
+            $jobDetail->keywords = $request->keywords;
+            $jobDetail->responsabitilies = $request->responsibility;
+            $jobDetail->qualifications = $request->qualifications;
+            $jobDetail->experiences = $request->experiences;
+            $jobDetail->company_name = $request->company_name;
+            $jobDetail->company_location = $request->company_location;
+            $jobDetail->company_website = $request->company_website;
+            $jobDetail->save();
+
+            session()->flash('success','Job updated successfully.');
+
+            return response()->json([
+                'status' => true,
+                'errors' => []
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Job $job)
-    {
-        //
+    public function deleteJob(Job $job, $id) {
+
+        $job = Job::where([
+            'user_id' => Auth::user()->id,
+            'id' => $job->jobId
+        ])->first();
+
+
+        if ($job == null) {
+            session()->flash('error','Either job deleted or not found.');
+            return response()->json([
+                'status' => true
+            ]);
+        }
+
+        Job::where('id',$job->jobId)->delete();
+        session()->flash('success','Job deleted successfully.');
+        return response()->json([
+            'status' => true
+        ]);
+
     }
+
 }
