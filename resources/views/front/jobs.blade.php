@@ -23,22 +23,22 @@
                         <div class="card border-0 shadow p-4">
                             <div class="mb-4">
                                 <h2>Keywords</h2>
-                                <input type="text" name="keyword" placeholder="Keywords" class="form-control">
+                                <input type="text" name="keyword" id="keyword" placeholder="Keywords" class="form-control" value="{{Request::get('keyword')}}">
                             </div>
 
                             <div class="mb-4">
                                 <h2>Location</h2>
-                                <input type="text" name="location" placeholder="Location" class="form-control">
+                                <input type="text" name="location" id="location" placeholder="Location" class="form-control" value="{{Request::get('location')}}">
                             </div>
 
                             <div class="mb-4">
                                 <h2>Category</h2>
                                 <select name="category" id="category" class="form-control">
                                     <option value="">Select a Category</option>
-                                    @forelse($categories as $categorie)
-                                        <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                                    @forelse($categories as $category)
+                                        <option {{ (Request::get('category') == $category->id) ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                     @empty
-                                        <p>There is no categories</p>
+                                        <option disabled>No categories available</option>
                                     @endforelse
                                 </select>
                             </div>
@@ -74,6 +74,7 @@
                                     <option value="10_plus">10+ Years</option>
                                 </select>
                             </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </form>
 
@@ -98,16 +99,27 @@
                                                         <span class="ps-1">{{$job->typeJob->name}}</span>
                                                     </p>
                                                     <p class="mb-0">
-                                                        <span class="fw-bolder"><i class="fa fa-hashtag"></i></span>
-                                                        <span class="ps-1">{{$job->keywords}}</span>
+                                                        <span class="fw-bolder"><i class="fa fa-tag"></i></span>
+                                                        <span class="ps-1">{{ $job->categoryJob->name}}</span>
                                                     </p>
-
                                                     @if(!is_null($job->salary))
                                                         <p class="mb-0">
                                                             <span class="fw-bolder"><i class="fa fa-usd"></i></span>
-                                                            <span class="ps-1">{{$job->salary}}</span>
+                                                            <span class="ps-1 fw-bolder">{{$job->salary}}</span>
                                                         </p>
                                                     @endif
+                                                    <p class="mb-0">
+                                                        <span class="">Experiences : </span>
+                                                        @if($job->experiences == 1)
+                                                            <span class="ps-1">{{ $job->experiences}} year</span>
+                                                        @else
+                                                            <span class="ps-1">{{ $job->experiences}} years</span>
+                                                        @endif
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <span class=""><i class="fa fa-hashtag"></i></span>
+                                                        <span class="ps-1">{{$job->keywords}}</span>
+                                                    </p>
                                                 </div>
 
                                                 <div class="d-grid mt-3">
@@ -129,4 +141,27 @@
         </div>
     </section>
 
+@endsection
+
+@section('customJs')
+    <script>
+        $('#searchForm').submit(function(e){
+            e.preventDefault();
+            let url = '{{route('jobs-page')}}?';
+            let keyword = $('#keyword').val();
+            let location = $('#location').val();
+            let category = $('#category').val();
+            console.log(category)
+            if(keyword != ''){
+                url+= '&keyword='+keyword;
+            }
+            if(location != ''){
+                url+= '&location='+location;
+            }
+            if(category != ''){
+                url+= '&category='+category;
+            }
+           // window.location.href = url;
+        })
+    </script>
 @endsection
