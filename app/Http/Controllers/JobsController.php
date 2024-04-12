@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorejobsRequest;
+use App\Http\Requests\StoreJobsRequest;
 use App\Http\Requests\UpdatejobsRequest;
 use App\Models\Job;
+use App\Models\JobApplication;
 use App\Models\TypeJob;
 use App\Models\CategoryJob;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -231,6 +233,74 @@ class JobsController extends Controller
         session()->flash('success', 'Job deleted successfully.');
         return redirect()->back();
 
+    }
+
+    public function detailJob($id){
+        $job = Job::where([
+            'id' => $id,
+            'status' => 1
+        ])->with(['typeJob','categoryJob'])->first();
+
+        if($job == null){
+            abort(404);
+        }
+
+        return view('front.detail',compact('job'));
+    }
+
+    public function applyJob(Request $request){
+        $id = $request->id;
+        $job = Job::where('id',$id)->first();
+        // if job does not exist in db
+        if($job == null ){
+            $message = 'Job does not exist';
+            session()->flash('error', $message);
+            return response()->json([
+                'status'=> false,
+                'message' => $message,
+            ]);
+        }
+
+         // if emplyee id want to apply in his own job
+        $employer_id = $job->user_id;
+        if ($employer_id == Auth::user()->id) {
+            $message = 'You can not apply on your own job.';
+            session()->flash('error',$message);
+            return response()->json([
+                'status' => false,
+                'message' => $message
+            ]);
+        }
+
+
+        // candidate cannot apply twice
+        $applyedJobCount = JobApplication::where([
+            'user_id'=>Auth::user()->id,
+            'job_id'=>$id,
+        ])->count();
+
+        if($applyedJobCount > 0){
+            $message = 'You have already applied to this job';
+            session()->flash('error', $message);
+            return response()->json([
+                'status'=> false,
+                'message'=> $message,
+            ]);
+        }
+
+        $applyedJob = new JobApplication();
+        $applyedJob->job_id = $id;
+        $applyedJob->user_id = Auth::user()->id;
+        $applyedJob->employer_id = $employer_id;
+        $applyedJob->applied_date = now();
+        $applyedJob->save();
+
+        $message = 'You have applied successfully ! ';
+        session()->flash('success',$message);
+        return response()->json([
+            'status' => true,
+            'message' => $message,
+        ]);
     }
 
 }

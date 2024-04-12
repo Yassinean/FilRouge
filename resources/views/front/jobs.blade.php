@@ -123,7 +123,7 @@
                                                 </div>
 
                                                 <div class="d-grid mt-3">
-                                                    <a href="job-detail.html" class="btn btn-primary btn-lg">Details</a>
+                                                    <a href="{{route('detailJob',$job->id)}}" class="btn btn-primary btn-lg">Details</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,7 +151,7 @@
             let keyword = $('#keyword').val();
             let location = $('#location').val();
             let category = $('#category').val();
-            console.log(category)
+            //console.log(location)
             if(keyword != ''){
                 url+= '&keyword='+keyword;
             }

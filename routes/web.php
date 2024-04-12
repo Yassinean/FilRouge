@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jobs-page', [JobsController::class, 'index'])->name('jobs-page');
+Route::get('/jobs/detail/{id}', [JobsController::class, 'detailJob'])->name('detailJob');
 Route::group(['prefix' => 'account'], function () {
     // this section for guest
     Route::group(['middleware' => 'guest'], function () {
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/jobs/edit/{jobId}', [JobsController::class, 'editJob'])->name('account.editJob');
         Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
         Route::get('/jobs/delete/{jobId}', [JobsController::class, 'deleteJob'])->name('account.deleteJob');
+        Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('account.applyJob');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
     });
 });
