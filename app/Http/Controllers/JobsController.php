@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatejobsRequest;
 use App\Mail\JobNotificationEmail;
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Models\SavedJob;
 use App\Models\TypeJob;
 use App\Models\CategoryJob;
 use App\Models\User;
@@ -312,6 +313,41 @@ class JobsController extends Controller
         return response()->json([
             'status' => true,
             'message' => $message,
+        ]);
+    }
+
+    public function saveJob(Request $request){
+        $id = $request->id;
+        $job = Job::find($id);
+        if($job == null){
+            session()->flash('error','Job not Found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+        // check if user already saved job
+        $countSavedJob = SavedJob::where([
+           'user_id'=> Auth::user()->id,
+           'job_id'=> $id,
+        ])->count();
+
+        if($countSavedJob > 0 ){
+            $message = 'You are already save this job';
+            session()->flash('error',$message);
+            return response()->json([
+               'status' => false,
+               'message' => $message,
+            ]);
+        }
+        $savedJob = new SavedJob();
+        $savedJob->job_id = $id;
+        $savedJob->job_id = Auth::user()->id;
+        $savedJob->save();
+        $message= 'You are saved this job successfully !';
+        session()->flash('success',$message);
+        return response()->json([
+           'status' => true,
+           'message' => $message,
         ]);
     }
 

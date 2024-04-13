@@ -66,7 +66,7 @@
                             <div class="border-bottom"></div>
                             @if(Auth::check())
                                 <div class="pt-3 text-end">
-                                    <a href="" class="btn btn-secondary">Save</a>
+                                    <a href="" onclick="saveJob({{$job->id}})" class="btn btn-secondary">Save</a>
                                     <a href="" onclick="applyJob({{$job->id}})" class="btn btn-primary">Apply</a>
                                 </div>
                             @else
@@ -86,7 +86,8 @@
                             </div>
                             <div class="job_content pt-3">
                                 <ul>
-                                    <li>Published on: <span>{{\Carbon\Carbon::parse($job->created_at)->format('d M,Y')}}</span></li>
+                                    <li>Published on:
+                                        <span>{{\Carbon\Carbon::parse($job->created_at)->format('d M,Y')}}</span></li>
                                     <li>Vacancy: <span>{{$job->vacancy}} Position</span></li>
                                     <li>Salary: <span>{{$job->salary}} DH</span></li>
                                     <li>Location: <span>{{$job->location}}</span></li>
@@ -107,7 +108,9 @@
                                         <li>Location: <span>{{$job->company_location}}</span></li>
                                     @endif
                                     @if(!empty($job->company_website))
-                                        <li>Webite: <span><a href="{{$job->company_website}}">{{$job->company_website}}</a></span></li>
+                                        <li>Webite: <span><a
+                                                    href="{{$job->company_website}}">{{$job->company_website}}</a></span>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
@@ -121,24 +124,41 @@
 @endsection
 
 @section('customJs')
-<script>
-    function applyJob(id){
-        if(confirm('Are you sure you want to apply on this job ?')){
-            let token = '{{ csrf_token() }}';
-            $.ajax({
-                // Set the CSRF token in the request headers
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                url:'{{route('account.applyJob')}}',
-                type:'post',
-                data:{id:id},
-                dataType:'json',
-                success:function(response){
-                    window.location.href='{{url()->current()}}';
-                }
-            })
+    <script>
+        function applyJob(id) {
+            if (confirm('Are you sure you want to apply on this job ?')) {
+                let token = '{{ csrf_token() }}';
+                $.ajax({
+                    // Set the CSRF token in the request headers
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    url: '{{route('account.applyJob')}}',
+                    type: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.href = '{{url()->current()}}';
+                    }
+                })
+            }
         }
-    }
-</script>
+
+        function saveJob(id) {
+                let token = '{{ csrf_token() }}';
+                $.ajax({
+                    // Set the CSRF token in the request headers
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    url: '{{route('account.saveJob')}}',
+                    type: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.href = '{{url()->current()}}';
+                    }
+                })
+        }
+    </script>
 @endsection

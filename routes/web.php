@@ -35,6 +35,7 @@ Route::group(['prefix' => 'account'], function () {
         //this one for candidate that he wants to remove his candidature from this job
         Route::get('/jobs/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
         Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('account.applyJob');
+        Route::post('/save-job', [JobsController::class, 'saveJob'])->name('account.saveJob');
         Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
     });
