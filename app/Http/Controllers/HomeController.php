@@ -17,7 +17,5 @@ class HomeController extends Controller
         // this method will show us home page
         return view('front.home', compact('categories','featureJobs' , 'latestJobs'));
     }
-    public function search() {
 
-    }
 }

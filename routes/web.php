@@ -32,7 +32,10 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/jobs/edit/{jobId}', [JobsController::class, 'editJob'])->name('account.editJob');
         Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
         Route::get('/jobs/delete/{jobId}', [JobsController::class, 'deleteJob'])->name('account.deleteJob');
+        //this one for candidate that he wants to remove his candidature from this job
+        Route::get('/jobs/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
         Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('account.applyJob');
+        Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
     });
 });

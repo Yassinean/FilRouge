@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobApplication;
 use App\Models\User;
 use Illuminate\Http\Request;
+//use \Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -134,6 +136,30 @@ class AccountController extends Controller
         }
     }
 
+    public function appliedJob(){
+        $user_id = Auth::id();
+        $jobApplications = JobApplication::where('user_id',$user_id)->get();
+        return view('front.account.job.job-application', compact('jobApplications'));
+    }
+
+    public function removeJob(){
+        $jobApp = new JobApplication();
+        $jobApplication = JobApplication::where([
+            ['user_id', Auth::user()->id],
+        ])->first();
+
+        // Check if the job application exists
+        if ($jobApplication == null) {
+            session()->flash('error', 'This job application was not found.');
+            return response()->json(['status' => false]);
+        }
+
+        // Delete the job application
+        $jobApplication->delete();
+
+        session()->flash('success', 'Your application for this job has been removed successfully.');
+        return redirect()->back();
+    }
     public function logout()
     {
         Auth::logout();

@@ -30,7 +30,7 @@
                 <a href="{{ route('account.getJob') }}">My Jobs</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="">Jobs Applied</a>
+                <a href="{{route('account.appliedJob')}}">Jobs Applied</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="">Saved Jobs</a>

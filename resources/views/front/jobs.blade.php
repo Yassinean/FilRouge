@@ -19,7 +19,7 @@
 
             <div class="row pt-5">
                 <div class="col-md-4 col-lg-3 sidebar mb-4">
-                    <form action="" method="post" name="searchForm" id="searchForm">
+                    <form action="" method="get" name="searchForm" id="searchForm">
                         <div class="card border-0 shadow p-4">
                             <div class="mb-4">
                                 <h2>Keywords</h2>
@@ -161,7 +161,7 @@
             if(category != ''){
                 url+= '&category='+category;
             }
-           // window.location.href = url;
+            window.location.href = {{url()->current()}};
         })
     </script>
 @endsection

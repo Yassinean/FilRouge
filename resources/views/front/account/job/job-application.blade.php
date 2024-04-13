@@ -25,10 +25,7 @@
                         <div class="card-body card-form">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="fs-4 mb-1">My Jobs</h3>
-                                </div>
-                                <div style="margin-top: -10px;">
-                                    <a href="{{route('account.createJob')}}" class="btn btn-primary">Post a Job</a>
+                                    <h3 class="fs-4 mb-1">My Jobs Applied</h3>
                                 </div>
 
                             </div>
@@ -37,23 +34,24 @@
                                     <thead class="bg-light">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Job Created</th>
+                                        <th scope="col">Job applied</th>
                                         <th scope="col">Applicants</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody class="border-0">
-                                    @forelse($jobs as $job)
+                                    {{--@dd($jobApplications);--}}
+                                    @forelse($jobApplications as $jobApplication)
                                         <tr class="active">
                                             <td>
-                                                <div class="job-name fw-500">{{$job->title}}</div>
-                                                <div class="info1">{{$job->typeJob->name}} . {{$job->location}}</div>
+                                                <div class="job-name fw-500">{{$jobApplication->job->title}}</div>
+                                                <div class="info1">{{$jobApplication->job->typeJob->name}} . {{$jobApplication->job->location}}</div>
                                             </td>
-                                            <td>{{\Carbon\Carbon::parse($job->created_at)->format('d M,Y')}}</td>
-                                            <td>{{$job->applications->count()}} Applications</td>
+                                            <td>{{\Carbon\Carbon::parse($jobApplication->applied_date)->format('d M,Y')}}</td>
+                                            <td>{{$jobApplication->job->applications->count()}} Applications</td>
                                             <td>
-                                                @if($job->status == 1)
+                                                @if($jobApplication->job->status == 1)
                                                     <div class="job-status text-capitalize">Active</div>
                                                 @else
                                                     <div class="job-status text-capitalize">Block</div>
@@ -67,16 +65,11 @@
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
-                                                            <a class="dropdown-item" href="{{ route('detailJob', $job->id) }}"> <i
+                                                            <a class="dropdown-item" href="{{route('detailJob',$jobApplication->job_id)}}"> <i
                                                                     class="fa fa-eye" aria-hidden="true"></i> View</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item"
-                                                               href="{{ route('account.editJob', ['jobId' => $job->id]) }}"><i
-                                                                    class="fa fa-edit" aria-hidden="true"></i>Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{route('account.deleteJob',$job->id)}}"><i class="fa fa-trash" aria-hidden="true"></i>Remove</a>
+                                                            <a class="dropdown-item" href="{{route('account.removeJob',$jobApplication->job_id)}}"  ><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -98,4 +91,19 @@
 @endsection
 
 @section('customJs')
+    <script type="text/javascript">
+        /*function removeJob(id) {
+            if (confirm("Are you sure you want to remove?")) {
+                $.ajax({
+                    url : '{ route("account.removeJob") }}',
+                    type: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+                    success: function(response) {
+                        window.location.href='{ url()->current() }}';
+                    }
+                });
+            }
+        }
+    </script>
 @endsection
