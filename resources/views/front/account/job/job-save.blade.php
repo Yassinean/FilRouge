@@ -25,7 +25,7 @@
                         <div class="card-body card-form">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="fs-4 mb-1">My Jobs Applied</h3>
+                                    <h3 class="fs-4 mb-1">My Jobs Saved</h3>
                                 </div>
 
                             </div>
@@ -42,16 +42,16 @@
                                     </thead>
                                     <tbody class="border-0">
                                     {{--@dd($jobApplications);--}}
-                                    @forelse($jobSaved as $jobSaved)
+                                    @forelse($jobSaved as $jobS)
                                         <tr class="active">
                                             <td>
-                                                <div class="job-name fw-500">{{$jobSaved->job->title}}</div>
-                                                <div class="info1">{{$jobSaved->job->typeJob->name}} . {{$jobSaved->job->location}}</div>
+                                                <div class="job-name fw-500">{{$jobS->job->title}}</div>
+                                                <div class="info1">{{$jobS->job->typeJob->name}} . {{$jobS->job->location}}</div>
                                             </td>
-                                            <td>{{\Carbon\Carbon::parse($jobSaved->applied_date)->format('d M,Y')}}</td>
-                                            <td>{{$jobSaved->job->applications->count()}} Applications</td>
+                                            <td>{{\Carbon\Carbon::parse($jobS->applied_date)->format('d M,Y')}}</td>
+                                            <td>{{$jobS->job->applications->count()}} Applications</td>
                                             <td>
-                                                @if($jobSaved->job->status == 1)
+                                                @if($jobS->job->status == 1)
                                                     <div class="job-status text-capitalize">Active</div>
                                                 @else
                                                     <div class="job-status text-capitalize">Block</div>
@@ -65,11 +65,11 @@
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
-                                                            <a class="dropdown-item" href="{{route('detailJob',$jobSaved->job_id)}}"> <i
+                                                            <a class="dropdown-item" href="{{route('detailJob',$jobS->job_id)}}"> <i
                                                                     class="fa fa-eye" aria-hidden="true"></i> View</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" href="{{route('account.removeSavedJob',$jobSaved->job_id)}}"  ><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>
+                                                            <a class="dropdown-item" href="{{route('account.removeSavedJob',$jobS->job_id)}}"  ><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>
                                                         </li>
                                                     </ul>
                                                 </div>

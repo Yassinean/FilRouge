@@ -152,12 +152,12 @@ class AccountController extends Controller
 
     public function appliedJob(){
         $user_id = Auth::id();
-        $jobApplications = JobApplication::where('user_id',$user_id)->get();
+        $jobApplications = JobApplication::where('user_id',$user_id)->orderBy('created_at','DESC')->get();
         return view('front.account.job.job-application', compact('jobApplications'));
     }
     public function savedJob(){
         $user_id = Auth::id();
-        $jobSaved = SavedJob::where('user_id',$user_id)->get();
+        $jobSaved = SavedJob::where('user_id',$user_id)->orderBy('created_at','DESC')->get();
         return view('front.account.job.job-save', compact('jobSaved'));
     }
 
