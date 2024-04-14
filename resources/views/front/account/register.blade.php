@@ -34,6 +34,13 @@
                                     placeholder="Please confirm Password">
                                 <p></p>
                             </div>
+                            <div class="mt-3">
+                                <select name="role" class="form-control">
+                                    <option selected disabled>Sélectionnez un Role</option>
+                                    <option value="employer">Employeur</option>
+                                    <option value="employee">Candidat</option>
+                                </select>
+                            </div>
                             <button class="btn btn-primary mt-2">Register</button>
                         </form>
                     </div>

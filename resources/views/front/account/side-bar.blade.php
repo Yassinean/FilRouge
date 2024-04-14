@@ -23,18 +23,21 @@
             <li class="list-group-item d-flex justify-content-between p-3">
                 <a href="{{ route('account.profile') }}">Account Settings</a>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="{{ route('account.createJob') }}">Post a Job</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="{{ route('account.getJob') }}">My Jobs</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="{{route('account.appliedJob')}}">Jobs Applied</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="">Saved Jobs</a>
-            </li>
+            @if(Auth::user()->role == 'employer')
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <a href="{{ route('account.createJob') }}">Post a Job</a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <a href="{{ route('account.getJob') }}">My Jobs</a>
+                </li>
+            @elseif(Auth::user()->role == 'employee' )
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <a href="{{route('account.appliedJob')}}">Jobs Applied</a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <a href="{{route('account.savedJob')}}">Saved Jobs</a>
+                </li>
+            @endif
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="{{ route('account.logout') }}">Logout</a>
             </li>

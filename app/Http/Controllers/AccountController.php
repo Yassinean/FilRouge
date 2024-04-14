@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\Emplyee;
+use App\Models\Emplyer;
 use App\Models\JobApplication;
+use App\Models\SavedJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 //use \Illuminate\Support\Facades\Request;
@@ -26,6 +30,7 @@ class AccountController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5',
             'confirm_password' => 'required|same:confirm_password',
+            'role' => 'required ',
         ]);
 
         if ($validateData->passes()) {
@@ -33,7 +38,16 @@ class AccountController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'role' => $request->role,
             ]);
+            if ($request->role === 'employer') {
+                Emplyer::create(['user_id' => $user->id]);
+            } elseif ($request->role === 'employee') {
+                Emplyee::create(['user_id' => $user->id]);
+            } elseif ($request->role === 'admin') {
+                Admin::create(['user_id' => $user->id]);
+            }
+
             session()->flash('success', 'You have registered Successfully');
             return response()->json([
                 'status' => true,
@@ -141,6 +155,11 @@ class AccountController extends Controller
         $jobApplications = JobApplication::where('user_id',$user_id)->get();
         return view('front.account.job.job-application', compact('jobApplications'));
     }
+    public function savedJob(){
+        $user_id = Auth::id();
+        $jobSaved = SavedJob::where('user_id',$user_id)->get();
+        return view('front.account.job.job-save', compact('jobSaved'));
+    }
 
     public function removeJob(){
         $jobApp = new JobApplication();
@@ -158,6 +177,24 @@ class AccountController extends Controller
         $jobApplication->delete();
 
         session()->flash('success', 'Your application for this job has been removed successfully.');
+        return redirect()->back();
+    }
+    public function removeSavedJob(){
+        $jobSave = new JobApplication();
+        $jobSaved = SavedJob::where([
+            ['user_id', Auth::user()->id],
+        ])->first();
+
+        // Check if the job application exists
+        if ($jobSaved == null) {
+            session()->flash('error', 'This job application was not found.');
+            return response()->json(['status' => false]);
+        }
+
+        // Delete the job application
+        $jobSaved->delete();
+
+        session()->flash('success', 'Your saved job has been removed successfully.');
         return redirect()->back();
     }
     public function logout()

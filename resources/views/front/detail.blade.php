@@ -8,9 +8,9 @@
                 <div class="col">
                     <nav aria-label="breadcrumb" class=" rounded-3 p-3">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="{{route('jobs-page')}}"><i class="fa fa-arrow-left"
-                                                                                            aria-hidden="true"></i>
-                                    &nbsp;Back to Jobs</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="{{route('jobs-page')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back to Jobs</a>
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -41,7 +41,9 @@
                                 </div>
                                 <div class="jobs_right">
                                     <div class="apply_now">
-                                        <a class="heart_mark" href="#"> <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                        @if(Auth::check())
+                                            <a class="heart_mark" href="" onclick="saveJob({{$job->id}})"> <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -66,12 +68,10 @@
                             <div class="border-bottom"></div>
                             @if(Auth::check())
                                 <div class="pt-3 text-end">
-                                    <a href="" onclick="saveJob({{$job->id}})" class="btn btn-secondary">Save</a>
                                     <a href="" onclick="applyJob({{$job->id}})" class="btn btn-primary">Apply</a>
                                 </div>
                             @else
                                 <div class="pt-3 text-end">
-                                    <a href="{{route('account.login')}}" class="btn btn-secondary">Login to Save</a>
                                     <a href="{{route('account.login')}}" class="btn btn-primary">Login to Apply</a>
                                 </div>
                             @endif
@@ -145,20 +145,29 @@
         }
 
         function saveJob(id) {
-                let token = '{{ csrf_token() }}';
-                $.ajax({
-                    // Set the CSRF token in the request headers
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                    },
-                    url: '{{route('account.saveJob')}}',
-                    type: 'post',
-                    data: {id: id},
-                    dataType: 'json',
-                    success: function (response) {
-                        window.location.href = '{{url()->current()}}';
+            let token = '{{ csrf_token() }}';
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                url: '{{ route('account.saveJob') }}',
+                type: 'post',
+                data: { id: id },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status) {
+                        alert(response.message); // Display success message
+                   // Refresh the page after successfully saving the job
+                    } else {
+                        alert(response.message); // Display error message
                     }
-                })
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while processing your request. Please try again later.');
+                }
+            });
         }
+
     </script>
 @endsection

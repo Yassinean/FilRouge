@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('designation')->nullable();
             $table->string('mobile')->nullable();
+            $table->enum('role',['admin','employer','employee'])->default('employee');
             $table->rememberToken();
             $table->timestamps();
         });

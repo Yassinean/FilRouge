@@ -253,6 +253,7 @@ class JobsController extends Controller
     }
 
     public function applyJob(Request $request){
+        $req = $request;
         $id = $request->id;
         $job = Job::where('id',$id)->first();
         // if job does not exist in db
@@ -341,7 +342,7 @@ class JobsController extends Controller
         }
         $savedJob = new SavedJob();
         $savedJob->job_id = $id;
-        $savedJob->job_id = Auth::user()->id;
+        $savedJob->user_id = Auth::user()->id;
         $savedJob->save();
         $message= 'You are saved this job successfully !';
         session()->flash('success',$message);

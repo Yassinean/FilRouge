@@ -23,20 +23,26 @@ Route::group(['prefix' => 'account'], function () {
 
     // this section for user who authenticated
     Route::group(['middleware' => 'auth'], function () {
+        // get methods
+
         Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
-        Route::put('/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-        Route::put('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
-        Route::get('/create-job', [JobsController::class, 'create'])->name('account.createJob');
-        Route::post('/store-job', [JobsController::class, 'store'])->name('account.storeJob');
+        //this one for candidate that he wants to remove his candidature from this job
         Route::get('/jobs', [JobsController::class, 'getJob'])->name('account.getJob');
         Route::get('/jobs/edit/{jobId}', [JobsController::class, 'editJob'])->name('account.editJob');
-        Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
+        Route::get('/create-job', [JobsController::class, 'create'])->name('account.createJob');
         Route::get('/jobs/delete/{jobId}', [JobsController::class, 'deleteJob'])->name('account.deleteJob');
-        //this one for candidate that he wants to remove his candidature from this job
-        Route::get('/jobs/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
+        Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
+        Route::get('/jobsApp/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
+        Route::get('/savedJob', [AccountController::class, 'savedJob'])->name('account.savedJob');
+        Route::get('/jobsSaved/remove/{jobId}', [AccountController::class, 'removeSavedJob'])->name('account.removeSavedJob');
+        Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
+
+        // end get methods
+        Route::put('/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
+        Route::put('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
+        Route::post('/store-job', [JobsController::class, 'store'])->name('account.storeJob');
+        Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
         Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('account.applyJob');
         Route::post('/save-job', [JobsController::class, 'saveJob'])->name('account.saveJob');
-        Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
-        Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
     });
 });
