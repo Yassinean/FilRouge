@@ -48,6 +48,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/edit-category/{id}', [AdminController::class, 'editCategory'])->name('dash.editCateg');
         Route::get('/edit-type/{id}', [AdminController::class, 'editType'])->name('dash.editType');
         Route::get('/jobs-update-status', [JobsController::class, 'all'])->name('dash.allJobs');
+        Route::get('/users', [AdminController::class, 'users'])->name('dash.users');
         // end get methods
 
         // start post and put and patch method
