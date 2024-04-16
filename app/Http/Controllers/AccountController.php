@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\CategoryJob;
 use App\Models\Emplyee;
 use App\Models\Emplyer;
+use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\SavedJob;
 use App\Models\User;
@@ -91,6 +93,18 @@ class AccountController extends Controller
         $user = User::findOrFail($userID);
 
         return view('front.account.profile', compact('user'));
+    }
+    public function profileAdmin()
+    {
+        $userID = Auth::id();
+        $categories = CategoryJob::count();
+        $candidats = Emplyee::count();
+        $employers = Emplyer::count();
+        $jobs = Job::count();
+        // $userData = User::where('id', $userID)->first();
+        $user = User::findOrFail($userID);
+
+        return view('front.account.admin.dashboard', compact('user' ,'categories','candidats','employers','jobs'));
     }
 
     public function updateProfile(Request $request)

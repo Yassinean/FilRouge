@@ -11,6 +11,7 @@
         content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="pinterest" content="nopin" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css"
         integrity="sha512-Fm8kRNVGCBZn0sPmwJbVXlqfJmPC13zRsMElZenX6v721g/H7OukJd8XzDEBRQ2FSATK8xNF9UYvzsCtUpfeJg=="
@@ -40,12 +41,19 @@
                         </li>
                     </ul>
                     @if (Auth::check())
-                        <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
+                        @if(Auth::user()->role == 'admin' )
+                            <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Dashbord</a>
+                        @elseif(Auth::user()->role == 'employer')
+                            <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
+                            <a class="btn btn-primary" href="{{ route('account.createJob') }}" type="submit">Post a Job</a>
+                        @else
+                            <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
+                        @endif
                     @else
                         <a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}"
                             type="submit">Login</a>
+                        <a class="btn btn-primary" href="{{ route('account.createJob') }}" type="submit">Post a Job</a>
                     @endif
-                    <a class="btn btn-primary" href="{{ route('account.createJob') }}" type="submit">Post a Job</a>
                 </div>
             </div>
         </nav>

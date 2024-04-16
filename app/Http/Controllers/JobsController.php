@@ -59,17 +59,16 @@ class JobsController extends Controller
             $jobs = $jobs->where('experiences', $request->experience);
         }
 
+        /*
+        $jobs = Job::query()->with(['typeJob', 'categoryJob']);
 
-        /*        $jobs = $jobs->with(['typeJob','category']);
+        if ($request->sort == '0') {
+            $jobs = $jobs->orderBy('created_at', 'ASC');
+        } else {
+            $jobs = $jobs->orderBy('created_at', 'DESC');
+        }
 
-                if($request->sort == '0') {
-                    $jobs = $jobs->orderBy('created_at','ASC');
-                } else {
-                    $jobs = $jobs->orderBy('created_at','DESC');
-                }
-        */
-
-        //      $jobs = $jobs->paginate(9);
+        $jobs = $jobs->get();*/
 
 
         return view('front.jobs', compact('categories', 'types', 'jobs' ,'jobTypeArray'));

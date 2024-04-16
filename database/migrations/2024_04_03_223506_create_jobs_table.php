@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('category_job_id')->constrained()->cascadeOnDelete();
             $table->foreignId('type_job_id')->constrained()->cascadeOnDelete();
             $table->longText('responsabitilies')->nullable();
-            $table->string('qualifications')->nullable();
+            $table->longText('qualifications')->nullable();
             $table->string('experiences')->nullable();
             $table->string('keywords')->nullable();
             $table->string('company_name');

@@ -89,7 +89,9 @@
                                     <li>Published on:
                                         <span>{{\Carbon\Carbon::parse($job->created_at)->format('d M,Y')}}</span></li>
                                     <li>Vacancy: <span>{{$job->vacancy}} Position</span></li>
-                                    <li>Salary: <span>{{$job->salary}} DH</span></li>
+                                    @if(!empty($job->salary))
+                                        <li>Salary: <span>{{$job->salary}} DH</span></li>
+                                    @endif
                                     <li>Location: <span>{{$job->location}}</span></li>
                                     <li>Job Nature: <span> {{$job->typeJob->name}}</span></li>
                                 </ul>

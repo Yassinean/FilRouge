@@ -35,8 +35,6 @@
                                     <tr>
                                         <th scope="col">Title</th>
                                         <th scope="col">Job applied</th>
-                                        <th scope="col">Applicants</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
@@ -46,17 +44,8 @@
                                         <tr class="active">
                                             <td>
                                                 <div class="job-name fw-500">{{$jobS->job->title}}</div>
-                                                <div class="info1">{{$jobS->job->typeJob->name}} . {{$jobS->job->location}}</div>
                                             </td>
                                             <td>{{\Carbon\Carbon::parse($jobS->applied_date)->format('d M,Y')}}</td>
-                                            <td>{{$jobS->job->applications->count()}} Applications</td>
-                                            <td>
-                                                @if($jobS->job->status == 1)
-                                                    <div class="job-status text-capitalize">Active</div>
-                                                @else
-                                                    <div class="job-status text-capitalize">Block</div>
-                                                @endif
-                                            </td>
                                             <td>
                                                 <div class="action-dots float-end">
                                                     <button href="#" class="btn" data-bs-toggle="dropdown"
