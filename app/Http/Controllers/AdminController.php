@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateTypeJobRequest;
 use App\Models\Admin;
 use App\Models\CategoryJob;
 use App\Models\TypeJob;
+use App\Models\User;
 
 class
 AdminController extends Controller
@@ -21,7 +22,8 @@ AdminController extends Controller
      */
     public function users()
     {
-        //
+        $users = User::where('role !==','admin')->get();
+        return view('front.account.admin.gestion-users');
     }
 
     /**

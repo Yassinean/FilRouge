@@ -25,7 +25,7 @@
                         <div class="card-body card-form">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="fs-4 mb-1">My Jobs Saved</h3>
+                                    <h3 class="fs-4 mb-1">List Jobs</h3>
                                 </div>
 
                             </div>
@@ -35,6 +35,8 @@
                                     <tr>
                                         <th scope="col">Title</th>
                                         <th scope="col">Job applied</th>
+                                        <th scope="col">Employer</th>
+                                        <th scope="col">Applicant</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
@@ -45,7 +47,9 @@
                                             <td>
                                                 <div class="job-name fw-500">{{$job->title}}</div>
                                             </td>
-                                            <td>{{\Carbon\Carbon::parse($job->applied_date)->format('d M,Y')}}</td>
+                                             <td>{{\Carbon\Carbon::parse($job->applied_date)->format('d M,Y')}}</td>
+                                             <td>{{$job->user->name}}</td>
+                                             <td>{{$job->applications->count()}}</td>
                                             <td>
                                                 <form action="{{route('dash.acceptJob',$job->id)}}" method="post">
                                                     @csrf
