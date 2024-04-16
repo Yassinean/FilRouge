@@ -9,6 +9,9 @@ class TypeJob extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+    ];
     public function job(){
         return $this->hasMany(Job::class);
     }

@@ -11,9 +11,10 @@ class TypeJobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function displayTypes()
     {
-        //
+        $types = TypeJob::where('status', 1)->get();
+        return view('front.account.admin.job-type', compact('types'));
     }
 
     /**

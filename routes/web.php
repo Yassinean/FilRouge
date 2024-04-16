@@ -3,6 +3,8 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryJobController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use \App\Http\Controllers\TypeJobController;
 use App\Http\Controllers\JobsController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,19 +39,21 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
         Route::get('/jobsApp/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
         Route::get('/savedJob', [AccountController::class, 'savedJob'])->name('account.savedJob');
-        Route::get('/categories', [CategoryJobController::class, 'displayCategory'])->name('dash.category');
+        Route::get('/categories', [AdminController::class, 'displayCategory'])->name('dash.category');
+        Route::get('/job-types', [TypeJobController::class, 'displayTypes'])->name('dash.type');
         Route::get('/jobsSaved/remove/{jobId}', [AccountController::class, 'removeSavedJob'])->name('account.removeSavedJob');
-        Route::get('/delete-category/{id}', [CategoryJobController::class, 'destroy'])->name('dash.deleteCateg');
+        Route::get('/delete-category/{id}', [AdminController::class, 'destroyCategory'])->name('dash.deleteCateg');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
-        Route::get('/edit-category/{id}', [CategoryJobController::class, 'edit'])->name('dash.editCateg');
+        Route::get('/edit-category/{id}', [AdminController::class, 'editCategory'])->name('dash.editCateg');
         // end get methods
 
         // start post and put and patch method
         Route::put('/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::put('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
         Route::post('/store-job', [JobsController::class, 'store'])->name('account.storeJob');
-        Route::put('/update-category/{id}', [CategoryJobController::class, 'update'])->name('dash.updateCateg');
-        Route::post('/store-category', [CategoryJobController::class, 'store'])->name('dash.storeCateg');
+        Route::put('/update-category/{id}', [AdminController::class, 'updateCategory'])->name('dash.updateCateg');
+        Route::post('/store-category', [AdminController::class, 'storeCategory'])->name('dash.storeCateg');
+        Route::post('/store-type', [AdminController::class, 'storeType'])->name('dash.storeType');
        // Route::post('/edit-category', [CategoryJobController::class, 'edit'])->name('account.editCategoy');
         Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
         Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('account.applyJob');
