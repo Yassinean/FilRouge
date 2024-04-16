@@ -133,7 +133,7 @@
             data: {
                 labels: ['{{$jobs}} Jobs', '{{$categories}} Categories', '{{$candidats}} Candidats', '{{$employers}} Employers'],
                 datasets: [{
-                    label: ['{{$jobs}} Jobs', '{{$categories}} Categories','{{$candidats}} Candidats', '{{$employers}} Employers'],
+                    // label: ['{{$jobs}} Jobs', '{{$categories}} Categories','{{$candidats}} Candidats', '{{$employers}} Employers'],
                     data: [{{$jobs}}, {{$categories}}, {{$candidats}}, {{$employers}}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

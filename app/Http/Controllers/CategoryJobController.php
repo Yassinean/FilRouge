@@ -56,22 +56,25 @@ class CategoryJobController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CategoryJob $categoryJob)
+    public function edit(CategoryJob $categoryJob, $id)
     {
-        $categories = CategoryJob::where('status', 1)->first();
-        return view('front.account.admin.edit-category', compact('categories'));
+        $category = CategoryJob::where('status', 1)->where('id', $id)->first();
+        return view('front.account.admin.edit-category', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryJobRequest $request, CategoryJob $categoryJob)
+    public function update(UpdateCategoryJobRequest $request, $id)
     {
+        $category = CategoryJob::find($id);
+
+
         $validatedData = $request->validate($request->rules());
 
-        $categoryJob->update([
-            'name' => $validatedData['new_category_name']
-        ]);
+        $category->name = $validatedData['new_category_name'];
+        $category->save();
+
 
         return redirect()->back()->with('success', 'The  ' . $validatedData['new_category_name'] . ' updated successfully ');
     }

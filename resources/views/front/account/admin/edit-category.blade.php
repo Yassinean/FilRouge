@@ -29,14 +29,16 @@
                                 </div>
                             </div>
 
-                            <form method="post" action="{{route('dash.updateCateg')}}">
+
+                            <form method="post" action="{{route('dash.updateCateg',['id'=>$category->id])}}">
                                 @csrf
                                 @method('put')
                                 <div class="mb-3">
                                     <label for="categoryName" class="form-label">Category Name</label>
                                     <input type="text" class="form-control" id="categoryName"
-                                           name="new_category_name" value="{{$categories->name}}">
+                                           name="new_category_name" value="{{ old('category_name', $category->name) }}">
                                 </div>
+
                                 <button type="submit" class="btn btn-primary">update Category</button>
                             </form>
                         </div>

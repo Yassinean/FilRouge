@@ -48,7 +48,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::put('/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::put('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
         Route::post('/store-job', [JobsController::class, 'store'])->name('account.storeJob');
-        Route::put('/update-category', [CategoryJobController::class, 'update'])->name('dash.updateCateg');
+        Route::put('/update-category/{id}', [CategoryJobController::class, 'update'])->name('dash.updateCateg');
         Route::post('/store-category', [CategoryJobController::class, 'store'])->name('dash.storeCateg');
        // Route::post('/edit-category', [CategoryJobController::class, 'edit'])->name('account.editCategoy');
         Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
