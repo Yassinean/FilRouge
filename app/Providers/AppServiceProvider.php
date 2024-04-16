@@ -11,7 +11,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            'App\Repositories\Interfaces\JobsInterface',
+            'App\Repositories\Implementations\JobsRepository'
+        );
+
     }
 
     /**

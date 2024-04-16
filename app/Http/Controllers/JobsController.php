@@ -11,6 +11,7 @@ use App\Models\SavedJob;
 use App\Models\TypeJob;
 use App\Models\CategoryJob;
 use App\Models\User;
+use App\Repositories\Interfaces\JobsInterface;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -349,6 +350,22 @@ class JobsController extends Controller
            'status' => true,
            'message' => $message,
         ]);
+    }
+
+    public function all(){
+        $jobs = $this->repository->all();
+        return view('front.account.admin.job-status', compact('jobs'));
+    }
+
+    protected $repository;
+    public function __construct(JobsInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function updateStatus(Job $job){
+        $this->repository->updateStatus($job);
+        return redirect()->back();
     }
 
 }

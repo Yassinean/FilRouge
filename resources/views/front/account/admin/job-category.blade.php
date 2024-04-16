@@ -59,8 +59,8 @@
                                     <thead class="bg-light">
                                     <tr>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                        <th scope="col" class="text-center">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody class="border-0">
@@ -72,9 +72,9 @@
                                             </td>
                                             <td>
                                                 @if($category->status == 1)
-                                                    <div class="job-status text-capitalize">Active</div>
+                                                    <div class="job-status bg-success text-white text-center rounded">Published</div>
                                                 @else
-                                                    <div class="job-status text-capitalize">Block</div>
+                                                    <div class="job-status bg-warning text-white text-center rounded">Pending</div>
                                                 @endif
                                             </td>
                                             <td>

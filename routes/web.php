@@ -39,7 +39,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
         Route::get('/jobsApp/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
         Route::get('/savedJob', [AccountController::class, 'savedJob'])->name('account.savedJob');
-        Route::get('/categories', [AdminController::class, 'displayCategory'])->name('dash.category');
+        Route::get('/categories', [CategoryJobController::class, 'displayCategory'])->name('dash.category');
         Route::get('/job-types', [TypeJobController::class, 'displayTypes'])->name('dash.type');
         Route::get('/jobsSaved/remove/{jobId}', [AccountController::class, 'removeSavedJob'])->name('account.removeSavedJob');
         Route::get('/delete-category/{id}', [AdminController::class, 'destroyCategory'])->name('dash.deleteCateg');
@@ -47,6 +47,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
         Route::get('/edit-category/{id}', [AdminController::class, 'editCategory'])->name('dash.editCateg');
         Route::get('/edit-type/{id}', [AdminController::class, 'editType'])->name('dash.editType');
+        Route::get('/jobs-update-status', [JobsController::class, 'all'])->name('dash.allJobs');
         // end get methods
 
         // start post and put and patch method
@@ -61,6 +62,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::post('/jobs/update/{jobId}', [JobsController::class, 'update'])->name('account.update');
         Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('account.applyJob');
         Route::post('/save-job', [JobsController::class, 'saveJob'])->name('account.saveJob');
+        Route::put('/acceptJob/{job}', [JobsController::class, 'updateStatus'])->name('dash.acceptJob');
 
         // end post method
     });

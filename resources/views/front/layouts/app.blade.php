@@ -42,7 +42,7 @@
                     </ul>
                     @if (Auth::check())
                         @if(Auth::user()->role == 'admin' )
-                            <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Dashbord</a>
+                            <a class="btn btn-outline-primary me-2" href="{{route('dash.dashboard')}}" type="submit">Dashbord</a>
                         @elseif(Auth::user()->role == 'employer')
                             <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
                             <a class="btn btn-primary" href="{{ route('account.createJob') }}" type="submit">Post a Job</a>

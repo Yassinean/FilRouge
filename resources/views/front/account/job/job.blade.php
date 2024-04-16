@@ -54,9 +54,9 @@
                                             <td>{{$job->applications->count()}} Applications</td>
                                             <td>
                                                 @if($job->status == 1)
-                                                    <div class="job-status text-capitalize">Active</div>
+                                                    <div class="job-status text-capitalize">Published</div>
                                                 @else
-                                                    <div class="job-status text-capitalize">Block</div>
+                                                    <div class="job-status text-capitalize">Pending</div>
                                                 @endif
                                             </td>
                                             <td>
