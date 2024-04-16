@@ -25,21 +25,21 @@
                         <div class="card-body card-form">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
-                                    <h3 class="fs-4 mb-1">Gestion des categories </h3>
+                                    <h3 class="fs-4 mb-1">Gestion des types </h3>
                                 </div>
                             </div>
 
 
-                            <form method="post" action="{{route('dash.updateCateg',['id'=>$category->id])}}">
+                            <form method="post" action="{{route('dash.updateType',['id'=>$type->id])}}">
                                 @csrf
                                 @method('put')
                                 <div class="mb-3">
-                                    <label for="categoryName" class="form-label">Category Name</label>
+                                    <label for="categoryName" class="form-label">Type Name</label>
                                     <input type="text" class="form-control" id="categoryName"
-                                           name="new_category_name" value="{{ old('category_name', $category->name) }}">
+                                           name="new_type_name" value="{{ old('type_name', $type->name) }}">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">update Category</button>
+                                <button type="submit" class="btn btn-primary">update Type</button>
                             </form>
                         </div>
                     </div>

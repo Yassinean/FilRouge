@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryJobRequest;
 use App\Http\Requests\StoreTypeJobRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Requests\UpdateCategoryJobRequest;
+use App\Http\Requests\UpdateTypeJobRequest;
 use App\Models\Admin;
 use App\Models\CategoryJob;
 use App\Models\TypeJob;
@@ -79,10 +80,10 @@ AdminController extends Controller
         $category = CategoryJob::where('status', 1)->where('id', $id)->first();
         return view('front.account.admin.edit-category', compact('category'));
     }
-    public function editType(CategoryJob $categoryJob, $id)
+    public function editType(TypeJob $typeJob, $id)
     {
-        $category = TypeJob::where('status', 1)->where('id', $id)->first();
-        return view('front.account.admin.edit-category', compact('category'));
+        $type = TypeJob::where('status', 1)->where('id', $id)->first();
+        return view('front.account.admin.edit-type', compact('type'));
     }
 
     /**
@@ -102,6 +103,19 @@ AdminController extends Controller
         return redirect()->back()->with('success', 'The  ' . $validatedData['new_category_name'] . ' updated successfully ');
     }
 
+    public function updateType(UpdateTypeJobRequest $request, $id)
+    {
+        $type = TypeJob::find($id);
+
+        $validatedData = $request->validate($request->rules());
+
+        $type->name = $validatedData['new_type_name'];
+        $type->save();
+
+
+        return redirect()->back()->with('success', 'The  ' . $validatedData['new_type_name'] . ' updated successfully ');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -110,5 +124,11 @@ AdminController extends Controller
         $categories = CategoryJob::findOrFail($id);
         $categories->delete();
         return back()->with('success', 'Category deleted successfully ');
+    }
+    public function destroyType($id)
+    {
+        $categories = TypeJob::findOrFail($id);
+        $categories->delete();
+        return back()->with('success', 'Type deleted successfully ');
     }
 }

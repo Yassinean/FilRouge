@@ -85,13 +85,13 @@
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
-                                                            <a href="{{route('dash.editCateg',$type->id)}}" class="dropdown-item">
+                                                            <a href="{{route('dash.editType',$type->id)}}" class="dropdown-item">
                                                                 <i class="fa fa-edit" aria-hidden="true"></i>
                                                                 Edit
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <form action="{{route('dash.deleteCateg',$type->id)}}"
+                                                            <form action="{{route('dash.deleteType',$type->id)}}"
                                                                   method="get">
                                                                 @csrf
                                                                 <button class="dropdown-item" type="submit"><i

@@ -43,8 +43,10 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/job-types', [TypeJobController::class, 'displayTypes'])->name('dash.type');
         Route::get('/jobsSaved/remove/{jobId}', [AccountController::class, 'removeSavedJob'])->name('account.removeSavedJob');
         Route::get('/delete-category/{id}', [AdminController::class, 'destroyCategory'])->name('dash.deleteCateg');
+        Route::get('/delete-type/{id}', [AdminController::class, 'destroyType'])->name('dash.deleteType');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
         Route::get('/edit-category/{id}', [AdminController::class, 'editCategory'])->name('dash.editCateg');
+        Route::get('/edit-type/{id}', [AdminController::class, 'editType'])->name('dash.editType');
         // end get methods
 
         // start post and put and patch method
@@ -52,6 +54,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::put('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
         Route::post('/store-job', [JobsController::class, 'store'])->name('account.storeJob');
         Route::put('/update-category/{id}', [AdminController::class, 'updateCategory'])->name('dash.updateCateg');
+        Route::put('/update-type/{id}', [AdminController::class, 'updateType'])->name('dash.updateType');
         Route::post('/store-category', [AdminController::class, 'storeCategory'])->name('dash.storeCateg');
         Route::post('/store-type', [AdminController::class, 'storeType'])->name('dash.storeType');
        // Route::post('/edit-category', [CategoryJobController::class, 'edit'])->name('account.editCategoy');
