@@ -36,7 +36,7 @@ class CategoryJobController extends Controller
         return redirect()->back()->with('success', 'You add ' . $validatedData['category_name'] . ' successfully ');
     }
 
-    public function edit(CategoryJob $categoryJob, $id)
+    public function edit($id)
     {
         $category = CategoryJob::where('status', 1)->where('id', $id)->first();
         return view('front.account.admin.edit-category', compact('category'));

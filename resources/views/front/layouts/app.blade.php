@@ -45,14 +45,14 @@
                             <a class="btn btn-outline-primary me-2" href="{{route('dash.dashboard')}}" type="submit">Dashbord</a>
                         @elseif(Auth::user()->role == 'employer')
                             <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
-                            <a class="btn btn-primary" href="{{ route('account.createJob') }}" type="submit">Post a Job</a>
+                            <a class="btn btn-primary" href="{{ route('jobs.create') }}" type="submit">Post a Job</a>
                         @else
                             <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
                         @endif
                     @else
                         <a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}"
                             type="submit">Login</a>
-                        <a class="btn btn-primary" href="{{ route('account.createJob') }}" type="submit">Post a Job</a>
+                        <a class="btn btn-primary" href="{{ route('jobs.create') }}" type="submit">Post a Job</a>
                     @endif
                 </div>
             </div>

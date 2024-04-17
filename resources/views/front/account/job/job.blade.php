@@ -28,7 +28,7 @@
                                     <h3 class="fs-4 mb-1">My Jobs</h3>
                                 </div>
                                 <div style="margin-top: -10px;">
-                                    <a href="{{route('account.createJob')}}" class="btn btn-primary">Post a Job</a>
+                                    <a href="{{route('jobs.create')}}" class="btn btn-primary">Post a Job</a>
                                 </div>
 
                             </div>
@@ -72,11 +72,11 @@
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item"
-                                                               href="{{ route('account.editJob', ['jobId' => $job->id]) }}"><i
+                                                               href="{{ route('jobs.edit', $job->id) }}"><i
                                                                     class="fa fa-edit" aria-hidden="true"></i>Edit</a>
                                                         </li>
                                                         <li>
-                                                            <form action="{{route('account.deleteJob',$job->id)}}" method="post">
+                                                            <form action="{{route('jobs.destroy',$job->id)}}" method="post">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="dropdown-item"><i class="fa fa-trash" aria-hidden="true"></i>Remove</button>

@@ -162,7 +162,7 @@
         $("#createJobForm").submit(function (e) {
             e.preventDefault();
             $.ajax({
-                url: '{{ route('account.storeJob') }}',
+                url: '{{ route('jobs.store') }}',
                 type: 'post',
                 dataType: 'json',
                 data: $("#createJobForm").serializeArray(),

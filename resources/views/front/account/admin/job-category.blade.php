@@ -39,7 +39,7 @@
                                                         aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="{{route('dash.storeCateg')}}">
+                                                <form method="post" action="{{route('category-jobs.store')}}">
                                                     @csrf
                                                     <div class="mb-3">
                                                         <label for="categoryName" class="form-label">Category
@@ -85,13 +85,13 @@
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
-                                                            <a href="{{route('dash.editCateg',$category->id)}}" class="dropdown-item">
+                                                            <a href="{{route('category-jobs.edit',$category->id)}}" class="dropdown-item">
                                                                 <i class="fa fa-edit" aria-hidden="true"></i>
                                                                 Edit
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <form action="{{route('dash.deleteCateg',$category->id)}}"
+                                                            <form action="{{route('category-jobs.destroy',$category->id)}}"
                                                                   method="POST">
                                                                 @csrf
                                                                 @method('DELETE')

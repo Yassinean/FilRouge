@@ -151,7 +151,7 @@ class JobsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job $job, $id)
+    public function edit($id)
     {
         $categories = CategoryJob::orderBy('name', 'ASC')->where('status', 1)->get();
         $types = TypeJob::orderBy('name', 'ASC')->where('status', 1)->get();
@@ -170,7 +170,7 @@ class JobsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatejobsRequest $request, Job $job, $id)
+    public function update(UpdatejobsRequest $request, $id)
     {
         $validator = Validator::make($request->all(), [$request]);
 
@@ -209,7 +209,7 @@ class JobsController extends Controller
         }
     }
 
-    public function delete(Job $job, $id)
+    public function destroy($id)
     {
 
         $job = Job::where('id', $id)
@@ -249,6 +249,12 @@ class JobsController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => $message
+            ]);
+        }
+        if(Auth::user()->role == 'admin'){
+            session()->flash('error','You are not allowed to apply');
+            return response()->json([
+                'status' => false
             ]);
         }
 
@@ -295,6 +301,12 @@ class JobsController extends Controller
     public function saveJob(Request $request){
         $id = $request->id;
         $job = Job::find($id);
+        if(Auth::user()->role == 'admin'){
+            session()->flash('error','You are not allowed to save jobs');
+            return response()->json([
+                'status' => false
+                ]);
+        }
         if($job == null){
             session()->flash('error','Job not Found');
             return response()->json([

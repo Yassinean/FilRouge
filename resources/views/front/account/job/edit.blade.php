@@ -163,7 +163,7 @@
         $("#editJobForm").submit(function (e) {
             e.preventDefault();
             $.ajax({
-                url: '{{ route('type-jobs.update',$jobs->id) }}',
+                url: '{{ route('jobs.update',$jobs->id) }}',
                 type: 'patch',
                 dataType: 'json',
                 data: $("#editJobForm").serializeArray(),

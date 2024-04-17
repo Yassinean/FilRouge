@@ -30,7 +30,7 @@
                             </div>
 
 
-                            <form method="post" action="{{route('dash.updateCateg',['id'=>$category->id])}}">
+                            <form method="post" action="{{route('category-jobs.update',$category->id)}}">
                                 @csrf
                                 @method('put')
                                 <div class="mb-3">

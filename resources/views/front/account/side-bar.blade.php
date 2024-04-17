@@ -35,7 +35,7 @@
             @endif
             @if(Auth::user()->role == 'employer')
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <a href="{{ route('account.createJob') }}">Post a Job</a>
+                    <a href="{{ route('jobs.create') }}">Post a Job</a>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                     <a href="{{ route('account.getJob') }}">My Jobs</a>

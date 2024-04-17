@@ -54,7 +54,7 @@ class TypeJobController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TypeJob $typeJob , $id)
+    public function edit($id)
     {
         $type = TypeJob::where('status', 1)->where('id', $id)->first();
         return view('front.account.admin.edit-type', compact('type'));

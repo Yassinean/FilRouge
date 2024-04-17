@@ -39,7 +39,7 @@
                                                         aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="{{route('dash.storeType')}}">
+                                                <form method="post" action="{{route('type-jobs.store')}}">
                                                     @csrf
                                                     <div class="mb-3">
                                                         <label for="categoryName" class="form-label">Type
@@ -72,7 +72,7 @@
                                             </td>
                                             <td>
                                                 @if($type->status == 1)
-                                                    <div class="job-status text-capitalize">Active</div>
+                                                    <div class="job-status text-capitalize">Published</div>
                                                 @else
                                                     <div class="job-status text-capitalize">Block</div>
                                                 @endif
@@ -85,7 +85,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
-                                                            <a href="{{route('dash.editType',$type->id)}}" class="dropdown-item">
+                                                            <a href="{{route('type-jobs.edit',$type->id)}}" class="dropdown-item">
                                                                 <i class="fa fa-edit" aria-hidden="true"></i>
                                                                 Edit
                                                             </a>
