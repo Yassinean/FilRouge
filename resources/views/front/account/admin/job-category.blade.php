@@ -92,8 +92,9 @@
                                                         </li>
                                                         <li>
                                                             <form action="{{route('dash.deleteCateg',$category->id)}}"
-                                                                  method="get">
+                                                                  method="POST">
                                                                 @csrf
+                                                                @method('DELETE')
                                                                 <button class="dropdown-item" type="submit"><i
                                                                         class="fa fa-trash" aria-hidden="true"></i>Remove
                                                                 </button>

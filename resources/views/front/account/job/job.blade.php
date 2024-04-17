@@ -76,7 +76,11 @@
                                                                     class="fa fa-edit" aria-hidden="true"></i>Edit</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" href="{{route('account.deleteJob',$job->id)}}"><i class="fa fa-trash" aria-hidden="true"></i>Remove</a>
+                                                            <form action="{{route('account.deleteJob',$job->id)}}" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item"><i class="fa fa-trash" aria-hidden="true"></i>Remove</button>
+                                                            </form>
                                                         </li>
                                                     </ul>
                                                 </div>

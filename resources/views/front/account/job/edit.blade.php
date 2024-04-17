@@ -23,6 +23,7 @@
                     @include('front.message')
                     <form action="" method="post" name="editJobForm" id="editJobForm">
                         @csrf
+                        @method('PATCH')
                         <div class="card border-0 shadow mb-4">
                             <div class="card-body card-form p-4">
                                 <h3 class="fs-4 mb-1">Job Details</h3>
@@ -162,8 +163,8 @@
         $("#editJobForm").submit(function (e) {
             e.preventDefault();
             $.ajax({
-                url: '{{ route('account.update',$jobs->id) }}',
-                type: 'post',
+                url: '{{ route('type-jobs.update',$jobs->id) }}',
+                type: 'patch',
                 dataType: 'json',
                 data: $("#editJobForm").serializeArray(),
                 success: function (response) {

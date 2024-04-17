@@ -134,15 +134,24 @@ class JobsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Job $job)
+    public function show($id)
     {
-        //
+        $job = Job::where([
+            'id' => $id,
+            'status' => 1
+        ])->with(['typeJob','categoryJob'])->first();
+
+        if($job == null){
+            abort(404);
+        }
+
+        return view('front.detail',compact('job'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function editJob(Job $job, $id)
+    public function edit(Job $job, $id)
     {
         $categories = CategoryJob::orderBy('name', 'ASC')->where('status', 1)->get();
         $types = TypeJob::orderBy('name', 'ASC')->where('status', 1)->get();
@@ -200,7 +209,7 @@ class JobsController extends Controller
         }
     }
 
-    public function deleteJob(Job $job, $id)
+    public function delete(Job $job, $id)
     {
 
         $job = Job::where('id', $id)
@@ -216,19 +225,6 @@ class JobsController extends Controller
         session()->flash('success', 'Job deleted successfully.');
         return redirect()->back();
 
-    }
-
-    public function detailJob($id){
-        $job = Job::where([
-            'id' => $id,
-            'status' => 1
-        ])->with(['typeJob','categoryJob'])->first();
-
-        if($job == null){
-            abort(404);
-        }
-
-        return view('front.detail',compact('job'));
     }
 
     public function applyJob(Request $request){
@@ -331,25 +327,5 @@ class JobsController extends Controller
         ]);
     }
 
-    public function all(){
-        $jobs = $this->repository->all();
-        return view('front.account.admin.job-status', compact('jobs'));
-    }
-
-    protected $repository;
-    public function __construct(JobsInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    public function updateStatus(Job $job){
-        $this->repository->updateStatus($job);
-        return redirect()->back();
-    }
-
-    public function updateStatusUser(User $user){
-        $this->repository->updateStatusUser($user);
-        return redirect()->back();
-    }
 
 }

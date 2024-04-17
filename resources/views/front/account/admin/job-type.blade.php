@@ -91,9 +91,10 @@
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <form action="{{route('dash.deleteType',$type->id)}}"
-                                                                  method="get">
+                                                            <form action="{{route('type-jobs.destroy',$type->id)}}"
+                                                                  method="post">
                                                                 @csrf
+                                                                @method('DELETE')
                                                                 <button class="dropdown-item" type="submit"><i
                                                                         class="fa fa-trash" aria-hidden="true"></i>Remove
                                                                 </button>
