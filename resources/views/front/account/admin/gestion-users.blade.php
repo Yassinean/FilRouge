@@ -33,29 +33,27 @@
                                 <table class="table ">
                                     <thead class="bg-light">
                                     <tr>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Job applied</th>
-                                        <th scope="col">Employer</th>
-                                        <th scope="col">Applicant</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Email</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody class="border-0">
                                     {{--@dd($jobApplications);--}}
-                                    @forelse($jobs as $job)
+                                    @forelse($users as $user)
                                         <tr class="active">
+                                             <td>{{$user->name}}</td>
                                             <td>
-                                                <div class="job-name fw-500">{{$job->title}}</div>
+                                                <div class="job-name fw-500">{{$user->role}}</div>
                                             </td>
-                                             <td>{{\Carbon\Carbon::parse($job->applied_date)->format('d M,Y')}}</td>
-                                             <td>{{$job->user->name}}</td>
-                                             <td>{{$job->applications->count()}}</td>
+                                             <td>{{$user->email}}</td>
                                             <td>
-                                                <form action="{{route('dash.statusJob',$job->id)}}" method="post">
+                                                <form action="{{route('dash.statusUser',$user->id)}}" method="post">
                                                     @csrf
                                                     @method('PUT')
-                                                    <button type="submit" class="btn btn-sm {{ $job->status ? 'btn-success' : 'btn-warning' }}">
-                                                        {{ $job->status ? 'Publié' : 'En attent' }}
+                                                    <button type="submit" class="btn btn-sm {{ $user->status ? 'btn-success' : 'btn-danger' }}">
+                                                        {{ $user->status ? 'Unblocked' : 'Blocked' }}
                                                     </button>
                                                 </form>
                                                 {{--<a class="dropdown-item" href="{{route('account.removeSavedJob',$job->job_id)}}"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>--}}

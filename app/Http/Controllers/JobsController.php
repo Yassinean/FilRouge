@@ -90,17 +90,8 @@ class JobsController extends Controller
      */
     public function store(StorejobsRequest $request): \Illuminate\Http\JsonResponse
     {
-        $rules = [
-            'title' => 'required|min:5|max:50',
-            'category_id' => 'required',
-            'jobType' => 'required',
-            'vacancy' => 'required',
-            'location' => 'required|max:70',
-            'description' => 'required:',
-            'company_name' => 'required|min:3|max:50',
-            'experiences' => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rules);
+
+        $validator = Validator::make($request->all(), [$request]);
         //dd($request);
         if ($validator->passes()) {
             $jobDetail = new Job();
@@ -172,19 +163,7 @@ class JobsController extends Controller
      */
     public function update(UpdatejobsRequest $request, Job $job, $id)
     {
-        $rules = [
-            'title' => 'required|min:5|max:50',
-            'category_id' => 'required',
-            'jobType' => 'required',
-            'vacancy' => 'required',
-            'location' => 'required|max:70',
-            'description' => 'required:',
-            'company_name' => 'required|min:3|max:50',
-            'experiences' => 'required',
-
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), [$request]);
 
         if ($validator->passes()) {
 
@@ -365,6 +344,11 @@ class JobsController extends Controller
 
     public function updateStatus(Job $job){
         $this->repository->updateStatus($job);
+        return redirect()->back();
+    }
+
+    public function updateStatusUser(User $user){
+        $this->repository->updateStatusUser($user);
         return redirect()->back();
     }
 

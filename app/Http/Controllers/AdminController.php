@@ -22,8 +22,8 @@ AdminController extends Controller
      */
     public function users()
     {
-        $users = User::where('role !==','admin')->get();
-        return view('front.account.admin.gestion-users');
+        $users = User::where('role', '!=', 'admin')->get();
+        return view('front.account.admin.gestion-users' , compact('users'));
     }
 
     /**
