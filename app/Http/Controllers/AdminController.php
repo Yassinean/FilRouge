@@ -97,4 +97,9 @@ AdminController extends Controller
         return redirect()->back();
     }
 
+    public function updateStatusFeaturedJob(Job $job){
+        $this->repository->updateStatusFeaturedJob($job);
+        return redirect()->back();
+    }
+
 }

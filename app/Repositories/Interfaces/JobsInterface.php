@@ -9,5 +9,6 @@ interface JobsInterface {
     public function updateStatus(Job $job);
     public function updateStatusUser(User $user);
 
+    public function updateStatusFeaturedJob(Job $job);
 
 }

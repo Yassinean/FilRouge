@@ -145,7 +145,12 @@ class JobsController extends Controller
             abort(404);
         }
 
-        return view('front.detail',compact('job'));
+        // fetching applicant that apply in the job
+        $jobApplicants = JobApplication::where('job_id',$id)->get();
+
+        //dd($jobApplicants);
+
+        return view('front.detail',compact('job','jobApplicants'));
     }
 
     /**
@@ -227,22 +232,24 @@ class JobsController extends Controller
 
     }
 
-    public function applyJob(Request $request){
-        $req = $request;
+    public function applyJob(Request $request) {
         $id = $request->id;
+
         $job = Job::where('id',$id)->first();
-        // if job does not exist in db
-        if($job == null ){
-            $message = 'Job does not exist';
-            session()->flash('error', $message);
+
+        // If job not found in db
+        if ($job == null) {
+            $message = 'Job does not exist.';
+            session()->flash('error',$message);
             return response()->json([
-                'status'=> false,
-                'message' => $message,
+                'status' => false,
+                'message' => $message
             ]);
         }
 
-         // if emplyee id want to apply in his own job
+        // you can not apply on your own job
         $employer_id = $job->user_id;
+
         if ($employer_id == Auth::user()->id) {
             $message = 'You can not apply on your own job.';
             session()->flash('error',$message);
@@ -251,50 +258,48 @@ class JobsController extends Controller
                 'message' => $message
             ]);
         }
-        if(Auth::user()->role == 'admin'){
-            session()->flash('error','You are not allowed to apply');
-            return response()->json([
-                'status' => false
-            ]);
-        }
 
-
-        // candidate cannot apply twice
-        $applyedJobCount = JobApplication::where([
-            'user_id'=>Auth::user()->id,
-            'job_id'=>$id,
+        // You can not apply on a job twise
+        $jobApplicationCount = JobApplication::where([
+            'user_id' => Auth::user()->id,
+            'job_id' => $id
         ])->count();
 
-        if($applyedJobCount > 0){
-            $message = 'You have already applied to this job';
-            session()->flash('error', $message);
+        if ($jobApplicationCount > 0) {
+            $message = 'You already applied on this job.';
+            session()->flash('error',$message);
             return response()->json([
-                'status'=> false,
-                'message'=> $message,
+                'status' => false,
+                'message' => $message
             ]);
         }
 
-        $applyedJob = new JobApplication();
-        $applyedJob->job_id = $id;
-        $applyedJob->user_id = Auth::user()->id;
-        $applyedJob->employer_id = $employer_id;
-        $applyedJob->applied_date = now();
-        $applyedJob->save();
+        $application = new JobApplication();
+        $application->job_id = $id;
+        $application->user_id = Auth::user()->id;
+        $application->employer_id = $employer_id;
+        $application->applied_date = now();
+        $application->save();
 
-        // Send email to the employer
+
+        // Send Notification Email to Employer
         $employer = User::where('id',$employer_id)->first();
+
         $mailData = [
             'employer' => $employer,
             'user' => Auth::user(),
             'job' => $job,
         ];
+
         Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
 
-        $message = 'You have applied successfully ! ';
+        $message = 'You have successfully applied.';
+
         session()->flash('success',$message);
+
         return response()->json([
             'status' => true,
-            'message' => $message,
+            'message' => $message
         ]);
     }
 

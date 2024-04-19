@@ -42,15 +42,23 @@ Route::group(['prefix' => 'account'], function () {
 
         /********* end account controller **********/
 
+        /************* Category controller ************/
+        Route::resource('category-jobs',CategoryJobController::class);
+        /*********** end category controller **********/
+
+        /************* Type controller ************/
+        Route::resource('type-jobs',TypeJobController::class);
+        /*********** end type controller **********/
+
         /************* Jobs controller ************/
 
         //this one for candidate that he wants to remove his candidature from this job
         Route::get('/jobs', [JobsController::class, 'getJob'])->name('account.getJob');
-        // ressource jobs
+        // resource jobs
         Route::resource('jobs',JobsController::class)->only([
             'create','store','edit','update','destroy'
         ]);
-        // end ressource job
+        // end resource job
         Route::post('/applyJob', [JobsController::class, 'applyJob'])->name('account.applyJob');
         Route::post('/saveJob', [JobsController::class, 'saveJob'])->name('account.saveJob');
         // end jobs controller
@@ -61,6 +69,7 @@ Route::group(['prefix' => 'account'], function () {
 
         Route::put('/updateStatusJob/{job}', [AdminController::class, 'updateStatus'])->name('dash.statusJob');
         Route::put('/updateStatusUser/{user}', [AdminController::class, 'updateStatusUser'])->name('dash.statusUser');
+        Route::put('/updateFeatureJob/{job}', [AdminController::class, 'updateStatusFeaturedJob'])->name('dash.statusFeaturedJob');
         Route::get('/jobsUpdateStatus', [AdminController::class, 'all'])->name('dash.allJobs');
         Route::get('/users', [AdminController::class, 'users'])->name('dash.users');
 

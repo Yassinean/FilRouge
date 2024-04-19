@@ -1,8 +1,15 @@
+<style>
+    /* Remove modal backdrop */
+    .modal-backdrop {
+        display: none !important;
+    }
+</style>
+
 <div class="card border-0 shadow mb-4 p-3">
     <div class="s-body text-center mt-3">
 
         @if (Auth::user()->image != '')
-            <img src="{{ asset('profile_pic/' . Auth::user()->image) }}" alt="{{ Auth::user()->image }}"
+            <img src="{{ Storage::url('profile_images/' . Auth::user()->image) }}" alt="{{ Auth::user()->image }}"
                  class="rounded-circle img-fluid" style="width: 150px;">
         @else
             <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
@@ -69,6 +76,7 @@
 </div>
 
 
+<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -96,6 +104,13 @@
         </div>
     </div>
 </div>
+<script>
+    // Listen for the modal hidden event
+    $('#exampleModal').on('hidden.bs.modal', function (e) {
+        // Remove the modal backdrop
+        $('.modal-backdrop').remove();
+    });
+</script>
 
 
 <script src="{{ asset('assets/js/edit_pic.js') }}"></script>

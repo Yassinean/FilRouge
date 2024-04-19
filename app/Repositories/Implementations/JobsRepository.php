@@ -24,5 +24,10 @@ class JobsRepository implements JobsInterface
         $user->update(['status' => !$user->status]);
         return redirect()->back()->with('success', 'User status modified successfully');
     }
+    public function updateStatusFeaturedJob(Job $job)
+    {
+        $job->update(['isFeatured' => !$job->isFeatured]);
+        return redirect()->back()->with('success', 'Job status modified successfully');
+    }
 
 }

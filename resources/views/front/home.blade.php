@@ -59,7 +59,7 @@
                             <a href="{{route('jobs-page').'?category='.$categorie->id}}">
                                 <h4 class="pb-2">{{$categorie->name}}</h4>
                             </a>
-                            <p class="mb-0"><span>{{$categorie->job->count()}}</span> Available position</p>
+                            <p class="mb-0"><span>{{$categorie->job->where('status',1)->count()}}</span> Available position</p>
                         </div>
                     </div>
                 @empty

@@ -11,6 +11,7 @@ use App\Models\JobApplication;
 use App\Models\SavedJob;
 use App\Models\User;
 use Illuminate\Http\Request;
+
 //use \Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -94,6 +95,7 @@ class AccountController extends Controller
 
         return view('front.account.profile', compact('user'));
     }
+
     public function profileAdmin()
     {
         $userID = Auth::id();
@@ -104,7 +106,7 @@ class AccountController extends Controller
         // $userData = User::where('id', $userID)->first();
         $user = User::findOrFail($userID);
 
-        return view('front.account.admin.dashboard', compact('user' ,'categories','candidats','employers','jobs'));
+        return view('front.account.admin.dashboard', compact('user', 'categories', 'candidats', 'employers', 'jobs'));
     }
 
     public function updateProfile(Request $request)
@@ -140,42 +142,44 @@ class AccountController extends Controller
     public function updateProfilePic(Request $request)
     {
         $userID = Auth::id();
-        $validator = validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'image' => 'required|image'
         ]);
+
         if ($validator->passes()) {
-            $image = $request->image;
-            $ext = $image->getClientOriginalExtension();
-            $imageName = $userID.'-'.time().'.'.$ext;
-            $image->move(public_path('assets/profile_pic/',$imageName));
-
-            User::where('id',$userID)->update(['image' => $imageName]);
-
-            session()->flash('success','Profile picture updated successfully');
-            return response()->json([
-                'status' => true,
-                'errors' => [],
-            ]);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = $userID . '-' . time() . '.' . $image->extension();
+                $image->storeAs('public/profile_images', $imageName);
+                User::where('id', $userID)->update(['image' => $imageName]);
+            }
+            session()->flash('success', 'Profile picture updated successfully');
         } else {
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors(),
             ]);
         }
+        return redirect()->back();
     }
 
-    public function appliedJob(){
-        $user_id = Auth::id();
-        $jobApplications = JobApplication::where('user_id',$user_id)->orderBy('created_at','DESC')->get();
+
+    public function appliedJob()
+    {
+        $employee_id = Auth::id();
+        $jobApplications = JobApplication::where('employee_id', $employee_id)->orderBy('created_at', 'DESC')->get();
         return view('front.account.job.job-application', compact('jobApplications'));
     }
-    public function savedJob(){
+
+    public function savedJob()
+    {
         $user_id = Auth::id();
-        $jobSaved = SavedJob::where('user_id',$user_id)->orderBy('created_at','DESC')->get();
+        $jobSaved = SavedJob::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
         return view('front.account.job.job-save', compact('jobSaved'));
     }
 
-    public function removeJob(){
+    public function removeJob()
+    {
         $jobApp = new JobApplication();
         $jobApplication = JobApplication::where([
             ['user_id', Auth::user()->id],
@@ -193,7 +197,9 @@ class AccountController extends Controller
         session()->flash('success', 'Your application for this job has been removed successfully.');
         return redirect()->back();
     }
-    public function removeSavedJob(){
+
+    public function removeSavedJob()
+    {
         $jobSave = new JobApplication();
         $jobSaved = SavedJob::where([
             ['user_id', Auth::user()->id],
@@ -211,6 +217,7 @@ class AccountController extends Controller
         session()->flash('success', 'Your saved job has been removed successfully.');
         return redirect()->back();
     }
+
     public function logout()
     {
         Auth::logout();

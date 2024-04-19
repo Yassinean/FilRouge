@@ -105,7 +105,7 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        No category found
+                                        No type found
                                     @endforelse
                                     </tbody>
 

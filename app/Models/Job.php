@@ -19,6 +19,7 @@ class Job extends Model
         'company_name',
         'experiences',
         'status',
+        'isFeatured',
     ];
 
     public function typeJob()

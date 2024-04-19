@@ -9,7 +9,8 @@
                     <nav aria-label="breadcrumb" class=" rounded-3 p-3">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item">
-                                <a href="{{route('jobs-page')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back to Jobs</a>
+                                <a href="{{route('jobs-page')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back
+                                    to Jobs</a>
                             </li>
                         </ol>
                     </nav>
@@ -42,7 +43,8 @@
                                 <div class="jobs_right">
                                     <div class="apply_now">
                                         @if(Auth::check())
-                                            <a class="heart_mark" href="" onclick="saveJob({{$job->id}})"> <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                            <a class="heart_mark" href="" onclick="saveJob({{$job->id}})"> <i
+                                                    class="fa fa-heart-o" aria-hidden="true"></i></a>
                                         @endif
                                     </div>
                                 </div>
@@ -75,6 +77,43 @@
                                     <a href="{{route('account.login')}}" class="btn btn-primary">Login to Apply</a>
                                 </div>
                             @endif
+                        </div>
+                    </div>
+                    <div class="card shadow border-0 mt-4">
+                        <div class="job_details_header">
+                            <div class="single_jobs white-bg d-flex justify-content-between">
+                                <div class="jobs_left d-flex align-items-center">
+                                    <div class="jobs_conetent">
+                                        <h4>{{$jobApplicants->count()}} Applicants</h4>
+                                    </div>
+                                </div>
+                                <div class="jobs_right"></div>
+                            </div>
+                        </div>
+                        <div class="descript_wrap white-bg">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Applied Date</th>
+                                </tr>
+                                @forelse($jobApplicants as $jobApplicant)
+
+                                    <tr>
+                                        <td>{{ $jobApplicant->user->name  }}</td>
+                                        <td>{{ $jobApplicant->user->email  }}</td>
+                                        <td>{{ $jobApplicant->user->mobile  }}</td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($jobApplicant->applied_date)->format('d M, Y') }}
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <td colspan="3">Applicants not found</td>
+                                @endforelse
+
+                            </table>
+
                         </div>
                     </div>
                 </div>
@@ -154,12 +193,12 @@
                 },
                 url: '{{ route('account.saveJob') }}',
                 type: 'post',
-                data: { id: id },
+                data: {id: id},
                 dataType: 'json',
                 success: function (response) {
                     if (response.status) {
                         alert(response.message); // Display success message
-                   // Refresh the page after successfully saving the job
+                        // Refresh the page after successfully saving the job
                     } else {
                         alert(response.message); // Display error message
                     }
