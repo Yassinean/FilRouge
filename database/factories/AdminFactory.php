@@ -17,7 +17,9 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name'=> 'Yassine Hanach',
+            'email'=> 'yassinedubraska@gmail.com',
+            'password'=> 'yassinedubraska@gmail.com',
         ];
     }
 }
