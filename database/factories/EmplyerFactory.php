@@ -17,7 +17,21 @@ class EmplyerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            [
+                'name' => 'Rabii Farakh',
+                'email' => 'rabiifarakh@gmail.com',
+                'password' => 'rabiifarakh@gmail.com',
+            ],
+            [
+                'name' => 'Salah Akil',
+                'email' => 'akilsalah@gmail.com',
+                'password' => 'akilsalah@gmail.com',
+            ],
+            [
+                'name' => 'Mohammed Ghollam',
+                'email' => 'ghollam@gmail.com',
+                'password' => 'ghollam@gmail.com',
+            ],
         ];
     }
 }
