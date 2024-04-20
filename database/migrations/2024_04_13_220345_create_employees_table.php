@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('emplyees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->longText('educations')->nullable();
+            $table->longText('certifications')->nullable();
+            $table->longText('experiences')->nullable();
+            $table->string('cv');
             $table->timestamps();
         });
     }
