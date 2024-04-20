@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\CategoryJobController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
-use \App\Http\Controllers\TypeJobController;
+use App\Http\Controllers\CategoryJobController;
+use App\Http\Controllers\EmplyeeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobsController;
+use \App\Http\Controllers\TypeJobController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -31,11 +32,11 @@ Route::group(['prefix' => 'account'], function () {
         /********** Account Controller ***********/
 
         Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
-        Route::get('/dashboard', [AccountController::class, 'profileAdmin'])->name('dash.dashboard');
-        Route::get('/appliedJob', [AccountController::class, 'appliedJob'])->name('account.appliedJob');
-        Route::get('/savedJob', [AccountController::class, 'savedJob'])->name('account.savedJob');
-        Route::get('/jobsApp/remove/{jobId}', [AccountController::class, 'removeJob'])->name('account.removeJob');
-        Route::get('/jobsSaved/remove/{jobId}', [AccountController::class, 'removeSavedJob'])->name('account.removeSavedJob');
+        Route::get('/appliedJob', [EmplyeeController::class, 'appliedJob'])->name('account.appliedJob');
+        Route::post('/register-profile-candidat', [EmplyeeController::class, 'store'])->name('account.registerData');
+        Route::get('/savedJob', [EmplyeeController::class, 'savedJob'])->name('account.savedJob');
+        Route::delete('/jobsApp/remove/{jobId}', [EmplyeeController::class, 'removeJob'])->name('account.removeJob');
+        Route::delete('/jobsSaved/remove/{jobId}', [EmplyeeController::class, 'removeSavedJob'])->name('account.removeSavedJob');
         Route::put('/updateProfile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::put('/updateProfilePic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
@@ -67,13 +68,14 @@ Route::group(['prefix' => 'account'], function () {
 
         /************* Admin Controller ***********/
 
+        Route::get('/dashboard', [AdminController::class, 'create'])->name('dash.dashboard');
         Route::put('/updateStatusJob/{job}', [AdminController::class, 'updateStatus'])->name('dash.statusJob');
         Route::put('/updateStatusUser/{user}', [AdminController::class, 'updateStatusUser'])->name('dash.statusUser');
         Route::put('/updateFeatureJob/{job}', [AdminController::class, 'updateStatusFeaturedJob'])->name('dash.statusFeaturedJob');
         Route::get('/jobsUpdateStatus', [AdminController::class, 'all'])->name('dash.allJobs');
         Route::get('/users', [AdminController::class, 'users'])->name('dash.users');
-
         /************ end admin controller **********/
+
 
         Route::get('/categories', [CategoryJobController::class, 'displayCategory'])->name('dash.category');
         Route::get('/jobTypes', [TypeJobController::class, 'displayTypes'])->name('dash.type');

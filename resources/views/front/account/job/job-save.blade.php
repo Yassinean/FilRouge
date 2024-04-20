@@ -7,7 +7,7 @@
                 <div class="col">
                     <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
                             <li class="breadcrumb-item active">Account Settings</li>
                         </ol>
                     </nav>
@@ -58,7 +58,11 @@
                                                                     class="fa fa-eye" aria-hidden="true"></i> View</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" href="{{route('account.removeSavedJob',$jobS->job_id)}}"  ><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>
+                                                            <form action="{{route('account.removeSavedJob',$jobS->job_id)}}" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item"><i class="fa fa-trash" aria-hidden="true"></i> Remove</button>
+                                                            </form>
                                                         </li>
                                                     </ul>
                                                 </div>

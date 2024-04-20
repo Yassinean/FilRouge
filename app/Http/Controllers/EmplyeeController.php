@@ -4,7 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmplyeeRequest;
 use App\Http\Requests\UpdateEmplyeeRequest;
+use App\Models\Admin;
+use App\Models\Education;
 use App\Models\Emplyee;
+use App\Models\Emplyer;
+use App\Models\JobApplication;
+use App\Models\SavedJob;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class EmplyeeController extends Controller
 {
@@ -29,7 +37,35 @@ class EmplyeeController extends Controller
      */
     public function store(StoreEmplyeeRequest $request)
     {
-        //
+        $validateData = Validator::make($request->all(), [
+            'education' => 'required',
+            'experience' => 'required',
+            'certification' => 'required',
+            'cv' => 'required|image',
+        ]);
+
+        if ($validateData->passes()) {
+            $employee = Education::create([
+                'education'=> $request->education,
+                'experience'=> $request->experience,
+                'certification'=> $request->certification,
+                'cv'=> $request->cv,
+            ]);
+
+            dd($employee);
+
+            session()->flash('success', 'You have registered Successfully');
+            return response()->json([
+                'status' => true,
+                'errors' => []
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validateData->errors()
+            ]);
+        }
+
     }
 
     /**
@@ -62,5 +98,59 @@ class EmplyeeController extends Controller
     public function destroy(Emplyee $emplyee)
     {
         //
+    }
+
+    public function appliedJob()
+    {
+        $user_id = Auth::id();
+        $jobApplications = JobApplication::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
+        return view('front.account.job.job-application', compact('jobApplications'));
+    }
+
+    public function savedJob()
+    {
+        $user_id = Auth::id();
+        $jobSaved = SavedJob::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
+        return view('front.account.job.job-save', compact('jobSaved'));
+    }
+
+    public function removeJob()
+    {
+        $jobApp = new JobApplication();
+        $jobApplication = JobApplication::where([
+            ['user_id', Auth::user()->id],
+        ])->first();
+
+        // Check if the job application exists
+        if ($jobApplication == null) {
+            session()->flash('error', 'This job application was not found.');
+            return response()->json(['status' => false]);
+        }
+
+        // Delete the job application
+        $jobApplication->delete();
+
+        session()->flash('success', 'Your application for this job has been removed successfully.');
+        return redirect()->back();
+    }
+
+    public function removeSavedJob()
+    {
+        $jobSave = new JobApplication();
+        $jobSaved = SavedJob::where([
+            ['user_id', Auth::user()->id],
+        ])->first();
+
+        // Check if the job application exists
+        if ($jobSaved == null) {
+            session()->flash('error', 'This job application was not found.');
+            return response()->json(['status' => false]);
+        }
+
+        // Delete the job application
+        $jobSaved->delete();
+
+        session()->flash('success', 'Your saved job has been removed successfully.');
+        return redirect()->back();
     }
 }

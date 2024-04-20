@@ -12,7 +12,7 @@
             <img src="{{ Storage::url('profile_images/' . Auth::user()->image) }}" alt="{{ Auth::user()->image }}"
                  class="rounded-circle img-fluid" style="width: 150px;">
         @else
-            <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
+            <img src="{{ asset('images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
                  style="width: 150px;">
         @endif
 

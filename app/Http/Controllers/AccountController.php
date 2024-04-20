@@ -32,7 +32,7 @@ class AccountController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5',
-            'confirm_password' => 'required|same:confirm_password',
+            'confirm_password' => 'required|same:password',
             'role' => 'required ',
         ]);
 
@@ -96,18 +96,6 @@ class AccountController extends Controller
         return view('front.account.profile', compact('user'));
     }
 
-    public function profileAdmin()
-    {
-        $userID = Auth::id();
-        $categories = CategoryJob::count();
-        $candidats = Emplyee::count();
-        $employers = Emplyer::count();
-        $jobs = Job::count();
-        // $userData = User::where('id', $userID)->first();
-        $user = User::findOrFail($userID);
-
-        return view('front.account.admin.dashboard', compact('user', 'categories', 'candidats', 'employers', 'jobs'));
-    }
 
     public function updateProfile(Request $request)
     {
@@ -160,61 +148,6 @@ class AccountController extends Controller
                 'errors' => $validator->errors(),
             ]);
         }
-        return redirect()->back();
-    }
-
-
-    public function appliedJob()
-    {
-        $employee_id = Auth::id();
-        $jobApplications = JobApplication::where('employee_id', $employee_id)->orderBy('created_at', 'DESC')->get();
-        return view('front.account.job.job-application', compact('jobApplications'));
-    }
-
-    public function savedJob()
-    {
-        $user_id = Auth::id();
-        $jobSaved = SavedJob::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
-        return view('front.account.job.job-save', compact('jobSaved'));
-    }
-
-    public function removeJob()
-    {
-        $jobApp = new JobApplication();
-        $jobApplication = JobApplication::where([
-            ['user_id', Auth::user()->id],
-        ])->first();
-
-        // Check if the job application exists
-        if ($jobApplication == null) {
-            session()->flash('error', 'This job application was not found.');
-            return response()->json(['status' => false]);
-        }
-
-        // Delete the job application
-        $jobApplication->delete();
-
-        session()->flash('success', 'Your application for this job has been removed successfully.');
-        return redirect()->back();
-    }
-
-    public function removeSavedJob()
-    {
-        $jobSave = new JobApplication();
-        $jobSaved = SavedJob::where([
-            ['user_id', Auth::user()->id],
-        ])->first();
-
-        // Check if the job application exists
-        if ($jobSaved == null) {
-            session()->flash('error', 'This job application was not found.');
-            return response()->json(['status' => false]);
-        }
-
-        // Delete the job application
-        $jobSaved->delete();
-
-        session()->flash('success', 'Your saved job has been removed successfully.');
         return redirect()->back();
     }
 

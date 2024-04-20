@@ -10,10 +10,13 @@ use App\Http\Requests\UpdateCategoryJobRequest;
 use App\Http\Requests\UpdateTypeJobRequest;
 use App\Models\Admin;
 use App\Models\CategoryJob;
+use App\Models\Emplyee;
+use App\Models\Emplyer;
 use App\Models\Job;
 use App\Models\TypeJob;
 use App\Models\User;
 use App\Repositories\Interfaces\JobsInterface;
+use Illuminate\Support\Facades\Auth;
 
 class
 AdminController extends Controller
@@ -33,7 +36,15 @@ AdminController extends Controller
      */
     public function create()
     {
-        //
+        $userID = Auth::id();
+        $categories = CategoryJob::count();
+        $candidats = Emplyee::count();
+        $employers = Emplyer::count();
+        $jobs = Job::count();
+        // $userData = User::where('id', $userID)->first();
+        $user = User::findOrFail($userID);
+
+        return view('front.account.admin.dashboard', compact('user', 'categories', 'candidats', 'employers', 'jobs'));
     }
 
     /**

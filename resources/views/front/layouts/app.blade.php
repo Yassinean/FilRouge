@@ -39,6 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{route('jobs-page')}}">Find Jobs</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{route('jobs-page')}}">Candidates</a>
+                        </li>
                     </ul>
                     @if (Auth::check())
                         @if(Auth::user()->role == 'admin' )
