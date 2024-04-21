@@ -46,9 +46,9 @@ class EmplyeeController extends Controller
 
         if ($validateData->passes()) {
             $employee = Education::create([
-                'education'=> $request->education,
-                'experience'=> $request->experience,
-                'certification'=> $request->certification,
+                'educations'=> $request->education,
+                'experiences'=> $request->experience,
+                'certifications'=> $request->certification,
                 'cv'=> $request->cv,
             ]);
 

@@ -10,7 +10,7 @@ class JobsRepository implements JobsInterface
 {
     public function all()
     {
-        return Job::all();
+        return Job::where('status',0)->paginate(5);
     }
 
     public function updateStatus(Job $job)
