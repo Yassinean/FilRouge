@@ -18,6 +18,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jobs-page', [JobsController::class, 'index'])->name('jobs-page');
 Route::get('/candidates', [CandidateController::class, 'index'])->name('candidate');
 Route::get('/jobs/detail/{id}', [JobsController::class, 'show'])->name('detailJob');
+Route::get('/candidate/profile/{id}', [CandidateController::class, 'profileCandidate'])->name('profileCandidate');
 
 Route::group(['prefix' => 'account'], function () {
     // this section for guest

@@ -16,6 +16,7 @@ use App\Models\Job;
 use App\Models\TypeJob;
 use App\Models\User;
 use App\Repositories\Interfaces\JobsInterface;
+use App\Services\Interfaces\JobsServiceInterface;
 use Illuminate\Support\Facades\Auth;
 
 class
@@ -47,69 +48,29 @@ AdminController extends Controller
         return view('front.account.admin.dashboard', compact('user', 'categories', 'candidats', 'employers', 'jobs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAdminRequest $request)
-    {
-
-    }
-        /**
-     * Display the specified resource.
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin, $id)
-    {
-
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAdminRequest $request, $id)
-    {
-
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-
-    }
 
     public function all(){
-        $jobs = $this->repository->all();
+        $jobs = $this->service->all();
         return view('front.account.admin.job-status', compact('jobs'));
     }
-    protected $repository;
-    public function __construct(JobsInterface $repository)
+
+    public function __construct(protected JobsServiceInterface $service)
     {
-        $this->repository = $repository;
+
     }
 
     public function updateStatus(Job $job){
-        $this->repository->updateStatus($job);
+        $this->service->updateStatus($job);
         return redirect()->back();
     }
 
     public function updateStatusUser(User $user){
-        $this->repository->updateStatusUser($user);
+        $this->service->updateStatusUser($user);
         return redirect()->back();
     }
 
     public function updateStatusFeaturedJob(Job $job){
-        $this->repository->updateStatusFeaturedJob($job);
+        $this->service->updateStatusFeaturedJob($job);
         return redirect()->back();
     }
 

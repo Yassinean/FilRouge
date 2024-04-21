@@ -17,6 +17,9 @@ return new class extends Migration
             $table->longText('educations')->nullable();
             $table->longText('certifications')->nullable();
             $table->longText('experiences')->nullable();
+            $table->string('website')->nullable();
+            $table->string('github')->nullable();
+            $table->string('twitter')->nullable();
             $table->string('cv');
             $table->timestamps();
         });

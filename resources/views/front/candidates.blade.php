@@ -44,7 +44,7 @@
                                             </div>
                                             <!-- Button to View Candidate Details -->
                                             <div class="d-grid mt-3">
-                                                <a href="#" class="btn btn-primary btn-lg">View Profile</a>
+                                                <a href="{{route('profileCandidate',$employee->id)}}" class="btn btn-primary btn-lg">View Profile</a>
                                             </div>
                                         </div>
                                     </div>

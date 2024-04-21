@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Implementations\JobsRepository;
+use App\Repositories\Interfaces\JobsInterface;
+use App\Services\Implementations\JobService;
+use App\Services\Interfaces\JobsServiceInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,11 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            'App\Repositories\Interfaces\JobsInterface',
-            'App\Repositories\Implementations\JobsRepository'
-        );
-
+        app()->bind(JobsInterface::class,JobsRepository::class);
+        app()->bind(JobsServiceInterface::class,JobService::class);
     }
 
     /**
