@@ -49,6 +49,9 @@
                 </li>
             @elseif(Auth::user()->role == 'employee' )
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <a href="{{route('account.info')}}">Mes infos</a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                     <a href="{{route('account.appliedJob')}}">Jobs Applied</a>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">

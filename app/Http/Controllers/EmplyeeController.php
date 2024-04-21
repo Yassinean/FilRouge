@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmplyeeRequest;
 use App\Http\Requests\UpdateEmplyeeRequest;
 use App\Models\Admin;
-use App\Models\Education;
 use App\Models\Emplyee;
 use App\Models\Emplyer;
+
 use App\Models\JobApplication;
 use App\Models\SavedJob;
 use App\Models\User;
@@ -21,7 +21,12 @@ class EmplyeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Emplyee::all();
+        return view('front.candidates', compact('employees'));
+    }
+    public function myInfo()
+    {
+        return view('front.account.employee.employee-info');
     }
 
     /**
@@ -37,22 +42,21 @@ class EmplyeeController extends Controller
      */
     public function store(StoreEmplyeeRequest $request)
     {
+
         $validateData = Validator::make($request->all(), [
             'education' => 'required',
             'experience' => 'required',
             'certification' => 'required',
-            'cv' => 'required|image',
+            'cv' => 'required',
         ]);
 
         if ($validateData->passes()) {
-            $employee = Education::create([
-                'educations'=> $request->education,
-                'experiences'=> $request->experience,
-                'certifications'=> $request->certification,
-                'cv'=> $request->cv,
+            $employee = Emplyee::create([
+                'educations' => $request->education,
+                'experiences' => $request->experience,
+                'certifications' => $request->certification,
+                'cv' => $request->cv,
             ]);
-
-            dd($employee);
 
             session()->flash('success', 'You have registered Successfully');
             return response()->json([
@@ -65,7 +69,6 @@ class EmplyeeController extends Controller
                 'errors' => $validateData->errors()
             ]);
         }
-
     }
 
     /**
@@ -89,7 +92,6 @@ class EmplyeeController extends Controller
      */
     public function update(UpdateEmplyeeRequest $request, Emplyee $emplyee)
     {
-        //
     }
 
     /**

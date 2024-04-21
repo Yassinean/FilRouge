@@ -24,101 +24,39 @@
                         <x-message/>
                     </div>
                     <div class="card border-0 shadow mb-4">
-                        @if(Auth::user()->role === 'employee' )
-                            <form action="" method="post" id="employeeForm" name="employeeForm">
-                                @csrf
-                                <div class="card-body  p-4">
-                                    <h3 class="fs-4 mb-1">My Profile</h3>
-                                    <div class="mb-4">
-                                        <label for="name" class="mb-2">Name*</label>
-                                        <input type="text" name="name" id="name" placeholder="Enter Name"
-                                               class="form-control" value="{{ $user->name }}">
-                                        <p></p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="email" class="mb-2">Email*</label>
-                                        <input type="text" name="email" id="email" placeholder="Enter Email"
-                                               class="form-control" value="{{ $user->email }}">
-                                        <p></p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="designation" class="mb-2">Designation</label>
-                                        <input type="text" name="designation" id="designation" placeholder="Designation"
-                                               class="form-control" value="{{ $user->designation }}">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="mobile" class="mb-2">Mobile</label>
-                                        <input type="text" name="mobile" id="mobile" placeholder="Mobile"
-                                               class="form-control" value="{{ $user->mobile }}">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="mobile" class="mb-2">Education</label>
-                                        <textarea style="resize: none" name="education" id="education"
-                                                  placeholder="Education"
-                                                  class="form-control" value="{{ $user->education }}">
-                                        </textarea>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="mobile" class="mb-2">Experiences</label>
-                                        <textarea style="resize: none" name="experience" id="experience"
-                                                  placeholder="Experiences"
-                                                  class="form-control" value="{{ $user->experience }}">
-                                        </textarea>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="mobile" class="mb-2">Certifications</label>
-                                        <textarea style="resize: none" name="certification" id="certification"
-                                                  placeholder="Certification"
-                                                  class="form-control" value="{{ $user->certification }}">
-                                        </textarea>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="mobile" class="mb-2">CV</label>
-                                        <input type="file" name="cv" id="cv" class="form-control"
-                                               value="{{ $user->cv }}">
-                                    </div>
+                        <form action="" method="post" id="userForm" name="userForm">
+                            @csrf
+                            <div class="card-body  p-4">
+                                <h3 class="fs-4 mb-1">My Profile</h3>
+                                <div class="mb-4">
+                                    <label for="name" class="mb-2">Name*</label>
+                                    <input type="text" name="name" id="name" placeholder="Enter Name"
+                                           class="form-control" value="{{ $user->name }}">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="email" class="mb-2">Email*</label>
+                                    <input type="text" name="email" id="email" placeholder="Enter Email"
+                                           class="form-control" value="{{ $user->email }}">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="designation" class="mb-2">Designation</label>
+                                    <input type="text" name="designation" id="designation"
+                                           placeholder="Designation"
+                                           class="form-control" value="{{ $user->designation }}">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="mobile" class="mb-2">Mobile</label>
+                                    <input type="text" name="mobile" id="mobile" placeholder="Mobile"
+                                           class="form-control" value="{{ $user->mobile }}">
+                                </div>
 
-                                </div>
-                                <div class="card-footer  p-4">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </form>
-                        @else
-                            <form action="" method="post" id="userForm" name="userForm">
-                                @csrf
-                                <div class="card-body  p-4">
-                                    <h3 class="fs-4 mb-1">My Profile</h3>
-                                    <div class="mb-4">
-                                        <label for="name" class="mb-2">Name*</label>
-                                        <input type="text" name="name" id="name" placeholder="Enter Name"
-                                               class="form-control" value="{{ $user->name }}">
-                                        <p></p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="email" class="mb-2">Email*</label>
-                                        <input type="text" name="email" id="email" placeholder="Enter Email"
-                                               class="form-control" value="{{ $user->email }}">
-                                        <p></p>
-                                    </div>
-                                    @if(!Auth::user()->role == 'admin')
-                                        <div class="mb-4">
-                                            <label for="designation" class="mb-2">Designation</label>
-                                            <input type="text" name="designation" id="designation"
-                                                   placeholder="Designation"
-                                                   class="form-control" value="{{ $user->designation }}">
-                                        </div>
-                                        <div class="mb-4">
-                                            <label for="mobile" class="mb-2">Mobile</label>
-                                            <input type="text" name="mobile" id="mobile" placeholder="Mobile"
-                                                   class="form-control" value="{{ $user->mobile }}">
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="card-footer  p-4">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </form>
-                        @endif
+                            </div>
+                            <div class="card-footer  p-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
                     </div>
 
                     <div class="card border-0 shadow mb-4">
@@ -181,6 +119,11 @@
                             .siblings('p')
                             .removeClass('invalid-feedback')
                             .html('')
+                        $("#designation").removeClass('is-invalid')
+                            .siblings('p')
+                            .removeClass('invalid-feedback')
+                            .html('')
+
 
                         $('#user_name').html(response.user.name);
                         $('#message').html(response.message);
@@ -217,127 +160,5 @@
                 }
             });
         });
-
-        $('#employeeForm').submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '{{ route('account.registerData') }}',
-                type: 'post',
-                dataType: 'json',
-                data: $("#employeeForm").serializeArray(),
-                success: function (response) {
-                    if (response.status == true) {
-                        // Code pour le succès
-                    } else {
-                        let errors = response.errors;
-
-                        // Code pour les erreurs sur le champ "name"
-                        if (errors.name) {
-                            $("#name").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.name)
-                        } else {
-                            $("#name").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "email"
-                        if (errors.email) {
-                            $("#email").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.email)
-                        } else {
-                            $("#email").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "designation"
-                        if (errors.designation) {
-                            $("#designation").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.designation)
-                        } else {
-                            $("#designation").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "mobile"
-                        if (errors.mobile) {
-                            $("#mobile").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.mobile)
-                        } else {
-                            $("#mobile").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "education"
-                        if (errors.education) {
-                            $("#education").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.education)
-                        } else {
-                            $("#education").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "experience"
-                        if (errors.experience) {
-                            $("#experience").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.experience)
-                        } else {
-                            $("#experience").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "certification"
-                        if (errors.certification) {
-                            $("#certification").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.certification)
-                        } else {
-                            $("#certification").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        // Code pour les erreurs sur le champ "cv"
-                        if (errors.cv) {
-                            $("#cv").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.cv)
-                        } else {
-                            $("#cv").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-                    }
-                }
-            });
-        });
-
     </script>
 @endsection

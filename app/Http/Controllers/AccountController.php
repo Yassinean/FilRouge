@@ -83,7 +83,7 @@ class AccountController extends Controller
                 return redirect()->route('account.login')->with('error', 'Email or Password is incorrect');
             }
         } else {
-            return redirect()->route('account.login')->withErrors($validateData)->withInput($request->only('email')); // withInput kat7afd lina 3la values li f l input o only kat7afd lina 3la value dyal achln input bina
+            return redirect()->route('account.login')->withErrors($validateData)->withInput($request->only('email')); // withInput kat7afd lina 3la values li f l input o only kat7afd lina 3la value dyal achmn input bina
         }
     }
 
