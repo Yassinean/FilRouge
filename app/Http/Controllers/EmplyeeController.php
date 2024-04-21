@@ -21,8 +21,7 @@ class EmplyeeController extends Controller
      */
     public function index()
     {
-        $employees = Emplyee::all();
-        return view('front.candidates', compact('employees'));
+
     }
     public function myInfo()
     {

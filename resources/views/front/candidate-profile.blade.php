@@ -9,8 +9,7 @@
                     <nav aria-label="breadcrumb" class=" rounded-3 p-3">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item">
-                                <a href="{{route('jobs-page')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back
-                                    to Jobs</a>
+                                <a href="{{route('candidate')}}"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;</a>
                             </li>
                         </ol>
                     </nav>

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryJobController;
 use App\Http\Controllers\EmplyeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\CandidateController;
 use \App\Http\Controllers\TypeJobController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jobs-page', [JobsController::class, 'index'])->name('jobs-page');
-Route::get('/candidates', [EmplyeeController::class, 'index'])->name('candidate');
+Route::get('/candidates', [CandidateController::class, 'index'])->name('candidate');
 Route::get('/jobs/detail/{id}', [JobsController::class, 'show'])->name('detailJob');
 
 Route::group(['prefix' => 'account'], function () {
