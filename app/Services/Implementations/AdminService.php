@@ -5,13 +5,13 @@ namespace App\Services\Implementations;
 
 use App\Models\Job;
 use App\Models\User;
-use App\Repositories\Interfaces\JobsInterface;
+use App\Repositories\Interfaces\AdminInterface;
 use App\Services\Interfaces\AdminServiceInterface;
 
 class AdminService implements AdminServiceInterface
 {
 
-    public function __construct(protected JobsInterface $repository)
+    public function __construct(protected AdminInterface $repository)
     {
 
     }

@@ -12,6 +12,7 @@ use App\Models\TypeJob;
 use App\Models\CategoryJob;
 use App\Models\User;
 use App\Repositories\Interfaces\JobsInterface;
+use App\Services\Interfaces\JobsServiceInterface;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,59 +21,27 @@ use Illuminate\Support\Facades\Validator;
 
 class JobsController extends Controller
 {
+
+    public function __construct(protected JobsServiceInterface $service)
+    {
+
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $categories = CategoryJob::where('status', 1)->get();
-        $types = TypeJob::where('status', 1)->get();
+        $data = $this->service->index($request);
 
-        $jobs = Job::where('status', 1);
-        // Search using keyword
-        if (!empty($request->keyword)) {
-            $jobs = $jobs->where(function ($query) use ($request) {
-                $query->whereAny(['title', 'keywords'], 'like', '%' . $request->keyword . '%');
-            });
-        }
+        // Extract variables from the returned data
+        $categories = $data['categories'];
+        $types = $data['types'];
+        $jobs = $data['jobs'];
+        $jobTypeArray = $data['jobTypeArray'];
 
-        // Search using location
-        if (!empty($request->location)) {
-            $jobs = $jobs->where('location', 'like', '%' . $request->location . '%');
-        }
-        // Search using category
-        if (!empty($request->category)) {
-            $jobs = $jobs->where('category_job_id', $request->category);
-        }
-        $jobs = $jobs->with(['typeJob', 'categoryJob'])->orderBy('created_at', 'DESC')->paginate(9);
-
-
-        $jobTypeArray = [];
-        // Search using Job Type
-        if (!empty($request->jobType)) {
-            $jobTypeArray = explode(',', $request->jobType);
-
-            $jobs = $jobs->whereIn('type_job_id', $jobTypeArray);
-        }
-
-        // Search using experience
-        if (!empty($request->experience)) {
-            $jobs = $jobs->where('experiences', $request->experience);
-        }
-
-        /*
-        $jobs = Job::query()->with(['typeJob', 'categoryJob']);
-
-        if ($request->sort == '0') {
-            $jobs = $jobs->orderBy('created_at', 'ASC');
-        } else {
-            $jobs = $jobs->orderBy('created_at', 'DESC');
-        }
-
-        $jobs = $jobs->get();*/
-
-
-        return view('front.jobs', compact('categories', 'types', 'jobs' ,'jobTypeArray'));
+        // Pass variables to the view
+        return view('front.jobs', compact('categories', 'types', 'jobs', 'jobTypeArray'));
     }
 
     /**

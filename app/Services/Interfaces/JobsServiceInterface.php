@@ -5,11 +5,11 @@ namespace App\Services\Interfaces;
 use App\Http\Requests\UpdatejobsRequest;
 use App\Models\Job;
 use App\Models\User;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 interface JobsServiceInterface
 {
-    public function index();
+    public function index(Request $request);
 
     public function create();
 

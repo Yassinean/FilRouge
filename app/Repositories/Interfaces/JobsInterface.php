@@ -1,14 +1,27 @@
 <?php
+
 namespace App\Repositories\Interfaces;
+
+use App\Http\Requests\StoreJobsRequest;
+use App\Http\Requests\UpdatejobsRequest;
 use App\Models\Job;
 use App\Models\User;
+use Illuminate\Http\Request;
 
-interface JobsInterface {
+interface JobsInterface
+{
+    public function index(Request $request);
 
-    public function all();
-    public function updateStatus(Job $job);
-    public function updateStatusUser(User $user);
+    public function create();
 
-    public function updateStatusFeaturedJob(Job $job);
+    public function store(StoreJobsRequest $request);
+
+    public function getJob();
+    public function show($id);
+    public function edit($id);
+    public function update(UpdatejobsRequest $request, $id);
+    public function destroy($id);
+    public function applyJob(Request $request);
+    public function saveJob(Request $request);
 
 }
