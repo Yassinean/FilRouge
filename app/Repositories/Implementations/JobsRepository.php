@@ -18,7 +18,6 @@ use App\Mail\JobNotificationEmail;
 use App\Repositories\Interfaces\JobsInterface;
 
 
-
 class JobsRepository implements JobsInterface
 {
     /**
@@ -73,7 +72,7 @@ class JobsRepository implements JobsInterface
         $jobs = $jobs->get();*/
 
 
-        return view('front.jobs', compact('categories', 'types', 'jobs' ,'jobTypeArray'));
+        return view('front.jobs', compact('categories', 'types', 'jobs', 'jobTypeArray'));
     }
 
     /**
@@ -92,27 +91,26 @@ class JobsRepository implements JobsInterface
     public function store(StoreJobsRequest $request): \Illuminate\Http\JsonResponse
     {
 
-        $validator = Validator::make($request->all(), $request->rules());
+        $validatedData = $request->validated();
         //dd($request);
-        if ($validator->passes()) {
-            $jobDetail = new Job();
-            $jobDetail->title = $request->title;
-            $jobDetail->location = $request->location;
-            $jobDetail->vacancy = $request->vacancy;
-            $jobDetail->user_id = Auth::user()->id;
-            $jobDetail->salary = $request->salary;
-            $jobDetail->description = $request->description;
-            $jobDetail->category_job_id = $request->category_id;
-            $jobDetail->type_job_id = $request->jobType;
-            $jobDetail->keywords = $request->keywords;
-            $jobDetail->responsabitilies = $request->responsibility;
-            $jobDetail->qualifications = $request->qualifications;
-            $jobDetail->experiences = $request->experiences;
-            $jobDetail->company_name = $request->company_name;
-            $jobDetail->company_location = $request->company_location;
-            $jobDetail->company_website = $request->company_website;
-            $jobDetail->save();
-
+        if ($validatedData->passes()) {
+            $jobDetail = Job::create([
+                'title' => $validatedData['title'],
+                'location' => $validatedData['location'],
+                'vacancy' => $validatedData['vacancy'],
+                'user_id' => Auth::user()->id,
+                'salary' => $validatedData['salary'],
+                'description' => $validatedData['description'],
+                'category_job_id' => $validatedData['category_id'],
+                'type_job_id' => $validatedData['jobType'],
+                'keywords' => $validatedData['keywords'],
+                'responsabitilies' => $validatedData['responsibility'],
+                'qualifications' => $validatedData['qualifications'],
+                'experiences' => $validatedData['experiences'],
+                'company_name' => $validatedData['company_name'],
+                'company_location' => $validatedData['company_location'],
+                'company_website' => $validatedData['company_website'],
+            ]);
             session()->flash('success', 'Job added successfully!');
             return response()->json([
                 'status' => true,
@@ -140,18 +138,18 @@ class JobsRepository implements JobsInterface
         $job = Job::where([
             'id' => $id,
             'status' => 1
-        ])->with(['typeJob','categoryJob'])->first();
+        ])->with(['typeJob', 'categoryJob'])->first();
 
-        if($job == null){
+        if ($job == null) {
             abort(404);
         }
 
         // fetching applicant that apply in the job
-        $jobApplicants = JobApplication::where('job_id',$id)->get();
+        $jobApplicants = JobApplication::where('job_id', $id)->get();
 
         //dd($jobApplicants);
 
-        return view('front.detail',compact('job','jobApplicants'));
+        return view('front.detail', compact('job', 'jobApplicants'));
     }
 
     /**
@@ -233,15 +231,16 @@ class JobsRepository implements JobsInterface
 
     }
 
-    public function applyJob(Request $request) {
+    public function applyJob(Request $request)
+    {
         $id = $request->id;
 
-        $job = Job::where('id',$id)->first();
+        $job = Job::where('id', $id)->first();
 
         // If job not found in db
         if ($job == null) {
             $message = 'Job does not exist.';
-            session()->flash('error',$message);
+            session()->flash('error', $message);
             return response()->json([
                 'status' => false,
                 'message' => $message
@@ -253,7 +252,7 @@ class JobsRepository implements JobsInterface
 
         if ($employer_id == Auth::user()->id) {
             $message = 'You can not apply on your own job.';
-            session()->flash('error',$message);
+            session()->flash('error', $message);
             return response()->json([
                 'status' => false,
                 'message' => $message
@@ -268,7 +267,7 @@ class JobsRepository implements JobsInterface
 
         if ($jobApplicationCount > 0) {
             $message = 'You already applied on this job.';
-            session()->flash('error',$message);
+            session()->flash('error', $message);
             return response()->json([
                 'status' => false,
                 'message' => $message
@@ -284,7 +283,7 @@ class JobsRepository implements JobsInterface
 
 
         // Send Notification Email to Employer
-        $employer = User::where('id',$employer_id)->first();
+        $employer = User::where('id', $employer_id)->first();
 
         $mailData = [
             'employer' => $employer,
@@ -296,7 +295,7 @@ class JobsRepository implements JobsInterface
 
         $message = 'You have successfully applied.';
 
-        session()->flash('success',$message);
+        session()->flash('success', $message);
 
         return response()->json([
             'status' => true,
@@ -304,30 +303,31 @@ class JobsRepository implements JobsInterface
         ]);
     }
 
-    public function saveJob(Request $request){
+    public function saveJob(Request $request)
+    {
         $id = $request->id;
         $job = Job::find($id);
-        if(Auth::user()->role == 'admin'){
-            session()->flash('error','You are not allowed to save jobs');
+        if (Auth::user()->role == 'admin') {
+            session()->flash('error', 'You are not allowed to save jobs');
             return response()->json([
                 'status' => false
             ]);
         }
-        if($job == null){
-            session()->flash('error','Job not Found');
+        if ($job == null) {
+            session()->flash('error', 'Job not Found');
             return response()->json([
                 'status' => false,
             ]);
         }
         // check if user already saved job
         $countSavedJob = SavedJob::where([
-            'user_id'=> Auth::user()->id,
-            'job_id'=> $id,
+            'user_id' => Auth::user()->id,
+            'job_id' => $id,
         ])->count();
 
-        if($countSavedJob > 0 ){
+        if ($countSavedJob > 0) {
             $message = 'You are already save this job';
-            session()->flash('error',$message);
+            session()->flash('error', $message);
             return response()->json([
                 'status' => false,
                 'message' => $message,
@@ -337,8 +337,8 @@ class JobsRepository implements JobsInterface
         $savedJob->job_id = $id;
         $savedJob->user_id = Auth::user()->id;
         $savedJob->save();
-        $message= 'You are saved this job successfully !';
-        session()->flash('success',$message);
+        $message = 'You are saved this job successfully !';
+        session()->flash('success', $message);
         return response()->json([
             'status' => true,
             'message' => $message,
