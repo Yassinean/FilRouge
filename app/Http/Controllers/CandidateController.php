@@ -16,7 +16,6 @@ class CandidateController extends Controller
     public function profileCandidate($id)
     {
         $employeeProfile = Emplyee::where('id',$id)->first();
-
         return view('front.candidate-profile',compact('employeeProfile'));
     }
 }

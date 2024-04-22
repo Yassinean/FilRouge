@@ -20,30 +20,31 @@
             <div class="card border-0 shadow p-5">
                 <form action="{{route('jobs-page')}}" method="get">
                     <div class="row">
-                    <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
-                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keywords">
-                    </div>
-                    <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
-                        <input type="text" class="form-control" name="location" id="location" placeholder="Location">
-                    </div>
-                    <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
-                        <select name="category" id="category" class="form-control">
-                            <option value="">Select a Category</option>
-                            @forelse($categories as $categorie)
-                                <option value="{{$categorie->id}}">{{$categorie->name}}</option>
-                            @empty
-                                There's no category
-                            @endforelse
-                        </select>
-                    </div>
-
-                    <div class=" col-md-3 mb-xs-3 mb-sm-3 mb-lg-0">
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block">Search</button>
+                        <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
+                            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keywords">
+                        </div>
+                        <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
+                            <input type="text" class="form-control" name="location" id="location"
+                                   placeholder="Location">
+                        </div>
+                        <div class="col-md-3 mb-3 mb-sm-3 mb-lg-0">
+                            <select name="category" id="category" class="form-control">
+                                <option value="">Select a Category</option>
+                                @forelse($categories as $categorie)
+                                    <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                                @empty
+                                    There's no category
+                                @endforelse
+                            </select>
                         </div>
 
+                        <div class=" col-md-3 mb-xs-3 mb-sm-3 mb-lg-0">
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-block">Search</button>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -59,7 +60,8 @@
                             <a href="{{route('jobs-page').'?category='.$categorie->id}}">
                                 <h4 class="pb-2">{{$categorie->name}}</h4>
                             </a>
-                            <p class="mb-0"><span>{{$categorie->job->where('status',1)->count()}}</span> Available position</p>
+                            <p class="mb-0"><span>{{$categorie->job->where('status',1)->count()}}</span> Available
+                                position</p>
                         </div>
                     </div>
                 @empty
@@ -77,34 +79,35 @@
                     <div class="job_lists">
                         <div class="row">
                             @forelse($featureJobs as $featureJob )
-                              <div class="col-md-4">
-                                <div class="card border-0 p-3 shadow mb-4">
-                                    <div class="card-body">
-                                        <h3 class="border-0 fs-5 pb-2 mb-0">{{ $featureJob->title }}</h3>
-                                        <p>{{Str::limit($featureJob->description,10)}}</p>
-                                        <div class="bg-light p-3 border">
-                                            <p class="mb-0">
-                                                <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
-                                                <span class="ps-1">{{$featureJob->location}}</span>
-                                            </p>
-                                            <p class="mb-0">
-                                                <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
-                                                <span class="ps-1">{{$featureJob->typeJob->name}}</span>
-                                            </p>
-                                            @if(!is_null($featureJob->salary))
+                                <div class="col-md-4">
+                                    <div class="card border-0 p-3 shadow mb-4">
+                                        <div class="card-body">
+                                            <h3 class="border-0 fs-5 pb-2 mb-0">{{ $featureJob->title }}</h3>
+                                            <p>{{Str::limit($featureJob->description,10)}}</p>
+                                            <div class="bg-light p-3 border">
                                                 <p class="mb-0">
-                                                    <span class="fw-bolder"><i class="fa fa-usd"></i></span>
-                                                    <span class="ps-1">{{$featureJob->salary}}</span>
+                                                    <span class="fw-bolder"><i class="fa fa-map-marker"></i></span>
+                                                    <span class="ps-1">{{$featureJob->location}}</span>
                                                 </p>
-                                            @endif
-                                        </div>
+                                                <p class="mb-0">
+                                                    <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
+                                                    <span class="ps-1">{{$featureJob->typeJob->name}}</span>
+                                                </p>
+                                                @if(!is_null($featureJob->salary))
+                                                    <p class="mb-0">
+                                                        <span class="fw-bolder"><i class="fa fa-usd"></i></span>
+                                                        <span class="ps-1">{{$featureJob->salary}}</span>
+                                                    </p>
+                                                @endif
+                                            </div>
 
-                                        <div class="d-grid mt-3">
-                                            <a href="{{route('detailJob',$featureJob->id)}}" class="btn btn-primary btn-lg">Details</a>
+                                            <div class="d-grid mt-3">
+                                                <a href="{{route('detailJob',$featureJob->id)}}"
+                                                   class="btn btn-primary btn-lg">Details</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             @empty
                                 <p>There is no jobs</p>
                             @endforelse
@@ -146,7 +149,8 @@
                                             </div>
 
                                             <div class="d-grid mt-3">
-                                                <a href="{{route('detailJob',$latestJob->id)}}" class="btn btn-primary btn-lg">Details</a>
+                                                <a href="{{route('detailJob',$latestJob->id)}}"
+                                                   class="btn btn-primary btn-lg">Details</a>
                                             </div>
                                         </div>
                                     </div>
@@ -154,6 +158,9 @@
                             @empty
                                 <p>There is no jobs</p>
                             @endforelse
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            {{$latestJobs->links()}}
                         </div>
                     </div>
                 </div>

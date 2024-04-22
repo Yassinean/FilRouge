@@ -43,16 +43,17 @@
                                     {{--@dd($jobApplications);--}}
                                     @forelse($users as $user)
                                         <tr class="active">
-                                             <td>{{$user->name}}</td>
+                                            <td>{{$user->name}}</td>
                                             <td>
                                                 <div class="job-name fw-500">{{$user->role}}</div>
                                             </td>
-                                             <td>{{$user->email}}</td>
+                                            <td>{{$user->email}}</td>
                                             <td>
                                                 <form action="{{route('dash.statusUser',$user->id)}}" method="post">
                                                     @csrf
                                                     @method('PUT')
-                                                    <button type="submit" class="btn btn-sm {{ $user->status ? 'btn-success' : 'btn-danger' }}">
+                                                    <button type="submit"
+                                                            class="btn btn-sm {{ $user->status ? 'btn-success' : 'btn-danger' }}">
                                                         {{ $user->status ? 'Unblocked' : 'Blocked' }}
                                                     </button>
                                                 </form>
@@ -65,6 +66,9 @@
                                     </tbody>
 
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                {{$users->links()}}
                             </div>
                         </div>
                     </div>

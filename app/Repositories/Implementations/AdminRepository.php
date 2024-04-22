@@ -4,9 +4,9 @@ namespace App\Repositories\Implementations;
 
 use App\Models\Job;
 use App\Models\User;
-use App\Repositories\Interfaces\JobsInterface;
+use App\Repositories\Interfaces\AdminInterface;
 
-class JobsRepository implements JobsInterface
+class AdminRepository implements AdminInterface
 {
     public function all()
     {

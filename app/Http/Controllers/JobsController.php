@@ -127,7 +127,7 @@ class JobsController extends Controller
 
     public function getJob()
     {
-        $jobs = Job::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
+        $jobs = Job::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('front.account.job.job', compact('jobs'));
     }
 

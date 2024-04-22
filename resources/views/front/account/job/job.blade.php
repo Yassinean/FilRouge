@@ -67,7 +67,8 @@
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
-                                                            <a class="dropdown-item" href="{{ route('detailJob', $job->id) }}"> <i
+                                                            <a class="dropdown-item"
+                                                               href="{{ route('detailJob', $job->id) }}"> <i
                                                                     class="fa fa-eye" aria-hidden="true"></i> View</a>
                                                         </li>
                                                         <li>
@@ -76,10 +77,13 @@
                                                                     class="fa fa-edit" aria-hidden="true"></i>Edit</a>
                                                         </li>
                                                         <li>
-                                                            <form action="{{route('jobs.destroy',$job->id)}}" method="post">
+                                                            <form action="{{route('jobs.destroy',$job->id)}}"
+                                                                  method="post">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="dropdown-item"><i class="fa fa-trash" aria-hidden="true"></i>Remove</button>
+                                                                <button type="submit" class="dropdown-item"><i
+                                                                        class="fa fa-trash" aria-hidden="true"></i>Remove
+                                                                </button>
                                                             </form>
                                                         </li>
                                                     </ul>
@@ -92,6 +96,9 @@
                                     </tbody>
 
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                {{$jobs->links()}}
                             </div>
                         </div>
                     </div>
