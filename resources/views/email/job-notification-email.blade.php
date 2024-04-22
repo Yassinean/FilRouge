@@ -14,7 +14,6 @@
     <p>Candidate name :  {{ $mailData['user']->name }}</p>
     <p>Candidate email :  {{ $mailData['user']->email }}</p>
     <p>Candidate mobile :  {{ $mailData['user']->mobile }}</p>
-
-
+    @dd($mailData)
 </body>
 </html>

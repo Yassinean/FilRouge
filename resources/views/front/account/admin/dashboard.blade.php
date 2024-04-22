@@ -67,64 +67,6 @@
 
 @section('customJs')
 
-    <script type="text/javascript">
-        $('#userForm').submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '{{ route('account.updateProfile') }}',
-                type: 'put',
-                dataType: 'json',
-                data: $("#userForm").serializeArray(),
-                success: function (response) {
-
-                    if (response.status == true) {
-
-                        $("#name").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback')
-                            .html('')
-
-                        $("#email").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback')
-                            .html('')
-
-                        $('#user_name').html(response.user.name);
-                        $('#message').html(response.message);
-                        // window.location.href = "{{ route('account.profile') }}";
-
-                    } else {
-                        let errors = response.errors;
-
-                        if (errors.name) {
-                            $("#name").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.name)
-                        } else {
-                            $("#name").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-
-                        if (errors.email) {
-                            $("#email").addClass('is-invalid')
-                                .siblings('p')
-                                .addClass('invalid-feedback')
-                                .html(errors.email)
-                        } else {
-                            $("#email").removeClass('is-invalid')
-                                .siblings('p')
-                                .removeClass('invalid-feedback')
-                                .html('')
-                        }
-                    }
-
-                }
-            });
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('userChart').getContext('2d');

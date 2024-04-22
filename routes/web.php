@@ -36,8 +36,8 @@ Route::group(['prefix' => 'account'], function () {
 
         Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
         Route::get('/appliedJob', [EmplyeeController::class, 'appliedJob'])->name('account.appliedJob');
-        Route::get('/myInfos', [EmplyeeController::class, 'myInfo'])->name('account.info');
-        Route::post('/registerProfile', [EmplyeeController::class, 'store'])->name('account.registerData');
+        Route::get('/myInfos', [EmplyeeController::class, 'index'])->name('account.info');
+        Route::put('/registerProfile/{id}', [EmplyeeController::class, 'update'])->name('account.registerData');
         Route::get('/savedJob', [EmplyeeController::class, 'savedJob'])->name('account.savedJob');
         Route::delete('/jobsApp/remove/{jobId}', [EmplyeeController::class, 'removeJob'])->name('account.removeJob');
         Route::delete('/jobsSaved/remove/{jobId}', [EmplyeeController::class, 'removeSavedJob'])->name('account.removeSavedJob');

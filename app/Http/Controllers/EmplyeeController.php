@@ -21,11 +21,8 @@ class EmplyeeController extends Controller
      */
     public function index()
     {
-
-    }
-    public function myInfo()
-    {
-        return view('front.account.employee.employee-info');
+        $employees = Emplyee::where('user_id', Auth::user()->id)->get();
+        return view('front.account.employee.employee-info', compact('employees'));
     }
 
     /**
@@ -42,32 +39,6 @@ class EmplyeeController extends Controller
     public function store(StoreEmplyeeRequest $request)
     {
 
-        $validateData = Validator::make($request->all(), [
-            'education' => 'required',
-            'experience' => 'required',
-            'certification' => 'required',
-            'cv' => 'required',
-        ]);
-
-        if ($validateData->passes()) {
-            $employee = Emplyee::create([
-                'educations' => $request->education,
-                'experiences' => $request->experience,
-                'certifications' => $request->certification,
-                'cv' => $request->cv,
-            ]);
-
-            session()->flash('success', 'You have registered Successfully');
-            return response()->json([
-                'status' => true,
-                'errors' => []
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validateData->errors()
-            ]);
-        }
     }
 
     /**
@@ -89,8 +60,35 @@ class EmplyeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEmplyeeRequest $request, Emplyee $emplyee)
+    public function update(UpdateEmplyeeRequest $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'education' => 'required',
+            'experience' => 'required',
+            'certification' => 'required',
+            'cv' => 'required|image', // Add appropriate file formats for CV
+        ]);
+        $userID = Auth::id();
+        if ($validator->passes()) {
+            $employee = Emplyee::find($id); // Retrieve the specific employee instance
+
+            // Update the attributes of the employee instance
+            $employee->educations = $request->education;
+            $employee->experiences = $request->experience;
+            $employee->certifications = $request->certification;
+            $employee->website = $request->website;
+            $employee->github = $request->github;
+            $employee->twitter = $request->twitter;
+            if ($request->hasFile('cv')) {
+                $cv = $request->file('cv');
+                $cvName = $userID . '-' . time() . '.' . $cv->getClientOriginalExtension();
+                $cv->storeAs('public/cv', $cvName);
+                $employee->cv = $cvName;
+            }
+            $employee->save(); // Save the changes
+
+            return redirect()->back()->with('success', 'Skills updated successfully!');
+        }
     }
 
     /**

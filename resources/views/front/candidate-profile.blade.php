@@ -32,7 +32,6 @@
                                 <div class="mt-3">
                                     <h4>{{$employeeProfile->user->name}}</h4>
                                     <p class="text-secondary mb-1">{{$employeeProfile->user->designation}}</p>
-                                    <p class="text-muted font-size-sm">Localisation</p>
                                 </div>
                             </div>
                         </div>
@@ -127,16 +126,20 @@
                         <div class="col-sm-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <img src="{{ Storage::url('profile_images/' . $employeeProfile->cv) }}" alt="cv">
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">CV</i></h6>
+                                    <img src="{{ Storage::url('cv/' . $employeeProfile->cv) }}" class="w-100" alt="cv">
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">certifications</i>
-                                    </h6>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Educations</i></h6>
+                                    <small>{!! nl2br($employeeProfile->educations) !!}</small>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Certifications</i></h6>
                                     <small>{!! nl2br($employeeProfile->certifications) !!}</small>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Experiences</i></h6>
+                                    <small>{!! nl2br($employeeProfile->experiences) !!}</small>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +149,6 @@
                 </div>
             </div>
 
-        </div>
         </div>
     </section>
 

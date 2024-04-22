@@ -119,7 +119,7 @@ class JobsRepository implements JobsInterface
         } else {
             return response()->json([
                 'status' => false,
-                'errors' => $validator->errors(),
+                'errors' => $validatedData->errors(),
             ]);
         }
     }
