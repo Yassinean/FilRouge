@@ -161,12 +161,12 @@
 @section('customJs')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#createJobForm').submit(function (event) {
+            $('#editJobForm').submit(function (event) {
                 event.preventDefault();
 
                 $.ajax({
-                    url: "{{ route('jobs.store') }}",
-                    type: 'POST',
+                    url: "{{ route('jobs.update',$jobs->id) }}",
+                    type: 'patch',
                     dataType: 'json',
                     data: $(this).serialize(),
                     success: function (response) {

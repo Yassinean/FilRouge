@@ -174,38 +174,30 @@ class JobsRepository implements JobsInterface
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatejobsRequest $request, $id)
+    public function update(UpdateJobsRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [$request]);
+        // Validate the request using the rules defined in the UpdateJobsRequest
+        $validatedData = $request->validated();
 
+        // Create a new Validator instance using the request data and rules
+        $validator = Validator::make($validatedData, $request->rules());
+
+        // Check if validation passes
         if ($validator->passes()) {
-
+            // Find the job by ID
             $jobDetail = Job::find($id);
-            $jobDetail->title = $request->title;
-            $jobDetail->location = $request->location;
-            $jobDetail->vacancy = $request->vacancy;
-            $jobDetail->user_id = Auth::user()->id;
-            $jobDetail->salary = $request->salary;
-            $jobDetail->description = $request->description;
-            $jobDetail->category_job_id = $request->category_id;
-            $jobDetail->type_job_id = $request->jobType;
-            $jobDetail->keywords = $request->keywords;
-            $jobDetail->responsabitilies = $request->responsibility;
-            $jobDetail->qualifications = $request->qualifications;
-            $jobDetail->experiences = $request->experiences;
-            $jobDetail->company_name = $request->company_name;
-            $jobDetail->company_location = $request->company_location;
-            $jobDetail->company_website = $request->company_website;
-            $jobDetail->save();
 
+            // Update the job details using the validated data
+            $jobDetail->update($validatedData);
+
+            // Flash success message and return JSON response
             session()->flash('success', 'Job updated successfully.');
-
             return response()->json([
                 'status' => true,
                 'errors' => []
             ]);
-
         } else {
+            // If validation fails, return JSON response with errors
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
