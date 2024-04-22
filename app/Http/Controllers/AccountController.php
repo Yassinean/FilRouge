@@ -166,7 +166,8 @@ class AccountController extends Controller
             ]);
         }
 
-        if (Hash::check($request->old_password, Auth::user()->password) == false) {
+        // this check function return boolean value , if those parameter are matched it will be returned a true value = 1 , else it returns 0
+        if (!Hash::check($request->old_password, Auth::user()->password)) {
             session()->flash('error', 'Your old password is incorrect.');
             return response()->json([
                 'status' => true
