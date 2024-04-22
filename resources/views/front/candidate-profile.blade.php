@@ -22,9 +22,13 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="{{ Storage::url('profile_images/' . $employeeProfile->user->image) }}"
-                                     alt="Admin"
-                                     class="rounded-circle" width="150">
+                                @if($employeeProfile->user !== null && $employeeProfile->user->image !== null)
+                                    <img src="{{ Storage::url('profile_images/' . $employeeProfile->user->image) }}" alt="3ak"
+                                         class="w-50 rounded-circle">
+                                @else
+                                    <img src="{{ asset('images/avatar7.png')  }}" alt="3ak"
+                                         class="w-50 rounded-circle">
+                                @endif
                                 <div class="mt-3">
                                     <h4>{{$employeeProfile->user->name}}</h4>
                                     <p class="text-secondary mb-1">{{$employeeProfile->user->designation}}</p>

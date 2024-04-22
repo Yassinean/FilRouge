@@ -27,19 +27,26 @@
                                         <div class="card-body">
                                             <!-- Candidate Image -->
                                             <div class="d-flex justify-content-center candidate-image">
-                                                <img src="{{ Storage::url('profile_images/' . $employee->user->image) }}" alt="{{$employee->image}}"
-                                                     class="w-50 rounded-circle">
+                                                @if($employee->user !== null && $employee->user->image !== null)
+                                                    <img
+                                                        src="{{ Storage::url('profile_images/' . $employee->user->image) }}"
+                                                        alt="3ak"
+                                                        class="w-50 rounded-circle">
+                                                @else
+                                                    <img src="{{ asset('images/avatar7.png')  }}" alt="3ak"
+                                                         class="w-50 rounded-circle">
+                                                @endif
                                             </div>
                                             <!-- Candidate Name -->
-                                            <h3 class="border-0 fs-5 pb-2 mt-2 mb-0 text-center">{{$employee->name}}</h3>
+                                            <h3 class="border-0 fs-5 pb-2 mt-2 mb-0 text-center">{{$employee->user->name}}</h3>
                                             <!-- Additional Info -->
                                             <div class="bg-light p-3 border">
                                                 <!-- Candidate Description -->
-                                                <p class="text-start">{{$employee->designation}}</p>
+                                                <p class="text-start">{{$employee->user->designation}}</p>
                                                 <!-- Candidate Location -->
                                                 <p class="mb-0">
                                                     <span class="fw-bolder"><i class="fa fa-mobile"></i></span>
-                                                    <span class="ps-1">{{$employee->mobile}}</span>
+                                                    <span class="ps-1">{{$employee->user->mobile}}</span>
                                                 </p>
                                             </div>
                                             <!-- Button to View Candidate Details -->

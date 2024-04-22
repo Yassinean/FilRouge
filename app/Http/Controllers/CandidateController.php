@@ -10,6 +10,7 @@ class CandidateController extends Controller
     public function index()
     {
         $employees = Emplyee::all();
+        $employees->load('user');
         return view('front.candidates', compact('employees'));
     }
 

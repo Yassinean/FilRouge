@@ -43,6 +43,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::delete('/jobsSaved/remove/{jobId}', [EmplyeeController::class, 'removeSavedJob'])->name('account.removeSavedJob');
         Route::put('/updateProfile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::put('/updateProfilePic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
+        Route::post('/updatePassword', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
 
         /********* end account controller **********/

@@ -92,7 +92,7 @@ class JobsRepository implements JobsInterface
     public function store(StoreJobsRequest $request): \Illuminate\Http\JsonResponse
     {
 
-        $validator = Validator::make($request->all(), [$request]);
+        $validator = Validator::make($request->all(), $request->rules());
         //dd($request);
         if ($validator->passes()) {
             $jobDetail = new Job();
