@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 interface CategoryJobInterface
 {
-    public function index(Request $request);
+    public function index();
 
     public function store(StoreCategoryJobRequest $request);
 
