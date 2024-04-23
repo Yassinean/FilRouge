@@ -11,15 +11,18 @@ class Job extends Model
 
     protected $fillable = [
         'title',
-        'category_id',
-        'jobType',
+        'category_job_id',
+        'type_job_id',
+        'user_id',
         'vacancy',
         'location',
         'description',
-        'company_name',
         'experiences',
         'status',
         'isFeatured',
+        'company_name',
+        'company_location',
+        'company_website',
     ];
 
     public function typeJob()

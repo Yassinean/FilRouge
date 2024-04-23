@@ -59,7 +59,7 @@
                 </li>
             @else
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <a href="{{route('dash.category')}}">Gestion des categories</a>
+                    <a href="{{route('category-jobs.index')}}">Gestion des categories</a>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                     <a href="{{route('dash.type')}}">Gestion des types de job</a>

@@ -27,9 +27,15 @@ class UpdatejobsRequest extends FormRequest
             'jobType' => 'required',
             'vacancy' => 'required',
             'location' => 'required|max:70',
-            'description' => 'required',
+            'description' => 'required:',
             'company_name' => 'required|min:3|max:50',
             'experiences' => 'required',
+            "salary" => "sometimes",
+            "keywords" => "sometimes",
+            "responsibility" => "sometimes",
+            "qualifications" => "sometimes",
+            "company_location" => "sometimes",
+            "company_website" => "sometimes"
         ];
     }
 }

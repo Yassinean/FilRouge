@@ -16,6 +16,7 @@ use App\Models\TypeJob;
 use App\Http\Requests\UpdatejobsRequest;
 use App\Mail\JobNotificationEmail;
 use App\Repositories\Interfaces\JobsInterface;
+use Mockery\Exception;
 
 
 class JobsRepository implements JobsInterface
@@ -88,12 +89,10 @@ class JobsRepository implements JobsInterface
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreJobsRequest $request): \Illuminate\Http\JsonResponse
+    public function store(array $validatedData): \Illuminate\Http\JsonResponse
     {
 
-        $validatedData = $request->validated();
-        //dd($request);
-        if ($validatedData->passes()) {
+        try {
             $jobDetail = Job::create([
                 'title' => $validatedData['title'],
                 'location' => $validatedData['location'],
@@ -110,13 +109,14 @@ class JobsRepository implements JobsInterface
                 'company_name' => $validatedData['company_name'],
                 'company_location' => $validatedData['company_location'],
                 'company_website' => $validatedData['company_website'],
+
             ]);
             session()->flash('success', 'Job added successfully!');
             return response()->json([
                 'status' => true,
                 'message' => 'Job details stored successfully',
             ]);
-        } else {
+        } catch (Exception) {
             return response()->json([
                 'status' => false,
                 'errors' => $validatedData->errors(),
@@ -124,216 +124,217 @@ class JobsRepository implements JobsInterface
         }
     }
 
-    public function getJob()
-    {
-        $jobs = Job::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
-        return view('front.account.job.job', compact('jobs'));
+public function getJob()
+{
+    $jobs = Job::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
+    return view('front.account.job.job', compact('jobs'));
+}
+
+/**
+ * Display the specified resource.
+ */
+public function show($id)
+{
+    $job = Job::where([
+        'id' => $id,
+        'status' => 1
+    ])->with(['typeJob', 'categoryJob'])->first();
+
+    if ($job == null) {
+        abort(404);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $job = Job::where([
-            'id' => $id,
-            'status' => 1
-        ])->with(['typeJob', 'categoryJob'])->first();
+    // fetching applicant that apply in the job
+    $jobApplicants = JobApplication::where('job_id', $id)->get();
 
-        if ($job == null) {
-            abort(404);
-        }
+    //dd($jobApplicants);
 
-        // fetching applicant that apply in the job
-        $jobApplicants = JobApplication::where('job_id', $id)->get();
+    return view('front.detail', compact('job', 'jobApplicants'));
+}
 
-        //dd($jobApplicants);
+/**
+ * Show the form for editing the specified resource.
+ */
+public function edit($id)
+{
+    $categories = CategoryJob::orderBy('name', 'ASC')->where('status', 1)->get();
+    $types = TypeJob::orderBy('name', 'ASC')->where('status', 1)->get();
 
-        return view('front.detail', compact('job', 'jobApplicants'));
+    $jobs = Job::where([
+        'user_id' => Auth::user()->id,
+        'id' => $id
+    ])->first();
+    if ($jobs == null) {
+        abort(404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $categories = CategoryJob::orderBy('name', 'ASC')->where('status', 1)->get();
-        $types = TypeJob::orderBy('name', 'ASC')->where('status', 1)->get();
+    return view('front.account.job.edit', compact('categories', 'types', 'jobs'));
+}
 
-        $jobs = Job::where([
-            'user_id' => Auth::user()->id,
-            'id' => $id
-        ])->first();
-        if ($jobs == null) {
-            abort(404);
-        }
+/**
+ * Update the specified resource in storage.
+ */
+public function update(UpdateJobsRequest $request, $id)
+{
+    // Validate the request using the rules defined in the UpdateJobsRequest
+    $validatedData = $request->validated();
 
-        return view('front.account.job.edit', compact('categories', 'types', 'jobs'));
-    }
+    // Create a new Validator instance using the request data and rules
+    $validator = Validator::make($validatedData, $request->rules());
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateJobsRequest $request, $id)
-    {
-        // Validate the request using the rules defined in the UpdateJobsRequest
-        $validatedData = $request->validated();
+    // Check if validation passes
+    if ($validator->passes()) {
+        // Find the job by ID
+        $jobDetail = Job::find($id);
 
-        // Create a new Validator instance using the request data and rules
-        $validator = Validator::make($validatedData, $request->rules());
+        // Update the job details using the validated data
+        $jobDetail->update($validatedData);
 
-        // Check if validation passes
-        if ($validator->passes()) {
-            // Find the job by ID
-            $jobDetail = Job::find($id);
-
-            // Update the job details using the validated data
-            $jobDetail->update($validatedData);
-
-            // Flash success message and return JSON response
-            session()->flash('success', 'Job updated successfully.');
-            return response()->json([
-                'status' => true,
-                'errors' => []
-            ]);
-        } else {
-            // If validation fails, return JSON response with errors
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
-    }
-
-    public function destroy($id)
-    {
-
-        $job = Job::where('id', $id)
-            ->where('user_id', Auth::user()->id)
-            ->first();
-
-        if (!$job) {
-            session()->flash('error', 'Either job was deleted or not found.');
-            return redirect()->back();
-        }
-
-        $job->delete();
-        session()->flash('success', 'Job deleted successfully.');
-        return redirect()->back();
-
-    }
-
-    public function applyJob(Request $request)
-    {
-        $id = $request->id;
-
-        $job = Job::where('id', $id)->first();
-
-        // If job not found in db
-        if ($job == null) {
-            $message = 'Job does not exist.';
-            session()->flash('error', $message);
-            return response()->json([
-                'status' => false,
-                'message' => $message
-            ]);
-        }
-
-        // you can not apply on your own job
-        $employer_id = $job->user_id;
-
-        if ($employer_id == Auth::user()->id) {
-            $message = 'You can not apply on your own job.';
-            session()->flash('error', $message);
-            return response()->json([
-                'status' => false,
-                'message' => $message
-            ]);
-        }
-
-        // You can not apply on a job twise
-        $jobApplicationCount = JobApplication::where([
-            'user_id' => Auth::user()->id,
-            'job_id' => $id
-        ])->count();
-
-        if ($jobApplicationCount > 0) {
-            $message = 'You already applied on this job.';
-            session()->flash('error', $message);
-            return response()->json([
-                'status' => false,
-                'message' => $message
-            ]);
-        }
-
-        $application = new JobApplication();
-        $application->job_id = $id;
-        $application->user_id = Auth::user()->id;
-        $application->employer_id = $employer_id;
-        $application->applied_date = now();
-        $application->save();
-
-
-        // Send Notification Email to Employer
-        $employer = User::where('id', $employer_id)->first();
-
-        $mailData = [
-            'employer' => $employer,
-            'user' => Auth::user(),
-            'job' => $job,
-        ];
-
-        Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
-
-        $message = 'You have successfully applied.';
-
-        session()->flash('success', $message);
-
+        // Flash success message and return JSON response
+        session()->flash('success', 'Job updated successfully.');
         return response()->json([
             'status' => true,
+            'errors' => []
+        ]);
+    } else {
+        // If validation fails, return JSON response with errors
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ]);
+    }
+}
+
+public function destroy($id)
+{
+
+    $job = Job::where('id', $id)
+        ->where('user_id', Auth::user()->id)
+        ->first();
+
+    if (!$job) {
+        session()->flash('error', 'Either job was deleted or not found.');
+        return redirect()->back();
+    }
+
+    $job->delete();
+    session()->flash('success', 'Job deleted successfully.');
+    return redirect()->back();
+
+}
+
+public function applyJob(Request $request)
+{
+    $id = $request->id;
+
+    $job = Job::where('id', $id)->first();
+
+    // If job not found in db
+    if ($job == null) {
+        $message = 'Job does not exist.';
+        session()->flash('error', $message);
+        return response()->json([
+            'status' => false,
             'message' => $message
         ]);
     }
 
-    public function saveJob(Request $request)
-    {
-        $id = $request->id;
-        $job = Job::find($id);
-        if (Auth::user()->role == 'admin') {
-            session()->flash('error', 'You are not allowed to save jobs');
-            return response()->json([
-                'status' => false
-            ]);
-        }
-        if ($job == null) {
-            session()->flash('error', 'Job not Found');
-            return response()->json([
-                'status' => false,
-            ]);
-        }
-        // check if user already saved job
-        $countSavedJob = SavedJob::where([
-            'user_id' => Auth::user()->id,
-            'job_id' => $id,
-        ])->count();
+    // you can not apply on your own job
+    $employer_id = $job->user_id;
 
-        if ($countSavedJob > 0) {
-            $message = 'You are already save this job';
-            session()->flash('error', $message);
-            return response()->json([
-                'status' => false,
-                'message' => $message,
-            ]);
-        }
-        $savedJob = new SavedJob();
-        $savedJob->job_id = $id;
-        $savedJob->user_id = Auth::user()->id;
-        $savedJob->save();
-        $message = 'You are saved this job successfully !';
-        session()->flash('success', $message);
+    if ($employer_id == Auth::user()->id) {
+        $message = 'You can not apply on your own job.';
+        session()->flash('error', $message);
         return response()->json([
-            'status' => true,
+            'status' => false,
+            'message' => $message
+        ]);
+    }
+
+    // You can not apply on a job twise
+    $jobApplicationCount = JobApplication::where([
+        'user_id' => Auth::user()->id,
+        'job_id' => $id
+    ])->count();
+
+    if ($jobApplicationCount > 0) {
+        $message = 'You already applied on this job.';
+        session()->flash('error', $message);
+        return response()->json([
+            'status' => false,
+            'message' => $message
+        ]);
+    }
+
+    $application = new JobApplication();
+    $application->job_id = $id;
+    $application->user_id = Auth::user()->id;
+    $application->employer_id = $employer_id;
+    $application->applied_date = now();
+    $application->save();
+
+
+    // Send Notification Email to Employer
+    $employer = User::where('id', $employer_id)->first();
+
+    $mailData = [
+        'employer' => $employer,
+        'user' => Auth::user(),
+        'job' => $job,
+    ];
+
+    Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
+
+    $message = 'You have successfully applied.';
+
+    session()->flash('success', $message);
+
+    return response()->json([
+        'status' => true,
+        'message' => $message
+    ]);
+}
+
+public
+function saveJob(Request $request)
+{
+    $id = $request->id;
+    $job = Job::find($id);
+    if (Auth::user()->role == 'admin') {
+        session()->flash('error', 'You are not allowed to save jobs');
+        return response()->json([
+            'status' => false
+        ]);
+    }
+    if ($job == null) {
+        session()->flash('error', 'Job not Found');
+        return response()->json([
+            'status' => false,
+        ]);
+    }
+    // check if user already saved job
+    $countSavedJob = SavedJob::where([
+        'user_id' => Auth::user()->id,
+        'job_id' => $id,
+    ])->count();
+
+    if ($countSavedJob > 0) {
+        $message = 'You are already save this job';
+        session()->flash('error', $message);
+        return response()->json([
+            'status' => false,
             'message' => $message,
         ]);
     }
+    $savedJob = new SavedJob();
+    $savedJob->job_id = $id;
+    $savedJob->user_id = Auth::user()->id;
+    $savedJob->save();
+    $message = 'You are saved this job successfully !';
+    session()->flash('success', $message);
+    return response()->json([
+        'status' => true,
+        'message' => $message,
+    ]);
+}
 }

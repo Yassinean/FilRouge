@@ -28,9 +28,9 @@ class JobService implements JobsServiceInterface
         return $this->repository->create();
     }
 
-    public function store(User $user)
+    public function store(array $jobData)
     {
-        return $this->repository->store();
+        return $this->repository->store($jobData);
     }
 
     public function getJob()
@@ -48,7 +48,7 @@ class JobService implements JobsServiceInterface
         return $this->repository->edit($id);
     }
 
-    public function update(UpdatejobsRequest $request, $id)
+    public function update(UpdateJobsRequest $request, $id)
     {
         return $this->repository->update($request,$id);
     }

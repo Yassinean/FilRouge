@@ -13,12 +13,12 @@ interface JobsServiceInterface
 
     public function create();
 
-    public function store(User $user);
+    public function store(array $jobData);
 
     public function getJob();
     public function show($id);
     public function edit($id);
-    public function update(UpdatejobsRequest $request, $id);
+    public function update(UpdateJobsRequest $request, $id);
     public function destroy($id);
     public function applyJob(Request $request);
     public function saveJob(Request $request);
