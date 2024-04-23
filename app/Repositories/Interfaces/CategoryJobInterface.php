@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Repositories\Interfaces;
+
+use App\Http\Requests\StoreCategoryJobRequest;
+
+use App\Models\Job;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+interface CategoryJobInterface
+{
+    public function index(Request $request);
+
+    public function store(StoreCategoryJobRequest $request);
+
+    public function edit($id);
+    public function update(UpdatejobsRequest $request, $id);
+    public function destroy($id);
+    public function applyJob(Request $request);
+    public function saveJob(Request $request);
+
+}

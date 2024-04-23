@@ -82,7 +82,7 @@ Route::group(['prefix' => 'account'], function () {
         /************ end admin controller **********/
 
 
-        Route::get('/categories', [CategoryJobController::class, 'displayCategory'])->name('dash.category');
+        //Route::get('/categories', [CategoryJobController::class, 'index'])->name('dash.category');
         Route::get('/jobTypes', [TypeJobController::class, 'displayTypes'])->name('dash.type');
 
        // Route::post('/edit-category', [CategoryJobController::class, 'edit'])->name('account.editCategoy');

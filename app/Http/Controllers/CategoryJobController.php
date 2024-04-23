@@ -15,7 +15,7 @@ class CategoryJobController extends Controller
      */
 
     // index >>
-    public function displayCategory()
+    public function index()
     {
         $categories = CategoryJob::where('status', 1)->get();
         return view('front.account.admin.job-category', compact('categories'));
