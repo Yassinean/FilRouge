@@ -3,52 +3,42 @@
 namespace App\Services\Implementations;
 
 
+use App\Http\Requests\StoreCategoryJobRequest;
+use App\Http\Requests\UpdateCategoryJobRequest;
 use App\Http\Requests\UpdatejobsRequest;
+use App\Models\Admin;
 use App\Models\Job;
 use App\Models\User;
-use App\Repositories\Interfaces\JobsInterface;
-use App\Services\Interfaces\JobsServiceInterface;
+use App\Repositories\Interfaces\CategoryJobInterface;
+use App\Services\Interfaces\CategoryJobServiceInterface;
 use Illuminate\Http\Request;
 
-class CategoryJobService implements JobsServiceInterface
+class CategoryJobService implements CategoryJobServiceInterface
 {
 
-    public function __construct(protected JobsInterface $repository)
+    public function __construct(protected CategoryJobInterface $repository)
     {
 
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        return $this->repository->index($request);
+        return $this->repository->index();
     }
 
-    public function create()
+
+    public function store(StoreCategoryJobRequest $request)
     {
-        return $this->repository->create();
+        return $this->repository->store($request);
     }
 
-    public function store(User $user)
-    {
-        return $this->repository->store();
-    }
-
-    public function getJob()
-    {
-        return $this->repository->getJob();
-    }
-
-    public function show($id)
-    {
-        return $this->repository->show($id);
-    }
 
     public function edit($id)
     {
         return $this->repository->edit($id);
     }
 
-    public function update(UpdatejobsRequest $request, $id)
+    public function update(UpdateCategoryJobRequest $request, $id)
     {
         return $this->repository->update($request,$id);
     }
@@ -58,13 +48,4 @@ class CategoryJobService implements JobsServiceInterface
         return $this->repository->destroy($id);
     }
 
-    public function applyJob(Request $request)
-    {
-        return $this->repository->applyJob($request);
-    }
-
-    public function saveJob(Request $request)
-    {
-        return $this->repository->saveJob($request);
-    }
 }
