@@ -19,27 +19,27 @@ class CategoryJobController extends Controller
     // index >>
     public function index()
     {
-        $this->service->index();
+        return $this->service->index();
     }
 
     public function store(StoreCategoryJobRequest $request)
     {
-        $this->service->store($request);
+        return $this->service->store($request);
     }
 
     public function edit($id)
     {
-        $this->service->edit();
+        return $this->service->edit();
     }
 
     public function update(UpdateCategoryJobRequest $request, $id)
     {
-        $this->service->update($request,$id);
+        return $this->service->update($request,$id);
     }
 
     public function destroy($id)
     {
-        $this->service->destroy($id);
+        return $this->service->destroy($id);
     }
 
 }

@@ -75,7 +75,7 @@ Route::group(['prefix' => 'account'], function () {
 
         Route::get('/dashboard', [AdminController::class, 'create'])->name('dash.dashboard');
         Route::put('/updateStatusJob/{job}', [AdminController::class, 'updateStatus'])->name('dash.statusJob');
-        Route::put('/updateStatusUser/{user}', [AdminController::class, 'updateStatusUser'])->name('dash.statusUser');
+        Route::patch('/updateStatusUser/{user}', [AdminController::class, 'updateStatusUser'])->name('dash.statusUser');
         Route::put('/updateFeatureJob/{job}', [AdminController::class, 'updateStatusFeaturedJob'])->name('dash.statusFeaturedJob');
         Route::get('/jobsUpdateStatus', [AdminController::class, 'all'])->name('dash.allJobs');
         Route::get('/users', [AdminController::class, 'users'])->name('dash.users');

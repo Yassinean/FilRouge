@@ -62,7 +62,7 @@
                                                value="{{$employee->twitter}}">
                                     </div>
                                     <div class="mb-4">
-                                        <label for="mobile" class="mb-2">CV</label>
+                                        <label for="mobile" class="mb-2">CV (should be an image)</label>
                                         <input type="file" name="cv" id="cv" class="form-control">
                                     </div>
                                     <div class="card-footer p-4">

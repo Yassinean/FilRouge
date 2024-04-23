@@ -131,12 +131,13 @@
                                 @empty
                                     <p>There is no jobs</p>
                                 @endforelse
-
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                {{$jobs->links()}}
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>

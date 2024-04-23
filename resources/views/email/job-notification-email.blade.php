@@ -1,19 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Notification Email</title>
 </head>
 <body>
     <h1>Hello {{ $mailData['employer']->name }}</h1>
-    <p>Job title :  {{ $mailData['job']->title }}</p>
+    <p>Job Title: {{ $mailData['job']->title }}</p>
     <h3>Candidate Details</h3>
-    <p>Candidate name :  {{ $mailData['user']->name }}</p>
-    <p>Candidate email :  {{ $mailData['user']->email }}</p>
-    <p>Candidate mobile :  {{ $mailData['user']->mobile }}</p>
-    @dd($mailData)
+    <p>Candidate name: {{ $mailData['candidate']->name }}</p>
+    <p>Candidate email: {{ $mailData['candidate']->email }}</p>
+    <p>Candidate mobile: {{ $mailData['candidate']->mobile }}</p>
+    <p>Experiences: {{ $mailData['candidate']->employee->experiences }}</p>
+    <p>Certifications: {{ $mailData['candidate']->employee->certifications }}</p>
 </body>
 </html>
