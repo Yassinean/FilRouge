@@ -186,6 +186,16 @@ class AccountController extends Controller
 
     }
 
+    public function forgetPassword(){
+        return view('front.account.forget-password');
+    }
+
+    public function processForgetPassword(Request $request){
+        Validator::make($request->all(),[
+            'email' => 'required|email|exist:users,email'
+        ]);
+    }
+
     public function logout()
     {
         Auth::logout();

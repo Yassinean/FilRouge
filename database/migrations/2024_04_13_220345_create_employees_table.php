@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('emplyees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->longText('educations')->nullable();
             $table->longText('certifications')->nullable();
             $table->longText('experiences')->nullable();
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('github')->nullable();
             $table->string('twitter')->nullable();
             $table->string('cv');
+            $table->boolean('reported')->default(false);
             $table->timestamps();
         });
     }

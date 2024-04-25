@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\CandidateController;
 use \App\Http\Controllers\TypeJobController;
+use \App\Http\Controllers\EmplyerController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/register', [AccountController::class, 'register'])->name('account.register');
         Route::post('/process-registration', [AccountController::class, 'processRegistration'])->name('account.processRegistration');
         Route::get('/login', [AccountController::class, 'login'])->name('account.login');
+        Route::get('/forgetPassword', [AccountController::class, 'forgetPassword'])->name('account.forgetPassword');
     });
 
     // this section for user who authenticated
@@ -35,15 +37,16 @@ Route::group(['prefix' => 'account'], function () {
         /********** Account Controller ***********/
 
         Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
+        Route::put('/updateProfile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
+        Route::put('/updateProfilePic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
+        Route::post('/updatePassword', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
         Route::get('/appliedJob', [EmplyeeController::class, 'appliedJob'])->name('account.appliedJob');
         Route::get('/myInfos', [EmplyeeController::class, 'index'])->name('account.info');
         Route::put('/registerProfile/{id}', [EmplyeeController::class, 'update'])->name('account.registerData');
         Route::get('/savedJob', [EmplyeeController::class, 'savedJob'])->name('account.savedJob');
         Route::delete('/jobsApp/remove/{jobId}', [EmplyeeController::class, 'removeJob'])->name('account.removeJob');
         Route::delete('/jobsSaved/remove/{jobId}', [EmplyeeController::class, 'removeSavedJob'])->name('account.removeSavedJob');
-        Route::put('/updateProfile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-        Route::put('/updateProfilePic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
-        Route::post('/updatePassword', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
+        Route::put('/reportEmployee', [EmplyerController::class, 'reportEmployee'])->name('account.reportEmployee');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
 
         /********* end account controller **********/
@@ -75,7 +78,7 @@ Route::group(['prefix' => 'account'], function () {
 
         Route::get('/dashboard', [AdminController::class, 'create'])->name('dash.dashboard');
         Route::put('/updateStatusJob/{job}', [AdminController::class, 'updateStatus'])->name('dash.statusJob');
-        Route::patch('/updateStatusUser/{user}', [AdminController::class, 'updateStatusUser'])->name('dash.statusUser');
+        Route::put('/updateStatusUser/{user}', [AdminController::class, 'updateStatusUser'])->name('dash.statusUser');
         Route::put('/updateFeatureJob/{job}', [AdminController::class, 'updateStatusFeaturedJob'])->name('dash.statusFeaturedJob');
         Route::get('/jobsUpdateStatus', [AdminController::class, 'all'])->name('dash.allJobs');
         Route::get('/users', [AdminController::class, 'users'])->name('dash.users');

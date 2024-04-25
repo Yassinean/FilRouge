@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAdminRequest;
-use App\Http\Requests\StoreCategoryJobRequest;
-use App\Http\Requests\StoreTypeJobRequest;
-use App\Http\Requests\UpdateAdminRequest;
-use App\Http\Requests\UpdateCategoryJobRequest;
-use App\Http\Requests\UpdateTypeJobRequest;
+
 use App\Models\Admin;
 use App\Models\CategoryJob;
 use App\Models\Emplyee;
@@ -63,19 +58,19 @@ AdminController extends Controller
     public function updateStatus(Job $job)
     {
         $this->service->updateStatus($job);
-        return redirect()->back();
+        return response()->json($job);
     }
 
     public function updateStatusUser(User $user)
     {
-        $this->service->updateStatusUser($user);
-        return redirect()->back();
+      $this->service->updateStatusUser($user);
+        return response()->json($user);
     }
 
     public function updateStatusFeaturedJob(Job $job)
     {
         $this->service->updateStatusFeaturedJob($job);
-        return redirect()->back();
+        return response()->json($job);
     }
 
 }

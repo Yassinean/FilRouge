@@ -50,27 +50,14 @@
                                                 <td>{{\Carbon\Carbon::parse($job->applied_date)->format('d M,Y')}}</td>
                                                 <td>{{$job->applications->count()}}</td>
                                                 <td>
-                                                    <form action="{{route('dash.statusJob',$job->id)}}" method="post">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit"
-                                                                class="btn btn-sm {{ $job->status ? 'btn-success' : 'btn-warning' }}">
-                                                            {{ $job->status ? 'Published' : 'Pending' }}
-                                                        </button>
-                                                    </form>
+                                                    <button data-bs-target="{{$job->id}}" class="btn btn-sm changeStatus {{ $job->status ? 'btn-success' : 'btn-warning' }}">
+                                                        {{ $job->status ? 'Published' : 'Pending' }}
+                                                    </button>
                                                 </td>
                                                 <td>
-                                                    <form action="{{route('dash.statusFeaturedJob',$job->id)}}"
-                                                          method="post">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit"
-                                                                class="btn btn-sm {{ $job->isFeatured ? 'btn-success' : 'btn-danger' }}">
-                                                            {{ $job->isFeatured ? 'Featured' : 'Not Featured' }}
-                                                        </button>
-                                                    </form>
-
-                                                    {{--<a class="dropdown-item" href="{{route('account.removeSavedJob',$job->job_id)}}"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>--}}
+                                                    <button data-bs-target="{{$job->id}}" class="btn btn-sm changeFeaturedStatus {{ $job->isFeatured ? 'btn-success' : 'btn-danger' }}">
+                                                        {{ $job->isFeatured ? 'Featured' : 'Not Featured' }}
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty
@@ -92,5 +79,58 @@
     @endsection
 
     @section('customJs')
+    <script>
+        $(".changeStatus").click(function (e) {
+            e.preventDefault();
+            var button = $(this);
+            var jobId = button.data('bs-target');
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                url: '/account/updateStatusJob/' + jobId,
+                type: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status) {
+                        button.removeClass('btn-warning').addClass('btn-success').html('Published');
+                    } else {
+                        button.removeClass('btn-success').addClass('btn-warning').html('Pending');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+        $(".changeFeaturedStatus").click(function (e) {
+            e.preventDefault();
+            var button = $(this);
+            var jobId = button.data('bs-target');
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                url: '/account/updateFeatureJob/' + jobId,
+                type: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.isFeatured) {
+                        button.removeClass('btn-danger').addClass('btn-success').html('Featured');
+                    } else {
+                        button.removeClass('btn-success').addClass('btn-danger').html('Not Featured');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+
+    </script>
 
     @endsection

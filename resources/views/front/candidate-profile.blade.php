@@ -23,7 +23,8 @@
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
                                 @if($employeeProfile->user !== null && $employeeProfile->user->image !== null)
-                                    <img src="{{ Storage::url('profile_images/' . $employeeProfile->user->image) }}" alt="3ak"
+                                    <img src="{{ Storage::url('profile_images/' . $employeeProfile->user->image) }}"
+                                         alt="3ak"
                                          class="w-50 rounded-circle">
                                 @else
                                     <img src="{{ asset('images/avatar7.png')  }}" alt="3ak"
@@ -71,21 +72,21 @@
                                 </li>
                             @endif
                             @if(!empty($employeeProfile->twitter))
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <h6 class="mb-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24"
-                                                 fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round"
-                                                 stroke-linejoin="round"
-                                                 class="feather feather-twitter mr-2 icon-inline text-info">
-                                                <path
-                                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                                            </svg>
-                                            Twitter
-                                        </h6>
-                                        <span class="text-secondary">{{$employeeProfile->twitter}}</span>
-                                    </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <h6 class="mb-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class="feather feather-twitter mr-2 icon-inline text-info">
+                                            <path
+                                                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                                        </svg>
+                                        Twitter
+                                    </h6>
+                                    <span class="text-secondary">{{$employeeProfile->twitter}}</span>
+                                </li>
                             @endif
                         </ul>
                     </div>
@@ -97,9 +98,29 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Full Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">
+                                <div class="col-sm-6 text-secondary">
                                     {{$employeeProfile->user->name}}
                                 </div>
+
+                                @if(Auth::user()->role == 'employer')
+                                    <div class="col-sm-3">
+                                        <form action="{{route('account.reportEmployee',$employeeProfile->id)}}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28"
+                                                     height="28" color="#000000" fill="none">
+                                                    <path
+                                                        d="M15.8785 3L10.2827 3C7.32099 3 5.84015 3 4.92007 3.87868C4 4.75736 4 6.17157 4 9L4.10619 15L15.8785 15C18.1016 15 19.2131 15 19.6847 14.4255C19.8152 14.2666 19.9108 14.0841 19.9656 13.889C20.1639 13.184 19.497 12.3348 18.1631 10.6364L18.1631 10.6364C17.6083 9.92985 17.3309 9.57659 17.2814 9.1751C17.2671 9.05877 17.2671 8.94123 17.2814 8.8249C17.3309 8.42341 17.6083 8.07015 18.1631 7.36364L18.1631 7.36364C19.497 5.66521 20.1639 4.816 19.9656 4.11098C19.9108 3.91591 19.8152 3.73342 19.6847 3.57447C19.2131 3 18.1016 3 15.8785 3L15.8785 3Z"
+                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round"/>
+                                                    <path d="M4 21L4 8" stroke="currentColor" stroke-width="1.5"
+                                                          stroke-linecap="round"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
                             </div>
                             <hr>
                             <div class="row">
@@ -126,7 +147,8 @@
                         <div class="col-sm-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">CV</i></h6>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">CV</i>
+                                    </h6>
                                     <img src="{{ Storage::url('cv/' . $employeeProfile->cv) }}" class="w-100" alt="cv">
                                 </div>
                             </div>
@@ -134,11 +156,14 @@
                         <div class="col-sm-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Educations</i></h6>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Educations</i>
+                                    </h6>
                                     <small>{!! nl2br($employeeProfile->educations) !!}</small>
-                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Certifications</i></h6>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Certifications</i>
+                                    </h6>
                                     <small>{!! nl2br($employeeProfile->certifications) !!}</small>
-                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Experiences</i></h6>
+                                    <h6 class="d-flex align-items-center mt-3"><i class="material-icons text-info mr-2">Experiences</i>
+                                    </h6>
                                     <small>{!! nl2br($employeeProfile->experiences) !!}</small>
                                 </div>
                             </div>
@@ -155,50 +180,5 @@
 @endsection
 
 @section('customJs')
-    <script>
-        function applyJob(id) {
-            if (confirm('Are you sure you want to apply on this job ?')) {
-                let token = '{{ csrf_token() }}';
-                $.ajax({
-                    // Set the CSRF token in the request headers
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                    },
-                    url: '{{route('account.applyJob')}}',
-                    type: 'post',
-                    data: {id: id},
-                    dataType: 'json',
-                    success: function (response) {
-                        window.location.href = '{{url()->current()}}';
-                    }
-                })
-            }
-        }
 
-        function saveJob(id) {
-            let token = '{{ csrf_token() }}';
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                url: '{{ route('account.saveJob') }}',
-                type: 'post',
-                data: {id: id},
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status) {
-                        alert(response.message); // Display success message
-                        // Refresh the page after successfully saving the job
-                    } else {
-                        alert(response.message); // Display error message
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('An error occurred while processing your request. Please try again later.');
-                }
-            });
-        }
-
-    </script>
 @endsection

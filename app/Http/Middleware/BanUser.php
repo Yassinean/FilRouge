@@ -17,7 +17,7 @@ class BanUser
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(Auth::user()->status == 0)
+        if(Auth::user()->status == 1)
         {
             Auth::logout();
             abort('403','your banned');

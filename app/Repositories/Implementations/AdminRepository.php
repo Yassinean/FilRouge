@@ -15,14 +15,14 @@ class AdminRepository implements AdminInterface
 
     public function updateStatus(Job $job)
     {
-        $job->update(['status' => !$job->status]);
-        return redirect()->back()->with('success', 'Job status modified successfully');
+       $job->update(['status' => !$job->status]);
+        return response()->json(["job"=>$job] , 200);
     }
 
     public function updateStatusUser(User $user)
     {
         $user->update(['status' => !$user->status]);
-        return redirect()->back()->with('success', 'User status modified successfully');
+        return response()->json(['status' => $user->status],200);
     }
     public function updateStatusFeaturedJob(Job $job)
     {
