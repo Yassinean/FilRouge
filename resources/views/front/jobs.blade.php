@@ -99,7 +99,7 @@
                                                         <span class="ps-1">{{$job->typeJob->name}}</span>
                                                     </p>
                                                     <p class="mb-0">
-                                                        <span class="fw-bolder"><i class="fa fa-tag"></i></span>
+                                                        <span class="fw-bolder"><i class="fa fa-folder"></i></span>
                                                         <span class="ps-1">{{ $job->categoryJob->name}}</span>
                                                     </p>
                                                     @if(!is_null($job->salary))
@@ -117,7 +117,7 @@
                                                         @endif
                                                     </p>
                                                     <p class="mb-0">
-                                                        <span class=""><i class="fa fa-hashtag"></i></span>
+                                                        <span class=""><i class="fa fa-tag"></i></span>
                                                         <span class="ps-1">{{$job->keywords}}</span>
                                                     </p>
                                                 </div>
