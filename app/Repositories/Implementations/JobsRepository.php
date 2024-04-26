@@ -81,7 +81,6 @@ class JobsRepository implements JobsInterface
      */
     public function store(array $validatedData): \Illuminate\Http\JsonResponse
     {
-
         try {
             $jobDetail = Job::create([
                 'title' => $validatedData['title'],
@@ -99,8 +98,8 @@ class JobsRepository implements JobsInterface
                 'company_name' => $validatedData['company_name'],
                 'company_location' => $validatedData['company_location'],
                 'company_website' => $validatedData['company_website'],
-
             ]);
+
             session()->flash('success', 'Job added successfully!');
             return response()->json([
                 'status' => true,
@@ -150,7 +149,8 @@ class JobsRepository implements JobsInterface
         $categories = CategoryJob::orderBy('name', 'ASC')->where('status', 1)->get();
         $types = TypeJob::orderBy('name', 'ASC')->where('status', 1)->get();
 
-        $jobs = Job::where([
+
+        $jobs = Job::with('categoryJob','typeJob')->where([
             'user_id' => Auth::user()->id,
             'id' => $id
         ])->first();
@@ -166,32 +166,20 @@ class JobsRepository implements JobsInterface
      */
     public function update(UpdateJobsRequest $request, $id)
     {
-        // Validate the request using the rules defined in the UpdateJobsRequest
-        $validatedData = $request->validated();
 
-        // Create a new Validator instance using the request data and rules
+       $validatedData = $request->validated();
+
         $validator = Validator::make($validatedData, $request->rules());
 
-        // Check if validation passes
         if ($validator->passes()) {
-            // Find the job by ID
+
             $jobDetail = Job::find($id);
 
-            // Update the job details using the validated data
             $jobDetail->update($validatedData);
-
-            // Flash success message and return JSON response
-            session()->flash('success', 'Job updated successfully.');
-            return response()->json([
-                'status' => true,
-                'errors' => []
-            ]);
+            dd($jobDetail);
+            return redirect()->back()->with('success', 'Job updated successfully.');
         } else {
-            // If validation fails, return JSON response with errors
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
+            return redirect()->back()->with('errors','Something went wrong');
         }
     }
 
@@ -214,18 +202,15 @@ class JobsRepository implements JobsInterface
     }
 
 
-    public function applyJob(Request $request)
+    public function applyJob(Job $job)
     {
-        $id = $request->id;
-
-        $job = Job::findOrFail($id);
-
+        $id = $job->id;
         // Check if user is applying to their own job
-        if ($job->user_id == Auth::user()->id) {
-            $message = 'You cannot apply to your own job.';
-            return response()->json([
+        if ($job->user_id == Auth::user()->id || Auth::user()->role === 'employer' || Auth::user()->role === 'admin') {
+            $message = 'You cannot apply to jobs.';
+            return back()->with([
                 'status' => false,
-                'message' => $message
+                'error' => $message
             ]);
         }
 
@@ -234,12 +219,11 @@ class JobsRepository implements JobsInterface
             'user_id' => Auth::user()->id,
             'job_id' => $id
         ])->count();
-
         if ($jobApplicationCount > 0) {
             $message = 'You have already applied to this job.';
-            return response()->json([
+            return back()->with([
                 'status' => false,
-                'message' => $message
+                'error' => $message
             ]);
         }
 
@@ -262,54 +246,42 @@ class JobsRepository implements JobsInterface
 
         Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
 
-        $message = 'You have successfully applied.';
-
-        return response()->json([
-            'status' => true,
-            'message' => $message
-        ]);
+        return redirect()->back()->with('success','You have successfully applied');
     }
 
     public
-    function saveJob(Request $request)
+    function saveJob(Job $job)
     {
-        $id = $request->id;
+        $id = $job->id;
         $job = Job::find($id);
         if (Auth::user()->role == 'admin') {
-            session()->flash('error', 'You are not allowed to save jobs');
-            return response()->json([
-                'status' => false
-            ]);
+            return redirect()->back()->with('error', 'You are not allowed to save jobs');
+
         }
         if ($job == null) {
-            session()->flash('error', 'Job not Found');
-            return response()->json([
-                'status' => false,
-            ]);
+            return redirect()->back()->with('error', 'Job not Found');
         }
         // check if user already saved job
         $countSavedJob = SavedJob::where([
             'user_id' => Auth::user()->id,
             'job_id' => $id,
         ])->count();
-
-        if ($countSavedJob > 0) {
-            $message = 'You are already save this job';
-            session()->flash('error', $message);
-            return response()->json([
+        if ($job->user_id == Auth::user()->id) {
+            $message = 'You cannot save your own job.';
+            return back()->with([
                 'status' => false,
-                'message' => $message,
+                'error' => $message
             ]);
+        }
+
+       if ($countSavedJob > 0) {
+            return redirect()->back()->with('error', 'You are already save this job');
         }
         $savedJob = new SavedJob();
         $savedJob->job_id = $id;
         $savedJob->user_id = Auth::user()->id;
         $savedJob->save();
-        $message = 'You are saved this job successfully !';
-        session()->flash('success', $message);
-        return response()->json([
-            'status' => true,
-            'message' => $message,
-        ]);
+        return redirect()->back()->with('success', 'You are saved this job successfully !');
+
     }
 }

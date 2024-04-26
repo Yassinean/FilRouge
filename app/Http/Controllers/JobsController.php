@@ -95,12 +95,12 @@ class JobsController extends Controller
 
     }
 
-    public function applyJob(Request $request) {
-        return $this->service->applyJob($request);
+    public function applyJob(Job $job) {
+        return $this->service->applyJob($job);
     }
 
-    public function saveJob(Request $request){
-        return $this->service->saveJob($request);
+    public function saveJob(Job $job){
+        return $this->service->saveJob($job);
     }
 
 

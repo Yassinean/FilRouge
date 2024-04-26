@@ -29,7 +29,7 @@ class CategoryJobController extends Controller
 
     public function edit($id)
     {
-        return $this->service->edit();
+        return $this->service->edit($id);
     }
 
     public function update(UpdateCategoryJobRequest $request, $id)

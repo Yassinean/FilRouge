@@ -58,13 +58,13 @@ class JobService implements JobsServiceInterface
         return $this->repository->destroy($id);
     }
 
-    public function applyJob(Request $request)
+    public function applyJob(Job $job)
     {
-        return $this->repository->applyJob($request);
+        return $this->repository->applyJob($job);
     }
 
-    public function saveJob(Request $request)
+    public function saveJob(Job $job)
     {
-        return $this->repository->saveJob($request);
+        return $this->repository->saveJob($job);
     }
 }

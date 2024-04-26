@@ -64,12 +64,10 @@ Route::group(['prefix' => 'account'], function () {
         //this one for candidate that he wants to remove his candidature from this job
         Route::get('/jobsPosted', [JobsController::class, 'getJob'])->name('account.getJob');
         // resource jobs
-        Route::resource('jobs',JobsController::class)->only([
-            'index','create','store','show','edit','update','destroy'
-        ]);
+        Route::resource('jobs',JobsController::class);
         // end resource job
-        Route::post('/applyJob', [JobsController::class, 'applyJob'])->name('account.applyJob');
-        Route::post('/saveJob', [JobsController::class, 'saveJob'])->name('account.saveJob');
+        Route::post('/applyJob/{job}', [JobsController::class, 'applyJob'])->name('account.applyJob');
+        Route::post('/saveJob/{job}', [JobsController::class, 'saveJob'])->name('account.saveJob');
         // end jobs controller
 
         /************* Jobs controller ************/

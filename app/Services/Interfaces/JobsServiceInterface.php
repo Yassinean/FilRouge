@@ -20,7 +20,7 @@ interface JobsServiceInterface
     public function edit($id);
     public function update(UpdateJobsRequest $request, $id);
     public function destroy($id);
-    public function applyJob(Request $request);
-    public function saveJob(Request $request);
+    public function applyJob(Job $job);
+    public function saveJob(Job $job);
 
 }

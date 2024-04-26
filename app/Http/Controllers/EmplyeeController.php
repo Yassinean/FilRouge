@@ -66,13 +66,13 @@ class EmplyeeController extends Controller
             'education' => 'required',
             'experience' => 'required',
             'certification' => 'required',
-            'cv' => 'required|image', // Add appropriate file formats for CV
+            'cv' => 'required|image',
         ]);
         $userID = Auth::id();
         if ($validator->passes()) {
-            $employee = Emplyee::find($id); // Retrieve the specific employee instance
+            $employee = Emplyee::find($id);
 
-            // Update the attributes of the employee instance
+
             $employee->educations = $request->education;
             $employee->experiences = $request->experience;
             $employee->certifications = $request->certification;

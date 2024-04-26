@@ -21,6 +21,18 @@
             <div class="row pb-5">
                 <div class="col-md-8">
                     @include('front.message')
+                    <div class="card shadow border-0 mb-4">
+                        <div class="job_details_header">
+                            <div class="single_jobs white-bg d-flex justify-content-between">
+                                <div class="jobs_left d-flex align-items-center">
+                                    <div class="jobs_conetent">
+                                        <h4>{{$jobApplicants->count()}} Applicants to this job</h4>
+                                    </div>
+                                </div>
+                                <div class="jobs_right"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card shadow border-0">
                         <div class="job_details_header">
                             <div class="single_jobs white-bg d-flex justify-content-between">
@@ -43,8 +55,12 @@
                                 <div class="jobs_right">
                                     <div class="apply_now">
                                         @if(Auth::check())
-                                            <a class="heart_mark" href="" onclick="saveJob({{$job->id}})"> <i
-                                                    class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                            <form action="{{route('account.saveJob', $job->id)}}" method="post">
+                                                @csrf
+                                                <button type="submit" class="heart_mark"><i class="fa fa-heart-o"
+                                                                                            aria-hidden="true"></i>
+                                                </button>
+                                            </form>
                                         @endif
                                     </div>
                                 </div>
@@ -70,50 +86,16 @@
                             <div class="border-bottom"></div>
                             @if(Auth::check())
                                 <div class="pt-3 text-end">
-                                    <a href="" onclick="applyJob({{$job->id}})" class="btn btn-primary">Apply</a>
+                                    <form action="{{route('account.applyJob', $job->id)}}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Apply</button>
+                                    </form>
                                 </div>
                             @else
                                 <div class="pt-3 text-end">
                                     <a href="{{route('account.login')}}" class="btn btn-primary">Login to Apply</a>
                                 </div>
                             @endif
-                        </div>
-                    </div>
-                    <div class="card shadow border-0 mt-4">
-                        <div class="job_details_header">
-                            <div class="single_jobs white-bg d-flex justify-content-between">
-                                <div class="jobs_left d-flex align-items-center">
-                                    <div class="jobs_conetent">
-                                        <h4>{{$jobApplicants->count()}} Applicants</h4>
-                                    </div>
-                                </div>
-                                <div class="jobs_right"></div>
-                            </div>
-                        </div>
-                        <div class="descript_wrap white-bg">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Mobile</th>
-                                    <th>Applied Date</th>
-                                </tr>
-                                @forelse($jobApplicants as $jobApplicant)
-
-                                    <tr>
-                                        <td>{{ $jobApplicant->user->name  }}</td>
-                                        <td>{{ $jobApplicant->user->email  }}</td>
-                                        <td>{{ $jobApplicant->user->mobile  }}</td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($jobApplicant->applied_date)->format('d M, Y') }}
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <td colspan="3">Applicants not found</td>
-                                @endforelse
-
-                            </table>
-
                         </div>
                     </div>
                 </div>
@@ -165,50 +147,5 @@
 @endsection
 
 @section('customJs')
-    <script>
-        function applyJob(id) {
-            if (confirm('Are you sure you want to apply on this job ?')) {
-                let token = '{{ csrf_token() }}';
-                $.ajax({
-                    // Set the CSRF token in the request headers
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                    },
-                    url: '{{route('account.applyJob')}}',
-                    type: 'post',
-                    data: {id: id},
-                    dataType: 'json',
-                    success: function (response) {
-                        window.location.href = '{{url()->current()}}';
-                    }
-                })
-            }
-        }
 
-        function saveJob(id) {
-            let token = '{{ csrf_token() }}';
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                url: '{{ route('account.saveJob') }}',
-                type: 'post',
-                data: {id: id},
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status) {
-                        alert(response.message); // Display success message
-                        // Refresh the page after successfully saving the job
-                    } else {
-                        alert(response.message); // Display error message
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('An error occurred while processing your request. Please try again later.');
-                }
-            });
-        }
-
-    </script>
 @endsection

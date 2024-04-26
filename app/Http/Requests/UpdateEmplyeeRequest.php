@@ -22,7 +22,7 @@ class UpdateEmplyeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
         ];
     }
 }
