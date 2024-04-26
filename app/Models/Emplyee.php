@@ -14,6 +14,7 @@ class Emplyee extends Model
         'certifications',
         'experiences',
         'cv',
+        'reported',
     ];
 
     public function user(){

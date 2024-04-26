@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportEmployeeRepository implements ReportEmployeeInterface
 {
-    public function reportEmployee($employeeReported)
+    public function reportEmployee(Emplyee $employee)
     {
-        $employeeReported->update(['reported' => !$employeeReported->reported]);
+        $employee->update(['reported' => !$employee->reported]);
         return redirect()->back()->with('success', 'Employee reported successfully.');
     }
 }

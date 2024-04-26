@@ -7,14 +7,6 @@
                 <div class="col-6 col-md-10 ">
                     <h2>Find Jobs</h2>
                 </div>
-                <div class="col-6 col-md-2">
-                    <div class="align-end">
-                        <select name="sort" id="sort" class="form-control">
-                            <option value="">Latest</option>
-                            <option value="">Oldest</option>
-                        </select>
-                    </div>
-                </div>
             </div>
 
             <div class="row pt-5">
@@ -47,9 +39,9 @@
                                 <h2>Job Type</h2>
                                 @forelse($types as $type)
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input " name="job_type" type="checkbox"
-                                               value="{{$type->id}}" id="job-type-{{$type->id}}">
-                                        <label class="form-check-label "
+                                        <input class="form-check-input " name="job_type" type="radio"
+                                               value="{{$type->id}}" id="job-type-{{$type->id}}" {{ (Request::get('job_type') == $type->id) ? 'checked' : '' }}>
+                                        <label class="form-check-label"
                                                for="job-type-{{$type->id}}">{{$type->name}}</label>
                                     </div>
                                 @empty
@@ -133,6 +125,7 @@
                                 @endforelse
                             </div>
                             <div class="d-flex justify-content-center">
+                                {{$jobs->links()}}
                             </div>
                         </div>
                     </div>

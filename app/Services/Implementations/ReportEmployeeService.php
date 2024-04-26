@@ -16,8 +16,8 @@ class ReportEmployeeService implements ReportEmployeeServiceInterface
 
     }
 
-    public function reportEmployee($employeeReported)
+    public function reportEmployee(Emplyee $employee)
     {
-        return $this->repository->reportEmployee($employeeReported);
+        return $this->repository->reportEmployee($employee);
     }
 }

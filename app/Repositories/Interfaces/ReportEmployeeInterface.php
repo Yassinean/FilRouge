@@ -2,8 +2,10 @@
 namespace App\Repositories\Interfaces;
 
 
+use App\Models\Emplyee;
+
 interface ReportEmployeeInterface {
 
-    public function reportEmployee($employeeReported) ;
+    public function reportEmployee(Emplyee $employee) ;
 
 }

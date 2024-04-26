@@ -17,11 +17,12 @@ class BanUser
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(Auth::user()->status == 1)
+        if(Auth::user()->status == 1 || Auth::user()->reported == 1)
         {
             Auth::logout();
-            abort('403','your banned');
+            abort('403','you are banned or reported');
         }
+
         return $next($request);
     }
 }

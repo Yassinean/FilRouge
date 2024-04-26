@@ -38,10 +38,9 @@ class JobsController extends Controller
         $categories = $data['categories'];
         $types = $data['types'];
         $jobs = $data['jobs'];
-        $jobTypeArray = $data['jobTypeArray'];
 
         // Pass variables to the view
-        return view('front.jobs', compact('categories', 'types', 'jobs', 'jobTypeArray'));
+        return view('front.jobs', compact('categories', 'types', 'jobs'));
     }
 
     /**

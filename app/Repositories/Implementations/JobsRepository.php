@@ -26,15 +26,14 @@ class JobsRepository implements JobsInterface
      */
     public function index(Request $request)
     {
+       // dd($request->all());
         $categories = CategoryJob::where('status', 1)->get();
-        $types = TypeJob::where('status', 1)->paginate(15);
+        $types = TypeJob::where('status', 1)->get()  ;
 
-        $jobs = Job::where('status', 1)->get();
+        $jobs = Job::where('status', 1);
         // Search using keyword
         if (!empty($request->keyword)) {
-            $jobs = $jobs->where(function ($query) use ($request) {
-                $query->whereAny(['title', 'keywords'], 'like', '%' . $request->keyword . '%');
-            });
+            $jobs = $jobs->whereAny(['title', 'keywords'], 'like', '%' . $request->keyword . '%');
         }
 
         // Search using location
@@ -47,12 +46,10 @@ class JobsRepository implements JobsInterface
         }
 
 
-        $jobTypeArray = [];
         // Search using Job Type
-        if (!empty($request->jobType)) {
-            $jobTypeArray = explode(',', $request->jobType);
+        if (!empty($request->job_type)) {
 
-            $jobs = $jobs->whereIn('type_job_id', $jobTypeArray);
+            $jobs = $jobs->where('type_job_id', $request->job_type);
         }
 
         // Search using experience
@@ -60,19 +57,13 @@ class JobsRepository implements JobsInterface
             $jobs = $jobs->where('experiences', $request->experience);
         }
 
-        /*
-        $jobs = Job::query()->with(['typeJob', 'categoryJob']);
 
-        if ($request->sort == '0') {
-            $jobs = $jobs->orderBy('created_at', 'ASC');
-        } else {
-            $jobs = $jobs->orderBy('created_at', 'DESC');
-        }
+        $jobs = $jobs->with(['typeJob', 'categoryJob']);
 
-        $jobs = $jobs->get();*/
+        $jobs = $jobs->paginate(6);
 
 
-        return view('front.jobs', compact('categories', 'types', 'jobs', 'jobTypeArray'));
+        return view('front.jobs', compact('categories', 'types', 'jobs'));
     }
 
     /**

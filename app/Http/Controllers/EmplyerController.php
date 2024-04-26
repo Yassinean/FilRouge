@@ -14,8 +14,8 @@ class EmplyerController extends Controller
 
    }
 
-   public function reportEmployee(Emplyee $employeeReported){
-       return $this->service->reportEmployee($employeeReported);
+   public function reportEmployee(Emplyee $employee){
+       return $this->service->reportEmployee($employee);
    }
 
 }
